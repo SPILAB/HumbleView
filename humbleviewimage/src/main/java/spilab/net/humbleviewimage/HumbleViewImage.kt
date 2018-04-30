@@ -2,16 +2,28 @@ package spilab.net.humbleviewimage
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import java.net.HttpURLConnection
-import java.net.URL
+import spilab.net.humbleviewimage.model.HumbleViewDownloader
+import spilab.net.humbleviewimage.view.AnimationTimer
 
 
 class HumbleViewImage : AppCompatImageView {
 
+    companion object {
+        var DEFAULT_FADING_TIME_MILLIS = 500L;
+    }
+
     private var url: String? = null
+
+    private var nextDrawable: BitmapDrawable? = null
+
+    private val downloader: HumbleViewDownloader by lazy { HumbleViewDownloader(this, url!!) }
+
+    private val fadingAnimationTime: AnimationTimer by lazy { AnimationTimer(DEFAULT_FADING_TIME_MILLIS) }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs, 0) {
@@ -38,36 +50,34 @@ class HumbleViewImage : AppCompatImageView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (url != null) {
-            downloadImage(url!!)
+            downloader.start()
         }
     }
 
-    private fun downloadImage(url: String) {
-        Thread {
-            var bitmap: Bitmap? = null
-            val uri = URL(url)
-            try {
-                val urlConnection = uri.openConnection() as HttpURLConnection
-                try {
-                    val statusCode = urlConnection.responseCode
-                    if (statusCode == 200) {
-                        val inputStream = urlConnection.inputStream
-                        if (inputStream != null) {
-                            bitmap = BitmapFactory.decodeStream(inputStream)
-                        }
-                    }
-                } finally {
-                    urlConnection.disconnect()
-                }
-            } catch (exception: Exception) {
-                // For network exception, we do not need to log,
-                // we simply cannot retrieve the resource.
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        if (nextDrawable != null && canvas != null) {
+            val (savedBitmap, fadingAlpha) = prepareNextDrawable()
+            super.onDraw(canvas)
+            if (fadingAlpha == 255) {
+                nextDrawable = null
+            } else {
+                setImageDrawable(savedBitmap)
             }
-            if (bitmap != null) {
-                this.post({
-                    setImageBitmap(bitmap)
-                })
-            }
-        }.start()
+        }
+    }
+
+    private fun prepareNextDrawable(): Pair<Drawable, Int> {
+        val savedBitmap = drawable
+        val fadingAlpha = (fadingAnimationTime.getNormalized(255.0f)).toInt()
+        nextDrawable?.alpha = fadingAlpha
+        setImageDrawable(nextDrawable)
+        return Pair(savedBitmap, fadingAlpha)
+    }
+
+    internal fun transitionTo(bitmap: Bitmap) {
+        nextDrawable = BitmapDrawable(context.resources, bitmap)
+        fadingAnimationTime.start()
+        invalidate()
     }
 }
