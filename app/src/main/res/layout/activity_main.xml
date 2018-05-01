@@ -6,36 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <spilab.net.humbleviewimage.HumbleViewImage
-        android:id="@+id/SingleImage"
+    <FrameLayout
+        android:id="@+id/singleImage"
+        style="@style/rippleFrame"
         android:layout_width="0dp"
         android:layout_height="128dp"
         android:layout_margin="8dp"
-        android:contentDescription="@string/flickrSingleImage"
         android:onClick="onClickSingleImage"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/ImagesList"
+        app:layout_constraintBottom_toTopOf="@+id/imagesList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_photo_black_48px"
-        app:url="https://c2.staticflickr.com/8/7593/27009671293_db699ef384_b.jpg" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <spilab.net.humbleviewimage.HumbleViewImage
-        android:id="@+id/ImagesList"
+        <spilab.net.humbleviewimage.HumbleViewImage
+            android:id="@+id/singleImageImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/flickrImage"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_photo_black_48px"
+            app:url="https://c2.staticflickr.com/8/7593/27009671293_db699ef384_b.jpg" />
+
+        <TextView
+            style="@style/largeTextForButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:text="@string/single_image"
+            android:textColor="@color/md_white_1000" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/imagesList"
+        style="@style/rippleFrame"
         android:layout_width="0dp"
         android:layout_height="128dp"
         android:layout_margin="8dp"
-        android:contentDescription="@string/flickrSingleImage"
         android:onClick="onClickImagesList"
-        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SingleImage"
-        app:srcCompat="@drawable/ic_photo_black_48px"
-        app:url="https://c2.staticflickr.com/8/7593/27009671293_db699ef384_b.jpg" />
+        app:layout_constraintTop_toBottomOf="@+id/singleImage">
+
+        <spilab.net.humbleviewimage.HumbleViewImage
+            android:id="@+id/imagesListImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/flickrImage"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_photo_black_48px"
+            app:url="https://c2.staticflickr.com/8/7306/12631226523_d2926814c7_b.jpg" />
+
+        <TextView
+            style="@style/largeTextForButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:text="@string/images_list"
+            android:textColor="@color/md_white_1000" />
+
+    </FrameLayout>
+
 
 </android.support.constraint.ConstraintLayout>

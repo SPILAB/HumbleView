@@ -8,4 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="largeTextForButton" parent="android:style/Widget.TextView">
+        <item name="android:textSize">32sp</item>
+        <item name="android:shadowColor">@color/md_black_1000</item>
+        <item name="android:shadowRadius">32</item>
+    </style>
+
+    <style name="rippleFrame">
+        <item name="android:foreground">?android:selectableItemBackground</item>
+    </style>
+
 </resources>

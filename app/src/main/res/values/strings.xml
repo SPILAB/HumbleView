@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">HumbleView</string>
-    <string name="flickrSingleImage">https://www.flickr.com/photos/piviso/27009671293/sizes/l</string>
+    <string name="flickrImage">Image from FlickR</string>
     <string name="activity_title_single_image">Single image</string>
     <string name="activity_title_images_list">Images list</string>
+    <string name="single_image">SINGLE IMAGE</string>
+    <string name="images_list">IMAGES LIST</string>
 </resources>
