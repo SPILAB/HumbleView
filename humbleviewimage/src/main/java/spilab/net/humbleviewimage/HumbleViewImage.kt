@@ -3,27 +3,28 @@ package spilab.net.humbleviewimage
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
+import android.util.Log
 import spilab.net.humbleviewimage.model.HumbleViewDownloader
-import spilab.net.humbleviewimage.view.AnimationTimer
+import spilab.net.humbleviewimage.view.NextDrawable
 
 
 class HumbleViewImage : AppCompatImageView {
 
-    companion object {
-        var DEFAULT_FADING_TIME_MILLIS = 500L;
-    }
+    private val downloader: HumbleViewDownloader by lazy { HumbleViewDownloader(this) }
+    private var nextDrawable: NextDrawable? = null
 
-    private var url: String? = null
-
-    private var nextDrawable: BitmapDrawable? = null
-
-    private val downloader: HumbleViewDownloader by lazy { HumbleViewDownloader(this, url!!) }
-
-    private val fadingAnimationTime: AnimationTimer by lazy { AnimationTimer(DEFAULT_FADING_TIME_MILLIS) }
+    var url: String? = null
+        set(value) {
+            field = value
+            if (field != null) {
+                downloader.start(field!!)
+            }
+            cancelNextDrawableTransition()
+            Log.d("TAG", "url=$url")
+        }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs, 0) {
@@ -47,37 +48,33 @@ class HumbleViewImage : AppCompatImageView {
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        if (url != null) {
-            downloader.start()
-        }
-    }
-
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (nextDrawable != null && canvas != null) {
-            val (savedBitmap, fadingAlpha) = prepareNextDrawable()
+            nextDrawable!!.prepareNextDrawable(this)
             super.onDraw(canvas)
-            if (fadingAlpha == 255) {
+            if (nextDrawable!!.isAnimationCompleted()) {
                 nextDrawable = null
             } else {
-                setImageDrawable(savedBitmap)
+                nextDrawable!!.restoreCurrentDrawable(this)
             }
         }
     }
 
-    private fun prepareNextDrawable(): Pair<Drawable, Int> {
-        val savedBitmap = drawable
-        val fadingAlpha = (fadingAnimationTime.getNormalized(255.0f)).toInt()
-        nextDrawable?.alpha = fadingAlpha
-        setImageDrawable(nextDrawable)
-        return Pair(savedBitmap, fadingAlpha)
+    internal fun transitionTo(downloadedUrl: String, bitmap: Bitmap) {
+        if (downloadedUrl == url) {
+            nextDrawable = NextDrawable(this, bitmap)
+            if (ViewCompat.isAttachedToWindow(this)) {
+                Log.d("TAG", "transitionTo attached")
+                invalidate()
+            }
+            else {
+                Log.d("TAG", "transitionTo not attached")
+            }
+        }
     }
 
-    internal fun transitionTo(bitmap: Bitmap) {
-        nextDrawable = BitmapDrawable(context.resources, bitmap)
-        fadingAnimationTime.start()
-        invalidate()
+    private inline fun cancelNextDrawableTransition() {
+        nextDrawable = null
     }
 }

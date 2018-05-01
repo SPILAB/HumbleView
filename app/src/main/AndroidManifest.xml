@@ -18,7 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".singleimage.SingleImageActivity"></activity>
+        <activity
+            android:name=".singleimage.SingleImageActivity"
+            android:label="@string/activity_title_single_image" />
+        <activity
+            android:name=".imageslist.ImagesListActivity"
+            android:label="@string/activity_title_images_list" />
     </application>
 
 </manifest>

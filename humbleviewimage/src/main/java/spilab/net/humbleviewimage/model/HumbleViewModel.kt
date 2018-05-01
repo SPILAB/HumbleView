@@ -1,11 +1,13 @@
 package spilab.net.humbleviewimage.model
 
-import java.util.concurrent.Executors.newFixedThreadPool
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors.newFixedThreadPool
+import kotlin.math.max
 
 object HumbleViewModel {
 
     val executorService: ExecutorService by lazy {
-        return@lazy newFixedThreadPool(2)
+        val threadCount = max(2, Runtime.getRuntime().availableProcessors() - 1)
+        return@lazy newFixedThreadPool(threadCount)
     }
 }

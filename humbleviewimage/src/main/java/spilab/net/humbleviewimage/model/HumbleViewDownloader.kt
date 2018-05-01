@@ -2,14 +2,13 @@ package spilab.net.humbleviewimage.model
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.View
 import spilab.net.humbleviewimage.HumbleViewImage
 import java.net.HttpURLConnection
 import java.net.URL
 
-class HumbleViewDownloader(val view: HumbleViewImage, val url: String) {
+class HumbleViewDownloader(val view: HumbleViewImage) {
 
-    internal fun start() {
+    internal fun start(url: String) {
         HumbleViewModel.executorService.submit({
             var bitmap: Bitmap? = null
             val uri = URL(url)
@@ -32,7 +31,7 @@ class HumbleViewDownloader(val view: HumbleViewImage, val url: String) {
             }
             if (bitmap != null) {
                 view.post({
-                    view.transitionTo(bitmap)
+                    view.transitionTo(url, bitmap)
                 })
             }
         })
