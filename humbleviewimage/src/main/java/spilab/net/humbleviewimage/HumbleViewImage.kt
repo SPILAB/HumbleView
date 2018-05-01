@@ -6,24 +6,23 @@ import android.graphics.Canvas
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import android.util.Log
 import spilab.net.humbleviewimage.model.HumbleViewDownloader
 import spilab.net.humbleviewimage.view.NextDrawable
 
 
 class HumbleViewImage : AppCompatImageView {
 
-    private val downloader: HumbleViewDownloader by lazy { HumbleViewDownloader(this) }
+    private val downloaderLazy = lazy { HumbleViewDownloader(this) }
+    private val downloader: HumbleViewDownloader by downloaderLazy
     private var nextDrawable: NextDrawable? = null
 
     var url: String? = null
         set(value) {
             field = value
             if (field != null) {
-                downloader.start(field!!)
+                downloader.start(field!!, context.applicationContext)
             }
             cancelNextDrawableTransition()
-            Log.d("TAG", "url=$url")
         }
 
     constructor(context: Context) : this(context, null)
@@ -65,11 +64,7 @@ class HumbleViewImage : AppCompatImageView {
         if (downloadedUrl == url) {
             nextDrawable = NextDrawable(this, bitmap)
             if (ViewCompat.isAttachedToWindow(this)) {
-                Log.d("TAG", "transitionTo attached")
                 invalidate()
-            }
-            else {
-                Log.d("TAG", "transitionTo not attached")
             }
         }
     }

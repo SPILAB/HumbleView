@@ -5,20 +5,16 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import spilab.net.humbleviewimage.HumbleViewImage
 
-internal class NextDrawable {
+internal class NextDrawable(humbleViewImage: HumbleViewImage, bitmap: Bitmap) {
 
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 500L
     }
 
     private val fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS)
-    private var drawable: BitmapDrawable
+    private var drawable: BitmapDrawable = BitmapDrawable(humbleViewImage.resources, bitmap)
     private var savedBitmap: Drawable? = null
     private var fadingAlpha: Int = 0
-
-    constructor(humbleViewImage: HumbleViewImage, bitmap: Bitmap) {
-        this.drawable = BitmapDrawable(humbleViewImage.resources, bitmap)
-    }
 
     fun prepareNextDrawable(humbleViewImage: HumbleViewImage) {
         savedBitmap = humbleViewImage.drawable
@@ -34,4 +30,5 @@ internal class NextDrawable {
     fun restoreCurrentDrawable(humbleViewImage: HumbleViewImage) {
         humbleViewImage.setImageDrawable(savedBitmap)
     }
+
 }
