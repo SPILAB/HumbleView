@@ -24,6 +24,7 @@
         <activity
             android:name=".imageslist.ImagesListActivity"
             android:label="@string/activity_title_images_list" />
+        <activity android:name=".decodescale.DecodeScale"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,6 @@
 package spilab.net.humbleviewimage.model
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Handler
 import spilab.net.humbleviewimage.HumbleViewImage
 import java.io.InputStream
@@ -11,34 +9,34 @@ import java.net.URL
 import java.util.concurrent.Future
 
 
-class HumbleViewDownloader(val view: HumbleViewImage) {
+internal class HumbleViewDownloader(val humbleViewImage: HumbleViewImage) {
 
     private var task: Future<*>? = null
-    private var url: String? = null
+    private var bitmapId: HumbleBitmapId? = null
 
-    internal fun start(url: String, context: Context) {
+    internal fun start(context: Context, bitmapId: HumbleBitmapId) {
         val mainHandler = Handler(context.mainLooper)
-        if (this.url != url) {
-            val canceled = task?.cancel(false)
+        if (this.bitmapId != bitmapId) {
+            task?.cancel(false)
         }
-        this.url = url
+        this.bitmapId = bitmapId
         task = HumbleViewModel.executorService.submit({
-            var bitmap: Bitmap? = null
+            var humbleViewBitmap: HumbleViewBitmap? = null
             var urlConnection: HttpURLConnection? = null
             var inputStream: InputStream? = null
-            val uri = URL(url)
+            val uri = URL(bitmapId.url)
             try {
                 urlConnection = uri.openConnection() as HttpURLConnection
                 val statusCode = urlConnection.responseCode
                 if (statusCode == 200) {
                     inputStream = urlConnection.inputStream
                     if (inputStream != null) {
-                        bitmap = BitmapFactory.decodeStream(inputStream)
+                        humbleViewBitmap = bitmapId.size.decodeBitmapForViewSize(inputStream)
                     }
                 }
-                if (bitmap != null) {
+                if (humbleViewBitmap != null) {
                     mainHandler.post({
-                        view.transitionTo(url, bitmap)
+                        humbleViewImage.transitionTo(bitmapId, humbleViewBitmap)
                     })
                 }
             } finally {

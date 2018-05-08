@@ -5,4 +5,5 @@
     <string name="activity_title_images_list">Images list</string>
     <string name="single_image">SINGLE IMAGE</string>
     <string name="images_list">IMAGES LIST</string>
+    <string name="decode_scale">DECODE SCALE</string>
 </resources>

@@ -13,8 +13,7 @@ class ImagesListActivity : AppCompatActivity() {
     companion object {
 
         fun createIntent(context: Context): Intent {
-            val intent = Intent(context, ImagesListActivity::class.java)
-            return intent
+            return Intent(context, ImagesListActivity::class.java)
         }
     }
 

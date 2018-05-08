@@ -11,7 +11,7 @@
     <style name="largeTextForButton" parent="android:style/Widget.TextView">
         <item name="android:textSize">32sp</item>
         <item name="android:shadowColor">@color/md_black_1000</item>
-        <item name="android:shadowRadius">32</item>
+        <item name="android:shadowRadius">24</item>
     </style>
 
     <style name="rippleFrame">

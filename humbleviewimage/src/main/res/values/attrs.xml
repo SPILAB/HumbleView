@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="HumbleViewImage">
         <attr name="url" format="string" />
+        <attr name="debug" format="boolean" />
     </declare-styleable>
 </resources>

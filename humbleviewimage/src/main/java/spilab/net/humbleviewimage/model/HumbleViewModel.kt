@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors.newFixedThreadPool
 import kotlin.math.max
 
-object HumbleViewModel {
+internal object HumbleViewModel {
 
     val executorService: ExecutorService by lazy {
         val threadCount = max(2, Runtime.getRuntime().availableProcessors() - 1)
