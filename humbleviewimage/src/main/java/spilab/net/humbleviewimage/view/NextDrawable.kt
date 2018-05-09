@@ -1,18 +1,16 @@
 package spilab.net.humbleviewimage.view
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import spilab.net.humbleviewimage.HumbleViewImage
+import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 
-internal class NextDrawable(humbleViewImage: HumbleViewImage, bitmap: Bitmap) {
+internal class NextDrawable(private var drawable: HumbleBitmapDrawable) {
 
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
     }
 
     private val fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS)
-    private var drawable: BitmapDrawable = BitmapDrawable(humbleViewImage.resources, bitmap)
     private var savedBitmap: Drawable? = null
     private var fadingAlpha: Int = 0
 

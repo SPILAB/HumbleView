@@ -7,7 +7,7 @@ import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleviewimage.model.*
 import spilab.net.humbleviewimage.view.HumbleViewImageDebug
-import spilab.net.humbleviewimage.view.HumbleViewSize
+import spilab.net.humbleviewimage.model.ViewSize
 import spilab.net.humbleviewimage.view.NextDrawable
 
 
@@ -17,7 +17,7 @@ class HumbleViewImage : AppCompatImageView {
         set(value) {
             field = value
             if (field != null) {
-                downloadIfNeeded()
+                updateImageIfNeeded()
             }
             cancelNextDrawableTransition()
         }
@@ -26,10 +26,10 @@ class HumbleViewImage : AppCompatImageView {
     private val downloaderLazy = lazy { HumbleViewDownloader(this) }
     private val downloader: HumbleViewDownloader by downloaderLazy
     private var nextDrawable: NextDrawable? = null
-    private var lastKnowSize: HumbleViewSize? = null
-    private var currentBitmapId: HumbleBitmapId? = null
+    private var lastKnowSize: ViewSize? = null
 
-    private var bitmapDebug: BitmapDebug? = null
+    private var nextBitmapId: HumbleBitmapId? = null
+
     private val viewDebug by lazy { HumbleViewImageDebug(this.context) }
 
     constructor(context: Context) : this(context, null)
@@ -58,8 +58,8 @@ class HumbleViewImage : AppCompatImageView {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        lastKnowSize = HumbleViewSize(w, h)
-        downloadIfNeeded()
+        lastKnowSize = ViewSize(w, h)
+        updateImageIfNeeded()
     }
 
     override fun onDetachedFromWindow() {
@@ -79,30 +79,42 @@ class HumbleViewImage : AppCompatImageView {
                 nextDrawable!!.restoreCurrentDrawable(this)
             }
         }
-        if (debug && canvas != null && bitmapDebug != null) {
-            viewDebug.onDraw(canvas, bitmapDebug!!)
+        if (debug && canvas != null) {
+            val currentDrawable = drawable
+            if (currentDrawable is HumbleBitmapDrawable) {
+                viewDebug.onDraw(canvas, currentDrawable.sampleSize)
+            }
         }
     }
 
-    internal fun transitionTo(bitmapId: HumbleBitmapId, humbleViewBitmap: HumbleViewBitmap) {
-        if (currentBitmapId == bitmapId) {
-            nextDrawable = NextDrawable(this, humbleViewBitmap.bitmap)
-            bitmapDebug = humbleViewBitmap.debug
+    internal fun onBitmapReady(bitmapId: HumbleBitmapId, drawable: HumbleBitmapDrawable?) {
+        if (drawable != null && nextBitmapId == bitmapId) {
+            nextBitmapId = HumbleBitmapId()
+            nextDrawable = NextDrawable(drawable)
             if (ViewCompat.isAttachedToWindow(this)) {
                 invalidate()
             }
         }
     }
 
-    private fun downloadIfNeeded() {
+    private fun updateImageIfNeeded() {
         if (url != null && lastKnowSize != null) {
-            val nextBitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
-            if (nextBitmapId != currentBitmapId) {
-                currentBitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
-                downloader.start(context.applicationContext, currentBitmapId!!)
+            val bitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
+            if (!isCurrentDrawableId(bitmapId) && bitmapId != nextBitmapId) {
+                nextBitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
+                downloader.start(context.applicationContext, resources, nextBitmapId!!)
             }
         }
     }
+
+    private inline fun isCurrentDrawableId(bitmapId: HumbleBitmapId): Boolean {
+        val currentDrawable = drawable
+        if (currentDrawable is HumbleBitmapDrawable) {
+            return currentDrawable.humbleBitmapId == bitmapId
+        }
+        return false
+    }
+
 
     private inline fun cancelNextDrawableTransition() {
         nextDrawable = null

@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import spilab.net.humbleviewimage.model.BitmapDebug
 
 
 internal class HumbleViewImageDebug(context: Context) {
@@ -19,8 +18,8 @@ internal class HumbleViewImageDebug(context: Context) {
 
     private var padding: Float
 
-    fun onDraw(canvas: Canvas, bitmapDebug: BitmapDebug) {
-        drawTextDebug(canvas, bitmapDebug.sampleSize.toString(), padding, padding)
+    fun onDraw(canvas: Canvas, sampleSize: Int) {
+        drawTextDebug(canvas, sampleSize.toString(), padding, padding)
     }
 
     private inline fun drawTextDebug(canvas: Canvas, text: String, posX: Float, posY: Float) {
