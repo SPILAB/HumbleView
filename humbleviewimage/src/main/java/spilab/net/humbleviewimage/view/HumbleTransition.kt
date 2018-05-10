@@ -1,16 +1,18 @@
 package spilab.net.humbleviewimage.view
 
 import android.graphics.drawable.Drawable
+import android.os.SystemClock
 import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 
-internal class HumbleTransitionDrawable(val drawable: HumbleBitmapDrawable) {
+internal class HumbleTransition(val drawable: HumbleBitmapDrawable) {
 
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
     }
 
-    private val fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS)
+    private val fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS,
+            { SystemClock.uptimeMillis() })
     private var savedBitmap: Drawable? = null
     private var fadingAlpha: Int = 0
 

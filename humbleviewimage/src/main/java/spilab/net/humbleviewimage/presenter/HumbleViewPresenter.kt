@@ -6,7 +6,7 @@ import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 import spilab.net.humbleviewimage.model.HumbleBitmapId
 import spilab.net.humbleviewimage.model.HumbleViewModel
-import spilab.net.humbleviewimage.view.HumbleTransitionDrawable
+import spilab.net.humbleviewimage.view.HumbleTransition
 
 internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
 
@@ -31,7 +31,7 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
         return humbleViewImage.resources
     }
 
-    fun setTransition(humbleTransitionDrawable: HumbleTransitionDrawable) {
+    fun setTransition(humbleTransitionDrawable: HumbleTransition) {
         humbleViewImage.humbleTransitionDrawable = humbleTransitionDrawable
         humbleViewImage.invalidate()
     }
@@ -41,6 +41,6 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
     }
 
     fun stop() {
-        model.stop()
+        model.cancelDownloadIfNeeded()
     }
 }

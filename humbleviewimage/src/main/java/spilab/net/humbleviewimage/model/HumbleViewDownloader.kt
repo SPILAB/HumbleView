@@ -49,6 +49,6 @@ internal class HumbleViewDownloader(val humbleViewImage: HumbleViewModel) {
     }
 
     internal fun cancel() {
-        task?.cancel(false)
+        task?.cancel(true)
     }
 }

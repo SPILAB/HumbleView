@@ -7,13 +7,13 @@ import android.util.AttributeSet
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 import spilab.net.humbleviewimage.model.ViewSize
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
-import spilab.net.humbleviewimage.view.HumbleTransitionDrawable
+import spilab.net.humbleviewimage.view.HumbleTransition
 import spilab.net.humbleviewimage.view.HumbleViewImageDebug
 
 
 class HumbleViewImage : AppCompatImageView {
 
-    internal var humbleTransitionDrawable: HumbleTransitionDrawable? = null
+    internal var humbleTransitionDrawable: HumbleTransition? = null
     private var lastKnowSize: ViewSize? = null
     private val viewDebug by lazy { HumbleViewImageDebug(this.context) }
     private var presenter = HumbleViewPresenter(this)
