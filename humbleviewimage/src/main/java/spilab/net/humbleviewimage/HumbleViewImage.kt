@@ -2,37 +2,25 @@ package spilab.net.humbleviewimage
 
 import android.content.Context
 import android.graphics.Canvas
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import spilab.net.humbleviewimage.model.*
-import spilab.net.humbleviewimage.view.HumbleViewImageDebug
+import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 import spilab.net.humbleviewimage.model.ViewSize
-import spilab.net.humbleviewimage.view.NextDrawable
+import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
+import spilab.net.humbleviewimage.view.HumbleTransitionDrawable
+import spilab.net.humbleviewimage.view.HumbleViewImageDebug
 
 
 class HumbleViewImage : AppCompatImageView {
 
-    var url: String? = null
-        set(value) {
-            field = value
-            if (field != null) {
-                updateImageIfNeeded()
-            }
-            cancelNextDrawableTransition()
-        }
-    var debug = false
-
-    private val downloaderLazy = lazy { HumbleViewDownloader(this) }
-    private val downloader: HumbleViewDownloader by downloaderLazy
-    private var nextDrawable: NextDrawable? = null
+    internal var humbleTransitionDrawable: HumbleTransitionDrawable? = null
     private var lastKnowSize: ViewSize? = null
-
-    private var nextBitmapId: HumbleBitmapId? = null
-
     private val viewDebug by lazy { HumbleViewImageDebug(this.context) }
+    private var presenter = HumbleViewPresenter(this)
+    private var debug = false
 
     constructor(context: Context) : this(context, null)
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs, 0) {
         applyCustomAttributes(context, attrs, 0)
     }
@@ -41,7 +29,6 @@ class HumbleViewImage : AppCompatImageView {
         applyCustomAttributes(context, attrs, defStyleAttr)
     }
 
-
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
         val styledAttributes = context.theme.obtainStyledAttributes(
@@ -49,34 +36,48 @@ class HumbleViewImage : AppCompatImageView {
                 R.styleable.HumbleViewImage, defStyleAttr, 0)
 
         try {
-            url = styledAttributes.getString(R.styleable.HumbleViewImage_url)
+            presenter.model.url = styledAttributes.getString(R.styleable.HumbleViewImage_url)
             debug = styledAttributes.getBoolean(R.styleable.HumbleViewImage_debug, false)
         } finally {
             styledAttributes.recycle()
         }
     }
 
+    fun setUrl(url: String) {
+        presenter.model.url = url
+    }
+
+    fun getUrl(): String? {
+        return presenter.model.url
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         lastKnowSize = ViewSize(w, h)
-        updateImageIfNeeded()
+        presenter.model.viewSize = lastKnowSize
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        presenter.start()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        presenter.stop()
         cancelNextDrawableTransition()
     }
 
     override fun onDraw(canvas: Canvas?) {
-        nextDrawable?.prepareCurrentDrawable(this)
+        humbleTransitionDrawable?.prepareCurrentDrawable(this)
         super.onDraw(canvas)
-        if (nextDrawable != null && canvas != null) {
-            nextDrawable!!.prepareNextDrawable(this)
+        if (humbleTransitionDrawable != null && canvas != null) {
+            humbleTransitionDrawable!!.prepareNextDrawable(this)
             super.onDraw(canvas)
-            if (nextDrawable!!.isAnimationCompleted()) {
-                nextDrawable = null
+            if (humbleTransitionDrawable!!.isAnimationCompleted()) {
+                humbleTransitionDrawable = null
             } else {
-                nextDrawable!!.restoreCurrentDrawable(this)
+                humbleTransitionDrawable!!.restoreCurrentDrawable(this)
             }
         }
         if (debug && canvas != null) {
@@ -87,36 +88,8 @@ class HumbleViewImage : AppCompatImageView {
         }
     }
 
-    internal fun onBitmapReady(bitmapId: HumbleBitmapId, drawable: HumbleBitmapDrawable?) {
-        if (drawable != null && nextBitmapId == bitmapId) {
-            nextBitmapId = HumbleBitmapId()
-            nextDrawable = NextDrawable(drawable)
-            if (ViewCompat.isAttachedToWindow(this)) {
-                invalidate()
-            }
-        }
-    }
-
-    private fun updateImageIfNeeded() {
-        if (url != null && lastKnowSize != null) {
-            val bitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
-            if (!isCurrentDrawableId(bitmapId) && bitmapId != nextBitmapId) {
-                nextBitmapId = HumbleBitmapId(url!!, lastKnowSize!!)
-                downloader.start(context.applicationContext, resources, nextBitmapId!!)
-            }
-        }
-    }
-
-    private inline fun isCurrentDrawableId(bitmapId: HumbleBitmapId): Boolean {
-        val currentDrawable = drawable
-        if (currentDrawable is HumbleBitmapDrawable) {
-            return currentDrawable.humbleBitmapId == bitmapId
-        }
-        return false
-    }
-
-
     private inline fun cancelNextDrawableTransition() {
-        nextDrawable = null
+        humbleTransitionDrawable?.completeAnimationImmediately(this)
+        humbleTransitionDrawable = null
     }
 }

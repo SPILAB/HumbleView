@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
 
-internal class NextDrawable(private var drawable: HumbleBitmapDrawable) {
+internal class HumbleTransitionDrawable(val drawable: HumbleBitmapDrawable) {
 
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
@@ -32,5 +32,10 @@ internal class NextDrawable(private var drawable: HumbleBitmapDrawable) {
 
     fun restoreCurrentDrawable(humbleViewImage: HumbleViewImage) {
         humbleViewImage.setImageDrawable(savedBitmap)
+    }
+
+    fun completeAnimationImmediately(humbleViewImage: HumbleViewImage) {
+        drawable.alpha = 255
+        humbleViewImage.setImageDrawable(drawable)
     }
 }

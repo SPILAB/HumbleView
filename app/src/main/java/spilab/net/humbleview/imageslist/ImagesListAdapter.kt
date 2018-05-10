@@ -21,10 +21,10 @@ class ImagesListAdapter(private val imagesUrls: Array<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var humbleImageView = holder.viewHolder.findViewById<HumbleViewImage>(R.id.humbleViewImage)
+        val humbleImageView = holder.viewHolder.findViewById<HumbleViewImage>(R.id.humbleViewImage)
         // TODO: Add documentation to explain why we should set the place holder again
         humbleImageView.setImageResource(R.drawable.ic_photo_black_48px)
-        humbleImageView.url = imagesUrls.get(position)
+        humbleImageView.setUrl(imagesUrls[position])
     }
 
     override fun getItemCount() = imagesUrls.size

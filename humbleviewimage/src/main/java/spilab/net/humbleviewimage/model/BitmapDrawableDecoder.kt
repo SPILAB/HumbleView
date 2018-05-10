@@ -1,10 +1,8 @@
-package spilab.net.humbleviewimage.drawable
+package spilab.net.humbleviewimage.model
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import spilab.net.humbleviewimage.android.AndroidBitmapFactory
-import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapId
 import java.io.InputStream
 
 internal class BitmapDrawableDecoder(private val bitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {

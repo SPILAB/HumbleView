@@ -3,27 +3,26 @@ package spilab.net.humbleviewimage.model
 import android.content.Context
 import android.content.res.Resources
 import android.os.Handler
-import spilab.net.humbleviewimage.HumbleViewImage
-import spilab.net.humbleviewimage.drawable.BitmapDrawableDecoder
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Future
 
 
-internal class HumbleViewDownloader(val humbleViewImage: HumbleViewImage) {
+internal class HumbleViewDownloader(val humbleViewImage: HumbleViewModel) {
 
     private var task: Future<*>? = null
     private var bitmapId: HumbleBitmapId? = null
     private val bitmapDecoder = BitmapDrawableDecoder()
 
     internal fun start(context: Context, resources: Resources, bitmapId: HumbleBitmapId) {
+        HumbleViewExecutor.installHTTPCache(context.applicationContext)
         val mainHandler = Handler(context.mainLooper)
         if (this.bitmapId != bitmapId) {
-            task?.cancel(false)
+            cancel()
         }
         this.bitmapId = bitmapId
-        task = HumbleViewModel.executorService.submit({
+        task = HumbleViewExecutor.executorService.submit({
             var drawable: HumbleBitmapDrawable ? = null
             var urlConnection: HttpURLConnection? = null
             var inputStream: InputStream? = null
@@ -39,7 +38,7 @@ internal class HumbleViewDownloader(val humbleViewImage: HumbleViewImage) {
                 }
                 if (drawable != null) {
                     mainHandler.post({
-                        humbleViewImage.onBitmapReady(bitmapId, drawable)
+                        humbleViewImage.onBitmapReady(drawable)
                     })
                 }
             } finally {
@@ -47,5 +46,9 @@ internal class HumbleViewDownloader(val humbleViewImage: HumbleViewImage) {
                 urlConnection?.disconnect()
             }
         })
+    }
+
+    internal fun cancel() {
+        task?.cancel(false)
     }
 }
