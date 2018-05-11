@@ -1,7 +1,6 @@
 package spilab.net.humbleviewimage.model
 
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
-import spilab.net.humbleviewimage.view.HumbleTransition
 
 internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
                                lastKnownSize: ViewSize? = null,
@@ -35,7 +34,7 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
 
     fun onBitmapReady(drawable: HumbleBitmapDrawable) {
         if (drawable != null && currentBitmapId != null && currentBitmapId == drawable.humbleBitmapId) {
-            presenter.setTransition(HumbleTransition(drawable))
+            presenter.addTransitionDrawable(drawable)
         }
     }
 

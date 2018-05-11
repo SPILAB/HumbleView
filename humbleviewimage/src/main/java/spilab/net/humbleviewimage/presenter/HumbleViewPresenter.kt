@@ -17,8 +17,9 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
         if (currentDrawable is HumbleBitmapDrawable) {
             if (currentDrawable.humbleBitmapId == bitmapId) return true
         }
-        if (humbleViewImage.humbleTransitionDrawable != null) {
-            if (humbleViewImage.humbleTransitionDrawable!!.drawable.humbleBitmapId == bitmapId) return true
+        if (humbleViewImage.humbleTransition != null &&
+                humbleViewImage.humbleTransition!!.isBitmapId(bitmapId)) {
+            return true
         }
         return false
     }
@@ -31,16 +32,16 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
         return humbleViewImage.resources
     }
 
-    fun setTransition(humbleTransitionDrawable: HumbleTransition) {
-        humbleViewImage.humbleTransitionDrawable = humbleTransitionDrawable
-        humbleViewImage.invalidate()
-    }
-
     fun start() {
         model.updateImageIfNeeded()
     }
 
     fun stop() {
         model.cancelDownloadIfNeeded()
+        humbleViewImage.completeAnimation()
+    }
+
+    fun addTransitionDrawable(drawable: HumbleBitmapDrawable) {
+        humbleViewImage.addTransition(HumbleTransition(humbleViewImage, drawable))
     }
 }

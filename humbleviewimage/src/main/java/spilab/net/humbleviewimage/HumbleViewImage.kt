@@ -2,6 +2,7 @@ package spilab.net.humbleviewimage
 
 import android.content.Context
 import android.graphics.Canvas
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
@@ -13,7 +14,7 @@ import spilab.net.humbleviewimage.view.HumbleViewImageDebug
 
 class HumbleViewImage : AppCompatImageView {
 
-    internal var humbleTransitionDrawable: HumbleTransition? = null
+    internal var humbleTransition: HumbleTransition? = null
     private var lastKnowSize: ViewSize? = null
     private val viewDebug by lazy { HumbleViewImageDebug(this.context) }
     private var presenter = HumbleViewPresenter(this)
@@ -65,31 +66,39 @@ class HumbleViewImage : AppCompatImageView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         presenter.stop()
-        cancelNextDrawableTransition()
     }
 
     override fun onDraw(canvas: Canvas?) {
-        humbleTransitionDrawable?.prepareCurrentDrawable(this)
+        humbleTransition?.prepareFading()
         super.onDraw(canvas)
-        if (humbleTransitionDrawable != null && canvas != null) {
-            humbleTransitionDrawable!!.prepareNextDrawable(this)
-            super.onDraw(canvas)
-            if (humbleTransitionDrawable!!.isAnimationCompleted()) {
-                humbleTransitionDrawable = null
-            } else {
-                humbleTransitionDrawable!!.restoreCurrentDrawable(this)
-            }
+        if (humbleTransition != null) {
+            humbleTransition!!.onDraw(canvas)
         }
+        drawDebug(canvas)
+    }
+
+    private inline fun drawDebug(canvas: Canvas?) {
         if (debug && canvas != null) {
             val currentDrawable = drawable
+            var sampleSize = -1
             if (currentDrawable is HumbleBitmapDrawable) {
-                viewDebug.onDraw(canvas, currentDrawable.sampleSize)
+                sampleSize = currentDrawable.sampleSize
             }
+            viewDebug.onDraw(canvas, sampleSize, humbleTransition)
         }
     }
 
-    private inline fun cancelNextDrawableTransition() {
-        humbleTransitionDrawable?.completeAnimationImmediately(this)
-        humbleTransitionDrawable = null
+    internal fun addTransition(humbleTransition: HumbleTransition) {
+        this.humbleTransition = humbleTransition
+        if (ViewCompat.isAttachedToWindow(this)) {
+            this.humbleTransition?.start()
+        } else {
+            completeAnimation()
+        }
+    }
+
+    internal fun completeAnimation() {
+        humbleTransition?.completeAnimationBySwitchingDrawable()
+        humbleTransition = null
     }
 }

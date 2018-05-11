@@ -1,7 +1,6 @@
 package spilab.net.humbleviewimage.model
 
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import spilab.net.humbleviewimage.android.AndroidBitmapFactory
 import java.io.InputStream
