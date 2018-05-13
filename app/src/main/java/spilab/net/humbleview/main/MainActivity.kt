@@ -1,7 +1,7 @@
 package spilab.net.humbleview.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import spilab.net.humbleview.R
 import spilab.net.humbleview.decodescale.DecodeScale

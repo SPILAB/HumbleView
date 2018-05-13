@@ -21,7 +21,7 @@ class ImagesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_images_list)
 
-        var viewManager = LinearLayoutManager(this)
+        val viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.ImagesListView).apply {
             setHasFixedSize(true)

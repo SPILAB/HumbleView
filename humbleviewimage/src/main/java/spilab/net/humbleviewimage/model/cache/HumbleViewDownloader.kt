@@ -4,14 +4,24 @@ import android.os.Handler
 import spilab.net.humbleviewimage.android.AndroidHttpURLConnection
 import spilab.net.humbleviewimage.model.*
 import java.io.InputStream
+import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
 import java.util.concurrent.Future
 
 
-internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpURLConnection,
-                                    private val model: HumbleViewModel,
-                                    private val drawableDecoder: BitmapDrawableDecoder,
-                                    private val handler: Handler) {
+internal class HumbleViewDownloader {
+
+    private val httpURLConnection: AndroidHttpURLConnection
+    private val model: WeakReference<HumbleViewModel>
+    private val drawableDecoder: BitmapDrawableDecoder
+    private val handler: Handler
+
+    constructor(httpURLConnection: AndroidHttpURLConnection, model: HumbleViewModel, drawableDecoder: BitmapDrawableDecoder, handler: Handler) {
+        this.httpURLConnection = httpURLConnection
+        this.model = WeakReference(model)
+        this.drawableDecoder = drawableDecoder
+        this.handler = handler
+    }
 
     @get:Synchronized
     @set:Synchronized
@@ -44,7 +54,9 @@ internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpUR
                 }
                 if (drawable != null) {
                     handler.post({
-                        model.onBitmapReady(drawable)
+                        val humbleViwModel = model.get()
+                        if (humbleViwModel != null)
+                            humbleViwModel.onBitmapReady(drawable)
                         resetCurrentBitmapId()
                     })
                 }

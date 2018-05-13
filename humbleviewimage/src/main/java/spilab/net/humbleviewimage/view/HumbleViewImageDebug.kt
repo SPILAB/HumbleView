@@ -32,13 +32,12 @@ internal class HumbleViewImageDebug(context: Context) {
         // see: https://chris.banes.me/2014/03/27/measuring-text/
         textPaint.getTextBounds(text, 0, text.length, textBounds)
         val textWidth = textPaint.measureText(text)
-        val textHeight = textBounds.height()
-        val bottom = textHeight + (padding * 2.0f)
+        val textHeight = textBounds.height() + (padding * 2.0f)
         canvas.drawRect(posX, posY,
-                textWidth + (padding * 2.0f), bottom, background)
+                textWidth + (padding * 2.0f), posY + textHeight, background)
         canvas.drawText(text, (posX + padding) - (textWidth / 2.0f),
                 (posY + padding) + (textHeight / 2.0f), textPaint)
-        return bottom
+        return posY + textHeight
     }
 
     init {

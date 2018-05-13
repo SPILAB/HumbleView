@@ -1,7 +1,5 @@
 package spilab.net.humbleviewimage.presenter
 
-import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.model.*

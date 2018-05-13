@@ -11,8 +11,7 @@ class SingleImageActivity : AppCompatActivity() {
     companion object {
 
         fun createIntent(context: Context): Intent {
-            val intent = Intent(context, SingleImageActivity::class.java)
-            return intent
+            return Intent(context, SingleImageActivity::class.java)
         }
     }
 

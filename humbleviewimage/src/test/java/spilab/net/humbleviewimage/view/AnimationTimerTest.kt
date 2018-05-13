@@ -7,8 +7,8 @@ import org.junit.Test
 class AnimationTimerTest {
 
     companion object {
-        val DURATION_MILLIS = 1000L
-        val EPSILON = 0.1f
+        const val DURATION_MILLIS = 1000L
+        const val EPSILON = 0.1f
     }
 
     private lateinit var animationTimer: AnimationTimer

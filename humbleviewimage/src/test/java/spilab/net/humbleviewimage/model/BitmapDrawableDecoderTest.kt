@@ -13,8 +13,6 @@ import java.io.ByteArrayInputStream
 
 class BitmapDrawableDecoderTest {
 
-    private val mockResources = mockk<Resources>()
-
     @Test
     fun `Given a view and bitmap of the same size, When decode for view, Then the bitmap should not be scaled`() {
         val mockAndroidBitmapFactory = createAndroidBitmapFactoryMock(128, 64)
