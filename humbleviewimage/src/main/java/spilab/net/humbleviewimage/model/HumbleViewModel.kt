@@ -1,10 +1,15 @@
 package spilab.net.humbleviewimage.model
 
+import android.content.Context
+import android.os.Handler
+import spilab.net.humbleviewimage.android.AndroidHttpURLConnection
+import spilab.net.humbleviewimage.model.cache.HumbleViewDownloader
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
 
 internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
-                               lastKnownSize: ViewSize? = null,
-                               var debug: Boolean = false) {
+                               private val bitmapDrawableDecoder: BitmapDrawableDecoder,
+                               var debug: Boolean = false,
+                               context: Context) {
 
     var url: String? = null
         set(value) {
@@ -12,13 +17,19 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
             updateImageIfNeeded()
         }
 
-    var viewSize = lastKnownSize
+    var viewSize: ViewSize? = null
         set(value) {
             field = value
             updateImageIfNeeded()
         }
 
-    private val downloaderLazy = lazy { HumbleViewDownloader(this) }
+    private val downloaderLazy = lazy {
+        HumbleViewDownloader(
+                AndroidHttpURLConnection(),
+                this,
+                bitmapDrawableDecoder,
+                Handler(context.mainLooper))
+    }
     private val downloader: HumbleViewDownloader by downloaderLazy
     private var currentBitmapId: HumbleBitmapId? = null
 
@@ -26,8 +37,7 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
         if (url != null && viewSize != null) {
             currentBitmapId = HumbleBitmapId(url!!, viewSize!!)
             if (!presenter.isCurrentOrNextDrawableId(currentBitmapId!!) /*&& currentBitmapId != nextBitmapId*/) {
-                downloader.start(presenter.getApplicationContext(),
-                        presenter.getResources(), currentBitmapId!!)
+                downloader.start(currentBitmapId!!)
             }
         }
     }

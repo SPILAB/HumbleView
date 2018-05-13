@@ -18,6 +18,7 @@ internal object HumbleViewExecutor {
         return@lazy newFixedThreadPool(threadCount)
     }
 
+    // TODO: REMOVE THIS CODE LATER IT IS JUST A POC
     fun installHTTPCache(context: Context) {
         if (!httpCacheInstaller) {
             try {

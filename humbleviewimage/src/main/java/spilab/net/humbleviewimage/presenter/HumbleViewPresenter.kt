@@ -2,15 +2,18 @@ package spilab.net.humbleviewimage.presenter
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import spilab.net.humbleviewimage.HumbleViewImage
-import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapId
-import spilab.net.humbleviewimage.model.HumbleViewModel
+import spilab.net.humbleviewimage.model.*
 import spilab.net.humbleviewimage.view.HumbleTransition
 
 internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
 
-    var model: HumbleViewModel = HumbleViewModel(this)
+    var model: HumbleViewModel = HumbleViewModel(
+            this,
+            BitmapDrawableDecoder(
+                    resources = humbleViewImage.resources),
+            context = humbleViewImage.context.applicationContext)
 
     fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
         val currentDrawable = humbleViewImage.drawable
@@ -24,14 +27,6 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
         return false
     }
 
-    fun getApplicationContext(): Context {
-        return humbleViewImage.context.applicationContext
-    }
-
-    fun getResources(): Resources {
-        return humbleViewImage.resources
-    }
-
     fun start() {
         model.updateImageIfNeeded()
     }
@@ -42,6 +37,7 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
     }
 
     fun addTransitionDrawable(drawable: HumbleBitmapDrawable) {
+        Log.d(HumbleViewConfig.TAG, "add transition to view=$humbleViewImage with drawable id=${drawable.humbleBitmapId}")
         humbleViewImage.addTransition(HumbleTransition(humbleViewImage, drawable))
     }
 }

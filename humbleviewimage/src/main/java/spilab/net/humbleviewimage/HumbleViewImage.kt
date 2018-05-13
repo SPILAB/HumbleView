@@ -6,6 +6,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
+import spilab.net.humbleviewimage.model.HumbleViewExecutor
 import spilab.net.humbleviewimage.model.ViewSize
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
 import spilab.net.humbleviewimage.view.HumbleTransition
@@ -42,6 +43,9 @@ class HumbleViewImage : AppCompatImageView {
         } finally {
             styledAttributes.recycle()
         }
+
+        // TODO: TEMPORARY POC
+        HumbleViewExecutor.installHTTPCache(context.applicationContext)
     }
 
     fun setUrl(url: String) {

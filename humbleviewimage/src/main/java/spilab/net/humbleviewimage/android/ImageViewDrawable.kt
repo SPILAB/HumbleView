@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 
 /**
- * This is mainly the code of the original Android ImageView, from API level 27
+ * The code is mainly a copy/past of the original Android ImageView,
+ * from API level 27:
+ * The matrix assign was was replaced with a set.
  */
 class ImageViewDrawable(private val imageView: ImageView, drawable: Drawable) {
 

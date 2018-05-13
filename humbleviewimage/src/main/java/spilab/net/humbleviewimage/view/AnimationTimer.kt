@@ -3,7 +3,8 @@ package spilab.net.humbleviewimage.view
 import kotlin.math.min
 
 
-internal class AnimationTimer(private val durationMillis: Long, private val uptimeMillis: () -> Long) {
+internal class AnimationTimer(private val durationMillis: Long,
+                              private val uptimeMillis: () -> Long) {
 
     private var timerStartMillis = uptimeMillis()
 

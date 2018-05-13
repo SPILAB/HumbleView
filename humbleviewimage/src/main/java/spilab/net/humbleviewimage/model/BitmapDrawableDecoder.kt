@@ -5,10 +5,10 @@ import android.graphics.BitmapFactory
 import spilab.net.humbleviewimage.android.AndroidBitmapFactory
 import java.io.InputStream
 
-internal class BitmapDrawableDecoder(private val bitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
+internal class BitmapDrawableDecoder(private val bitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory(),
+                                     private val resources: Resources) {
 
     fun decodeBitmapDrawableForViewSize(inputStream: InputStream,
-                                        resources: Resources,
                                         id: HumbleBitmapId): HumbleBitmapDrawable? {
         val bitmapData = inputStream.readBytes()
         val options = bitmapFactory.decodeBitmapSize(bitmapData)

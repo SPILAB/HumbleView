@@ -18,11 +18,12 @@ class BitmapDrawableDecoderTest {
     @Test
     fun `Given a view and bitmap of the same size, When decode for view, Then the bitmap should not be scaled`() {
         val mockAndroidBitmapFactory = createAndroidBitmapFactoryMock(128, 64)
-        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory)
+        val mockResources = mockk<Resources>()
+        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory,
+                mockResources)
 
         bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(
                 ByteArrayInputStream(ByteArray(8)),
-                mockResources,
                 HumbleBitmapId("url", ViewSize(128, 64)))
 
         verify { mockAndroidBitmapFactory.decodeBitmap(any(), 1) }
@@ -34,11 +35,12 @@ class BitmapDrawableDecoderTest {
         val mockAndroidBitmapFactory = createAndroidBitmapFactoryMock(
                 128 * bitmapBiggerThanViewBy,
                 64 * bitmapBiggerThanViewBy)
-        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory)
+        val mockResources = mockk<Resources>()
+        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory,
+                mockResources)
 
         bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(
                 ByteArrayInputStream(ByteArray(8)),
-                mockResources,
                 HumbleBitmapId("url", ViewSize(128, 64)))
 
         verify { mockAndroidBitmapFactory.decodeBitmap(any(), bitmapBiggerThanViewBy) }
@@ -50,11 +52,12 @@ class BitmapDrawableDecoderTest {
         val mockAndroidBitmapFactory = createAndroidBitmapFactoryMock(
                 128 / bitmapSmallerThanViewBy,
                 64 / bitmapSmallerThanViewBy)
-        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory)
+        val mockResources = mockk<Resources>()
+        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory,
+                mockResources)
 
         bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(
                 ByteArrayInputStream(ByteArray(8)),
-                mockResources,
                 HumbleBitmapId("url", ViewSize(128, 64)))
 
         verify { mockAndroidBitmapFactory.decodeBitmap(any(), 1) }
@@ -63,12 +66,13 @@ class BitmapDrawableDecoderTest {
     @Test
     fun `Given a view and bitmap of the same size, When decode for view, Then fill the drawable with the right bitmap id`() {
         val mockAndroidBitmapFactory = createAndroidBitmapFactoryMock(128, 64)
-        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory)
+        val mockResources = mockk<Resources>()
+        val bitmapDrawableDecoder = BitmapDrawableDecoder(mockAndroidBitmapFactory,
+                mockResources)
 
         val expectedId = HumbleBitmapId("url test", ViewSize(128, 64))
         val drawable = bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(
                 ByteArrayInputStream(ByteArray(8)),
-                mockResources,
                 expectedId)
 
         Assert.assertEquals(expectedId, drawable?.humbleBitmapId)
