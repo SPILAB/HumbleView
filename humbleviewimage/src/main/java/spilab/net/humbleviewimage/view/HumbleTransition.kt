@@ -1,33 +1,48 @@
 package spilab.net.humbleviewimage.view
 
-import android.graphics.Canvas
 import android.os.SystemClock
 import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.android.ImageViewDrawable
 import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapId
 
-internal class HumbleTransition(private val humbleViewImage: HumbleViewImage, private val drawable: HumbleBitmapDrawable) {
+internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
+                                private val imageViewDrawables: Array<ImageViewDrawable>, drawable: HumbleBitmapDrawable) {
 
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
+        const val CURRENT_IDX = 0
+        const val NEXT_IDX = 1
     }
+
+    private val maxAlpha: Int
+    private var fadingAlpha: Int = 0
 
     private val fadingAnimationTimer: AnimationTimer
-    private var fadingAlpha: Int = 0
-    private var imageViewDrawable: ImageViewDrawable
 
     init {
-        this.fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS,
-                { SystemClock.uptimeMillis() })
-        imageViewDrawable = ImageViewDrawable(humbleViewImage, drawable)
+        imageViewDrawables[NEXT_IDX].mDrawable = drawable
+        imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
+        imageViewDrawables[NEXT_IDX].mDrawable?.mutate()
+        fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS, { SystemClock.uptimeMillis() })
+        maxAlpha = humbleViewImage.imageAlpha
     }
-
-    fun isBitmapId(bitmapId: HumbleBitmapId): Boolean = (drawable.humbleBitmapId == bitmapId)
 
     fun start() {
         fadingAnimationTimer.start()
         animationLoop()
+    }
+
+    inline fun setupAlpha() {
+        fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
+        imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha - fadingAlpha
+        imageViewDrawables[NEXT_IDX].mDrawable?.alpha = fadingAlpha
+    }
+
+    fun completeAnimationBySwitchingDrawable() {
+        imageViewDrawables[CURRENT_IDX].mDrawable = null
+        imageViewDrawables[NEXT_IDX].mDrawable?.alpha = maxAlpha
+        humbleViewImage.setImageDrawable(imageViewDrawables[NEXT_IDX].mDrawable)
+        imageViewDrawables[NEXT_IDX].mDrawable = null
     }
 
     private fun animationLoop() {
@@ -35,31 +50,11 @@ internal class HumbleTransition(private val humbleViewImage: HumbleViewImage, pr
             humbleViewImage.postInvalidate()
             if (!isCompleted()) {
                 animationLoop()
-            }
-            else {
+            } else {
                 humbleViewImage.completeAnimation()
             }
         }
     }
 
-    fun completeAnimationBySwitchingDrawable() {
-        drawable.alpha = 255
-        humbleViewImage.setImageDrawable(drawable)
-    }
-
-    inline fun prepareFading() {
-        fadingAlpha = (fadingAnimationTimer.getNormalized(255.0f)).toInt()
-        humbleViewImage.drawable?.mutate()
-        humbleViewImage.drawable?.alpha = 255 - fadingAlpha
-    }
-
-    inline fun onDraw(canvas: Canvas?) {
-        if (canvas != null) {
-            imageViewDrawable.mDrawable.mutate()
-            imageViewDrawable.mDrawable.alpha = fadingAlpha
-            imageViewDrawable.onDraw(canvas)
-        }
-    }
-
-    private inline fun isCompleted(): Boolean = fadingAlpha == 255
+    private inline fun isCompleted(): Boolean = fadingAlpha == maxAlpha
 }

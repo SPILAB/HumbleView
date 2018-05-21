@@ -16,6 +16,6 @@ class HumbleViewApplication : Application() {
 
         // TODO: TEMPORARY POC
         HumbleViewConfig.installHTTPCache(applicationContext)
-        HumbleViewConfig.debug = true
+        // HumbleViewConfig.debug = true
     }
 }

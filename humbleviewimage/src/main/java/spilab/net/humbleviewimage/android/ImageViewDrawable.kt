@@ -12,33 +12,33 @@ import android.widget.ImageView.ScaleType
  * from API level 27:
  * The matrix assign was was replaced with a set.
  */
-class ImageViewDrawable(private val imageView: ImageView, drawable: Drawable) {
+class ImageViewDrawable(private val imageView: ImageView) {
 
-    val mDrawable: Drawable = drawable
+    var mDrawable: Drawable? = null
 
-    private var mDrawableWidth: Int
-    private var mDrawableHeight: Int
+    private var mDrawableWidth: Int = 0
+    private var mDrawableHeight: Int = 0
 
-    private var mPaddingLeft: Int
-    private var mPaddingRight: Int
-    private var mPaddingTop: Int
-    private var mPaddingBottom: Int
+    private var mPaddingLeft: Int = 0
+    private var mPaddingRight: Int = 0
+    private var mPaddingTop: Int = 0
+    private var mPaddingBottom: Int = 0
 
-    private var mScaleType: ImageView.ScaleType
-    private var mHaveFrame: Boolean
+    private var mScaleType: ImageView.ScaleType = ScaleType.FIT_CENTER
+    private var mHaveFrame: Boolean = false
 
     private var mMatrix = Matrix()
     private var mDrawMatrix: Matrix? = null
 
-    private var mCropToPadding: Boolean
+    private var mCropToPadding: Boolean = false
 
-    private var mScrollX: Int
-    private var mScrollY: Int
+    private var mScrollX: Int = 0
+    private var mScrollY: Int = 0
 
-    private var mRight: Int
-    private var mLeft: Int
-    private var mBottom: Int
-    private var mTop: Int
+    private var mRight: Int = 0
+    private var mLeft: Int = 0
+    private var mBottom: Int = 0
+    private var mTop: Int = 0
 
     private val mTempSrc = RectF()
     private val mTempDst = RectF()
@@ -49,56 +49,26 @@ class ImageViewDrawable(private val imageView: ImageView, drawable: Drawable) {
             Pair(ScaleType.FIT_CENTER, Matrix.ScaleToFit.CENTER),
             Pair(ScaleType.FIT_END, Matrix.ScaleToFit.END))
 
-    init {
-        mDrawableWidth = this.mDrawable.intrinsicWidth
-        mDrawableHeight = this.mDrawable.intrinsicHeight
-        mHaveFrame = this.imageView.width > 0 || this.imageView.height > 0
-        mPaddingLeft = this.imageView.paddingLeft
-        mPaddingRight = this.imageView.paddingRight
-        mPaddingTop = this.imageView.paddingTop
-        mPaddingBottom = this.imageView.paddingBottom
-        mScaleType = this.imageView.scaleType
-        mMatrix.set(this.imageView.matrix)
-        mCropToPadding = this.imageView.cropToPadding
-        mScrollX = this.imageView.scrollX
-        mScrollY = this.imageView.scrollY
-        mRight = this.imageView.right
-        mLeft = this.imageView.left
-        mBottom = this.imageView.bottom
-        mTop = this.imageView.top
-        configureBounds()
+    fun copyImageView() {
+        mDrawableWidth = mDrawable?.intrinsicWidth ?: 0
+        mDrawableHeight = mDrawable?.intrinsicHeight ?: 0
+        mHaveFrame = imageView.width > 0 || imageView.height > 0
+        mPaddingLeft = imageView.paddingLeft
+        mPaddingRight = imageView.paddingRight
+        mPaddingTop = imageView.paddingTop
+        mPaddingBottom = imageView.paddingBottom
+        mScaleType = imageView.scaleType
+        mMatrix.set(imageView.matrix)
+        mCropToPadding = imageView.cropToPadding
+        mScrollX = imageView.scrollX
+        mScrollY = imageView.scrollY
+        mRight = imageView.right
+        mLeft = imageView.left
+        mBottom = imageView.bottom
+        mTop = imageView.top
     }
 
-    fun onDraw(canvas: Canvas) {
-        if (mDrawableWidth == 0 || mDrawableHeight == 0) {
-            return      // nothing to draw (empty bounds)
-        }
-
-        if (mDrawMatrix == null && mPaddingTop === 0 && mPaddingLeft === 0) {
-            mDrawable.draw(canvas)
-        } else {
-            val saveCount = canvas.saveCount
-            canvas.save()
-
-            if (mCropToPadding) {
-                val scrollX = mScrollX
-                val scrollY = mScrollY
-                canvas.clipRect(scrollX + mPaddingLeft, scrollY + mPaddingTop,
-                        scrollX + mRight - mLeft - mPaddingRight,
-                        scrollY + mBottom - mTop - mPaddingBottom)
-            }
-
-            canvas.translate(mPaddingLeft.toFloat(), mPaddingTop.toFloat())
-
-            if (mDrawMatrix != null) {
-                canvas.concat(mDrawMatrix)
-            }
-            mDrawable.draw(canvas)
-            canvas.restoreToCount(saveCount)
-        }
-    }
-
-    private fun configureBounds() {
+    fun configureBounds() {
         if (mDrawable == null || !mHaveFrame) {
             return
         }
@@ -115,12 +85,12 @@ class ImageViewDrawable(private val imageView: ImageView, drawable: Drawable) {
             /* If the drawable has no intrinsic size, or we're told to
                 scaletofit, then we just fill our entire view.
             */
-            mDrawable.setBounds(0, 0, vwidth, vheight)
+            mDrawable?.setBounds(0, 0, vwidth, vheight)
             mDrawMatrix = null
         } else {
             // We need to do the scaling ourself, so have the drawable
             // use its native size.
-            mDrawable.setBounds(0, 0, dwidth, dheight)
+            mDrawable?.setBounds(0, 0, dwidth, dheight)
 
             if (ScaleType.MATRIX == mScaleType) {
                 // Use the specified matrix as-is.
@@ -180,6 +150,35 @@ class ImageViewDrawable(private val imageView: ImageView, drawable: Drawable) {
                 mDrawMatrix = Matrix(mMatrix)
                 mDrawMatrix?.setRectToRect(mTempSrc, mTempDst, scaleTypeToScaleToFit(mScaleType))
             }
+        }
+    }
+
+    fun onDraw(canvas: Canvas) {
+        if (mDrawableWidth == 0 || mDrawableHeight == 0) {
+            return      // nothing to draw (empty bounds)
+        }
+
+        if (mDrawMatrix == null && mPaddingTop === 0 && mPaddingLeft === 0) {
+            mDrawable?.draw(canvas)
+        } else {
+            val saveCount = canvas.saveCount
+            canvas.save()
+
+            if (mCropToPadding) {
+                val scrollX = mScrollX
+                val scrollY = mScrollY
+                canvas.clipRect(scrollX + mPaddingLeft, scrollY + mPaddingTop,
+                        scrollX + mRight - mLeft - mPaddingRight,
+                        scrollY + mBottom - mTop - mPaddingBottom)
+            }
+
+            canvas.translate(mPaddingLeft.toFloat(), mPaddingTop.toFloat())
+
+            if (mDrawMatrix != null) {
+                canvas.concat(mDrawMatrix)
+            }
+            mDrawable?.draw(canvas)
+            canvas.restoreToCount(saveCount)
         }
     }
 

@@ -70,9 +70,9 @@ class HumbleViewDownloaderTest {
         every { mockBitmapDrawableDecoder.decodeBitmapDrawableForViewSize(any(), any()) } returns mockHumbleBitmapDrawable
         humbleViewDownloader = HumbleViewDownloader(
                 mockAndroidHttpURLConnection,
-                mockHumbleViewModel,
                 mockBitmapDrawableDecoder,
-                mockHandler)
+                mockHandler,
+                mockHumbleViewModel)
     }
 
     @Test

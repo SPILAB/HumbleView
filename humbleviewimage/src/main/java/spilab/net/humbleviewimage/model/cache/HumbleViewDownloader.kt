@@ -9,19 +9,12 @@ import java.net.HttpURLConnection
 import java.util.concurrent.Future
 
 
-internal class HumbleViewDownloader {
+internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpURLConnection,
+                                    private val drawableDecoder: BitmapDrawableDecoder,
+                                    private val handler: Handler,
+                                    model: HumbleViewModel) {
 
-    private val httpURLConnection: AndroidHttpURLConnection
-    private val model: WeakReference<HumbleViewModel>
-    private val drawableDecoder: BitmapDrawableDecoder
-    private val handler: Handler
-
-    constructor(httpURLConnection: AndroidHttpURLConnection, model: HumbleViewModel, drawableDecoder: BitmapDrawableDecoder, handler: Handler) {
-        this.httpURLConnection = httpURLConnection
-        this.model = WeakReference(model)
-        this.drawableDecoder = drawableDecoder
-        this.handler = handler
-    }
+    private val model: WeakReference<HumbleViewModel> = WeakReference(model)
 
     @get:Synchronized
     @set:Synchronized
@@ -54,9 +47,7 @@ internal class HumbleViewDownloader {
                 }
                 if (drawable != null) {
                     handler.post({
-                        val humbleViwModel = model.get()
-                        if (humbleViwModel != null)
-                            humbleViwModel.onBitmapReady(drawable)
+                        model.get()?.onBitmapReady(drawable)
                         resetCurrentBitmapId()
                     })
                 }
@@ -70,6 +61,7 @@ internal class HumbleViewDownloader {
     }
 
     internal fun cancel() {
+        resetCurrentBitmapId()
         task?.cancel(true)
         task = null
     }

@@ -26,9 +26,9 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
     private val downloaderLazy = lazy {
         HumbleViewDownloader(
                 AndroidHttpURLConnection(),
-                this,
                 bitmapDrawableDecoder,
-                Handler(context.mainLooper))
+                Handler(context.mainLooper),
+                this)
     }
     private val downloader: HumbleViewDownloader by downloaderLazy
     private var currentBitmapId: HumbleBitmapId? = null
@@ -36,7 +36,7 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
     fun updateImageIfNeeded() {
         if (url != null && viewSize != null) {
             currentBitmapId = HumbleBitmapId(url!!, viewSize!!)
-            if (!presenter.isCurrentOrNextDrawableId(currentBitmapId!!) /*&& currentBitmapId != nextBitmapId*/) {
+            if (!presenter.isCurrentOrNextDrawableId(currentBitmapId!!)) {
                 downloader.start(currentBitmapId!!)
             }
         }
