@@ -10,7 +10,7 @@ import java.util.concurrent.Future
 
 
 internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpURLConnection,
-                                    private val drawableDecoder: BitmapDrawableDecoder,
+                                    private val bitmapDrawableDecoder: BitmapDrawableDecoder,
                                     private val handler: Handler,
                                     model: HumbleViewModel) {
 
@@ -40,9 +40,7 @@ internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpUR
                 if (statusCode == 200) {
                     inputStream = urlConnection.inputStream
                     if (inputStream != null) {
-                        drawable = drawableDecoder.decodeBitmapDrawableForViewSize(
-                                inputStream,
-                                humbleBitmapId)
+                        drawable = bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(inputStream, humbleBitmapId)
                     }
                 }
                 if (drawable != null) {

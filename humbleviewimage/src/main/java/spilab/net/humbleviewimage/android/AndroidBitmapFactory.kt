@@ -5,17 +5,7 @@ import android.graphics.BitmapFactory
 
 class AndroidBitmapFactory {
 
-    private val options = BitmapFactory.Options()
-
-    fun decodeBitmapSize(bitmapData: ByteArray): BitmapFactory.Options {
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
-        options.inJustDecodeBounds = false
-        return options
-    }
-
-    fun decodeBitmap(bitmapData: ByteArray, sampleSize: Int): Bitmap? {
-        options.inSampleSize = sampleSize
-        return BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
+    fun decodeByteArray(data: ByteArray, offset: Int, length: Int, opts: BitmapFactory.Options?): Bitmap? {
+        return BitmapFactory.decodeByteArray(data, offset, length, opts)
     }
 }

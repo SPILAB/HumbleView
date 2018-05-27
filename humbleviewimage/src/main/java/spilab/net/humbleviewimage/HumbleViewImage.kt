@@ -1,6 +1,5 @@
 package spilab.net.humbleviewimage
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -11,10 +10,8 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleviewimage.android.ImageViewDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapId
-import spilab.net.humbleviewimage.model.HumbleViewConfig
-import spilab.net.humbleviewimage.model.ViewSize
+import spilab.net.humbleviewimage.model.*
+import spilab.net.humbleviewimage.model.bitmap.BitmapPool
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
 import spilab.net.humbleviewimage.view.HumbleTransition
 import spilab.net.humbleviewimage.view.HumbleViewImageDebug
@@ -80,6 +77,14 @@ class HumbleViewImage : AppCompatImageView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         presenter.stop()
+
+        imageViewDrawables.forEach {
+            if (it.mDrawable is HumbleBitmapDrawable) {
+                val humbleBitmapDrawable = it.mDrawable as HumbleBitmapDrawable
+                BitmapPool.put(humbleBitmapDrawable.bitmap)
+            }
+            it.mDrawable = null
+        }
     }
 
     override fun setImageIcon(icon: Icon?) {
