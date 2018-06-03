@@ -1,1 +1,1 @@
-include ':app', ':humbleviewimage'
+include ':app', ':humbleimageview'

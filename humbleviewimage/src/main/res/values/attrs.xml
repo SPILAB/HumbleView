@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="HumbleViewImage">
-        <attr name="url" format="string" />
-        <attr name="debug" format="boolean" />
-    </declare-styleable>
-</resources>
