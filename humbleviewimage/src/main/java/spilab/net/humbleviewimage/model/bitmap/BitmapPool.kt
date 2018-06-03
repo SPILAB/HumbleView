@@ -1,6 +1,7 @@
 package spilab.net.humbleviewimage.model.bitmap
 
 import android.graphics.Bitmap
+import spilab.net.humbleviewimage.log.HumbleLogs
 import java.lang.ref.WeakReference
 
 internal object BitmapPool {
@@ -33,6 +34,7 @@ internal object BitmapPool {
         if (recycleIterator != null) {
             recycleIterator.remove()
         }
+        HumbleLogs.log("BitmapPool recycled=$recycleBitmap for width=$width, height=$height.")
         return recycleBitmap
     }
 }

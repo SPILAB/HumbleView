@@ -1,5 +1,6 @@
 package spilab.net.humbleviewimage.model.drawable
 
+import spilab.net.humbleviewimage.log.HumbleLogs
 import spilab.net.humbleviewimage.model.ViewSize
 import java.lang.ref.WeakReference
 
@@ -21,11 +22,11 @@ internal object DrawableFromResourcePool {
             } else {
                 if (drawable.resId == resId && drawable.viewSize == viewSize) {
                     recycleDrawable = drawable
-                    iterator.remove()
                     break
                 }
             }
         }
+        HumbleLogs.log("ResourcePool recycled=$recycleDrawable for resId=$resId, viewSize=$viewSize.")
         return recycleDrawable
     }
 }

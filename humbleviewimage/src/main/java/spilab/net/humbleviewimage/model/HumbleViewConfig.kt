@@ -10,6 +10,8 @@ class HumbleViewConfig {
 
         var debug = false
 
+        var log = false
+
         fun installHTTPCache(applicationContext: Context) {
             HumbleViewExecutor.installHTTPCache(applicationContext)
         }

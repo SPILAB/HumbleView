@@ -33,7 +33,6 @@ internal class HumbleViewPresenter(val humbleViewImage: HumbleViewImage) {
     }
 
     fun addTransitionDrawable(drawable: HumbleBitmapDrawable) {
-        Log.d(HumbleViewConfig.TAG, "add transition to view=$humbleViewImage with drawable id=${drawable.humbleBitmapId}")
         humbleViewImage.addTransition(drawable)
     }
 

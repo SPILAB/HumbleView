@@ -33,9 +33,11 @@ internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
     }
 
     inline fun setupAlpha() {
-        fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
-        imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha - fadingAlpha
-        imageViewDrawables[NEXT_IDX].mDrawable?.alpha = fadingAlpha
+        if (!isCompleted()) {
+            fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
+            imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha - fadingAlpha
+            imageViewDrawables[NEXT_IDX].mDrawable?.alpha = fadingAlpha
+        }
     }
 
     fun completeAnimationBySwitchingDrawable(): Drawable? {
