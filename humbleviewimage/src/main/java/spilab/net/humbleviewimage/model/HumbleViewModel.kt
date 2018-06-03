@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Handler
 import spilab.net.humbleviewimage.android.AndroidHttpURLConnection
 import spilab.net.humbleviewimage.model.cache.HumbleViewDownloader
+import spilab.net.humbleviewimage.model.drawable.DrawableDecoder
+import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
 
 internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
-                               private val bitmapDrawableDecoder: BitmapDrawableDecoder,
+                               private val bitmapDrawableDecoder: DrawableDecoder,
                                var debug: Boolean = false,
                                context: Context) {
 

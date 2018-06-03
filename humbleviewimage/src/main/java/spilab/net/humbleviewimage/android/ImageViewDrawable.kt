@@ -12,7 +12,7 @@ import android.widget.ImageView.ScaleType
  * from API level 27:
  * The matrix assign was was replaced with a set.
  */
-class ImageViewDrawable(private val imageView: ImageView) {
+internal class ImageViewDrawable(private val imageView: ImageView) {
 
     var mDrawable: Drawable? = null
 

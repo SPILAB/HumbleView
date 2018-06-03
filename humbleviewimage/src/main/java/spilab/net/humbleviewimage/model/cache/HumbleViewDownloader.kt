@@ -3,6 +3,8 @@ package spilab.net.humbleviewimage.model.cache
 import android.os.Handler
 import spilab.net.humbleviewimage.android.AndroidHttpURLConnection
 import spilab.net.humbleviewimage.model.*
+import spilab.net.humbleviewimage.model.drawable.DrawableDecoder
+import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
@@ -10,7 +12,7 @@ import java.util.concurrent.Future
 
 
 internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpURLConnection,
-                                    private val bitmapDrawableDecoder: BitmapDrawableDecoder,
+                                    private val bitmapDrawableDecoder: DrawableDecoder,
                                     private val handler: Handler,
                                     model: HumbleViewModel) {
 

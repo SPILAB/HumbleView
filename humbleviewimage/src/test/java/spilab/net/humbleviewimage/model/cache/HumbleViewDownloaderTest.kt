@@ -6,6 +6,8 @@ import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleviewimage.android.AndroidHttpURLConnection
 import spilab.net.humbleviewimage.model.*
+import spilab.net.humbleviewimage.model.drawable.DrawableDecoder
+import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 import java.io.ByteArrayInputStream
 import java.net.HttpURLConnection
 import java.util.concurrent.ExecutorService
@@ -30,7 +32,7 @@ class HumbleViewDownloaderTest {
     private lateinit var captureHandlerRunnable: CapturingSlot<Runnable>
 
     private lateinit var mockHumbleBitmapDrawable: HumbleBitmapDrawable
-    private lateinit var mockBitmapDrawableDecoder: BitmapDrawableDecoder
+    private lateinit var mockBitmapDrawableDecoder: DrawableDecoder
 
     @Before
     fun setUp() {

@@ -1,9 +1,10 @@
 package spilab.net.humbleviewimage.view
 
+import android.graphics.drawable.Drawable
 import android.os.SystemClock
 import spilab.net.humbleviewimage.HumbleViewImage
 import spilab.net.humbleviewimage.android.ImageViewDrawable
-import spilab.net.humbleviewimage.model.HumbleBitmapDrawable
+import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
                                 private val imageViewDrawables: Array<ImageViewDrawable>, drawable: HumbleBitmapDrawable) {
@@ -38,11 +39,13 @@ internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
         imageViewDrawables[NEXT_IDX].mDrawable?.alpha = fadingAlpha
     }
 
-    fun completeAnimationBySwitchingDrawable() {
-        imageViewDrawables[CURRENT_IDX].mDrawable = null
+    fun completeAnimationBySwitchingDrawable(): Drawable? {
+        var reclyable = imageViewDrawables[CURRENT_IDX].mDrawable
+        imageViewDrawables[CURRENT_IDX].mDrawable = null;
         imageViewDrawables[NEXT_IDX].mDrawable?.alpha = maxAlpha
         humbleViewImage.setImageDrawable(imageViewDrawables[NEXT_IDX].mDrawable)
         imageViewDrawables[NEXT_IDX].mDrawable = null
+        return reclyable
     }
 
     private fun animationLoop() {

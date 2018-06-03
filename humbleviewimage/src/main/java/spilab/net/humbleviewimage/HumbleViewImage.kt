@@ -7,11 +7,13 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.support.v4.view.ViewCompat
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleviewimage.android.ImageViewDrawable
 import spilab.net.humbleviewimage.model.*
-import spilab.net.humbleviewimage.model.bitmap.BitmapPool
+import spilab.net.humbleviewimage.model.drawable.DrawableResource
+import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleviewimage.presenter.HumbleViewPresenter
 import spilab.net.humbleviewimage.view.HumbleTransition
 import spilab.net.humbleviewimage.view.HumbleViewImageDebug
@@ -20,10 +22,8 @@ import spilab.net.humbleviewimage.view.HumbleViewImageDebug
 class HumbleViewImage : AppCompatImageView {
 
     private var humbleTransition: HumbleTransition? = null
-    private var lastKnowSize: ViewSize? = null
-    private val imageViewDrawables = arrayOf(
-            ImageViewDrawable(this),
-            ImageViewDrawable(this))
+    private var lastKnowSize = ViewSize()
+    private val imageViewDrawables = arrayOf(ImageViewDrawable(this), ImageViewDrawable(this))
     private val viewDebug by lazy {
         HumbleViewImageDebug(this.context)
     }
@@ -76,15 +76,12 @@ class HumbleViewImage : AppCompatImageView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        presenter.stop()
-
-        imageViewDrawables.forEach {
-            if (it.mDrawable is HumbleBitmapDrawable) {
-                val humbleBitmapDrawable = it.mDrawable as HumbleBitmapDrawable
-                BitmapPool.put(humbleBitmapDrawable.bitmap)
-            }
-            it.mDrawable = null
+        for (index in 0 until imageViewDrawables.size) {
+            presenter.recycleDrawable(imageViewDrawables[index].mDrawable)
+            imageViewDrawables[index].mDrawable = null;
         }
+        presenter.stop()
+        setImageDrawable(null)
     }
 
     override fun setImageIcon(icon: Icon?) {
@@ -103,7 +100,17 @@ class HumbleViewImage : AppCompatImageView {
     }
 
     override fun setImageResource(resId: Int) {
-        super.setImageResource(resId)
+        var drawable: Drawable? = null
+        if (lastKnowSize.isValid()) {
+            drawable = presenter.getRecycledDrawableResource(resId, lastKnowSize, alpha)
+        }
+        if (drawable == null) {
+            drawable = AppCompatResources.getDrawable(context, resId)
+            if (drawable != null) {
+                drawable = DrawableResource(drawable, resId)
+            }
+        }
+        setImageDrawable(drawable)
         updateImageViewDrawables()
     }
 
@@ -120,8 +127,10 @@ class HumbleViewImage : AppCompatImageView {
 
     override fun onDraw(canvas: Canvas) {
         humbleTransition?.setupAlpha()
-        imageViewDrawables[0].onDraw(canvas)
-        imageViewDrawables[1].onDraw(canvas)
+        for (index in 0 until imageViewDrawables.size) {
+            imageViewDrawables[index].onDraw(canvas)
+            presenter.updateDrawableResourceViewSize(imageViewDrawables[index].mDrawable, lastKnowSize)
+        }
         drawDebug(canvas)
     }
 
@@ -136,31 +145,39 @@ class HumbleViewImage : AppCompatImageView {
     }
 
     internal fun completeAnimation() {
-        humbleTransition?.completeAnimationBySwitchingDrawable()
-        humbleTransition = null
-        updateImageViewDrawables()
+        if (humbleTransition != null) {
+            var recyclableDrawable = humbleTransition!!.completeAnimationBySwitchingDrawable()
+            if (recyclableDrawable != null) {
+                presenter.recycleDrawable(recyclableDrawable)
+            }
+            humbleTransition = null
+            updateImageViewDrawables()
+        }
     }
 
     internal fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
-        imageViewDrawables.forEach {
-            if (it.mDrawable is HumbleBitmapDrawable) {
-                if ((it.mDrawable as HumbleBitmapDrawable).humbleBitmapId == bitmapId) return true
+        for (index in 0 until imageViewDrawables.size) {
+            val drawable = imageViewDrawables[index].mDrawable
+            if (drawable is HumbleBitmapDrawable
+                    && drawable.humbleBitmapId == bitmapId) {
+                return true
             }
         }
         return false
     }
 
-    /**
-     * Warning: imageViewDrawables can be null, because the
-     * constructor of ImageView call override methods
-     */
     private fun updateImageViewDrawables() {
-        imageViewDrawables?.forEachIndexed { index, imageViewDrawable ->
-            if (index == 0) {
-                imageViewDrawable.mDrawable = this.drawable
+        // Warning: imageViewDrawables can be null, because the
+        // constructor of ImageView call override methods
+        if (imageViewDrawables != null) {
+            for (index in 0 until imageViewDrawables.size) {
+                val imageViewDrawable = imageViewDrawables[index]
+                if (index == 0) {
+                    imageViewDrawable.mDrawable = this.drawable
+                }
+                imageViewDrawable.copyImageView()
+                imageViewDrawable.configureBounds()
             }
-            imageViewDrawable.copyImageView()
-            imageViewDrawable.configureBounds()
         }
     }
 
