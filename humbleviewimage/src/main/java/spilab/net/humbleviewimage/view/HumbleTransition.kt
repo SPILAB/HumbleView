@@ -7,8 +7,7 @@ import spilab.net.humbleviewimage.android.ImageViewDrawable
 import spilab.net.humbleviewimage.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
-                                private val imageViewDrawables: Array<ImageViewDrawable>, drawable: HumbleBitmapDrawable) {
-
+                                private val imageViewDrawables: Array<ImageViewDrawable>, drawable: HumbleBitmapDrawable) : Runnable {
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
         const val CURRENT_IDX = 0
@@ -49,13 +48,15 @@ internal class HumbleTransition(private val humbleViewImage: HumbleViewImage,
     }
 
     private fun animationLoop() {
-        humbleViewImage.postOnAnimation {
+        humbleViewImage.postOnAnimation(this)
+    }
+
+    override fun run() {
+        if (!isCompleted()) {
+            animationLoop()
             humbleViewImage.postInvalidate()
-            if (!isCompleted()) {
-                animationLoop()
-            } else {
-                humbleViewImage.completeAnimation()
-            }
+        } else {
+            humbleViewImage.completeAnimation()
         }
     }
 
