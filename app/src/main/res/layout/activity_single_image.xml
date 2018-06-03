@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".singleimage.SingleImageActivity">
 
-    <spilab.net.humbleviewimage.HumbleViewImage
+    <spilab.net.humbleimageview.HumbleImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg"/>

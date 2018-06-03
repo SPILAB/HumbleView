@@ -14,7 +14,7 @@
         android:paddingBottom="@dimen/smallMargin"
         android:scrollbarStyle="outsideOverlay">
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/smallHumbleViewImageA"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/ic_photo_black_48px"
             app:url="https://c1.staticflickr.com/1/318/19789239779_a82ece4aa8_k.jpg" />
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/smallHumbleViewImageB"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -40,7 +40,7 @@
             app:srcCompat="@drawable/ic_photo_black_48px"
             app:url="https://c1.staticflickr.com/1/299/20308321465_1f4ed99416_k.jpg" />
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/mediumHumbleViewImageA"
             android:layout_width="128dp"
             android:layout_height="128dp"
@@ -53,7 +53,7 @@
             app:srcCompat="@drawable/ic_photo_black_48px"
             app:url="https://c1.staticflickr.com/1/318/19789239779_a82ece4aa8_k.jpg" />
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/mediumHumbleViewImageB"
             android:layout_width="128dp"
             android:layout_height="128dp"
@@ -66,7 +66,7 @@
             app:srcCompat="@drawable/ic_photo_black_48px"
             app:url="https://c1.staticflickr.com/1/299/20308321465_1f4ed99416_k.jpg" />
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/bigHumbleViewImageA"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -79,7 +79,7 @@
             app:srcCompat="@drawable/ic_photo_black_48px"
             app:url="https://c1.staticflickr.com/1/318/19789239779_a82ece4aa8_k.jpg" />
 
-        <spilab.net.humbleviewimage.HumbleViewImage
+        <spilab.net.humbleimageview.HumbleImageView
             android:id="@+id/bigHumbleViewImageB"
             android:layout_width="0dp"
             android:layout_height="0dp"

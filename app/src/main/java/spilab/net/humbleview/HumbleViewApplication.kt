@@ -2,7 +2,7 @@ package spilab.net.humbleview
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
-import spilab.net.humbleviewimage.model.HumbleViewConfig
+import spilab.net.humbleimageview.model.HumbleViewConfig
 
 class HumbleViewApplication : Application() {
 

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import spilab.net.humbleview.R
-import spilab.net.humbleviewimage.HumbleViewImage
+import spilab.net.humbleimageview.HumbleImageView
 
 class ImagesListAdapter(private val imagesUrls: Array<String>) :
         RecyclerView.Adapter<ImagesListAdapter.ViewHolder>() {
@@ -21,7 +21,7 @@ class ImagesListAdapter(private val imagesUrls: Array<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val humbleImageView = holder.viewHolder.findViewById<HumbleViewImage>(R.id.humbleViewImage)
+        val humbleImageView = holder.viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
         // TODO: Add documentation to explain why we should set the place holder again
         humbleImageView.setImageResource(R.drawable.ic_photo_black_48px)
         humbleImageView.setUrl(imagesUrls[position])
