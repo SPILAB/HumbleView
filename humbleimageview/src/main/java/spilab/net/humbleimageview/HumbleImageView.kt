@@ -21,6 +21,10 @@ import spilab.net.humbleimageview.view.HumbleViewImageDebug
 
 class HumbleImageView : AppCompatImageView {
 
+    companion object {
+        const val CURRENT_IDX = 0
+    }
+
     private var humbleTransition: HumbleTransition? = null
     private var lastKnowSize = ViewSize()
     private val imageViewDrawables = arrayOf(ImageViewDrawable(this), ImageViewDrawable(this))
@@ -52,7 +56,7 @@ class HumbleImageView : AppCompatImageView {
         } finally {
             styledAttributes.recycle()
         }
-        updateImageViewDrawables()
+        synchronizeCurrentImageViewDrawables()
     }
 
     fun setUrl(url: String) {
@@ -76,27 +80,22 @@ class HumbleImageView : AppCompatImageView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        for (index in 0 until imageViewDrawables.size) {
-            presenter.recycleDrawable(imageViewDrawables[index].mDrawable)
-            imageViewDrawables[index].mDrawable = null
-        }
         presenter.stop()
-        setImageDrawable(null)
     }
 
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
-        updateImageViewDrawables()
+        synchronizeCurrentImageViewDrawables()
     }
 
     override fun setImageBitmap(bm: Bitmap?) {
         super.setImageBitmap(bm)
-        updateImageViewDrawables()
+        synchronizeCurrentImageViewDrawables()
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
         super.setImageDrawable(drawable)
-        updateImageViewDrawables()
+        synchronizeCurrentImageViewDrawables()
     }
 
     override fun setImageResource(resId: Int) {
@@ -108,20 +107,21 @@ class HumbleImageView : AppCompatImageView {
             drawable = AppCompatResources.getDrawable(context, resId)
             if (drawable != null) {
                 drawable = DrawableResource(drawable, resId)
+                presenter.recycleDrawable(drawable)
             }
         }
         setImageDrawable(drawable)
-        updateImageViewDrawables()
+        configureFromImageView()
     }
 
     override fun setImageURI(uri: Uri?) {
         super.setImageURI(uri)
-        updateImageViewDrawables()
+        synchronizeCurrentImageViewDrawables()
     }
 
     override fun setFrame(l: Int, t: Int, r: Int, b: Int): Boolean {
         val hasFrame = super.setFrame(l, t, r, b)
-        updateImageViewDrawables()
+        configureFromImageView()
         return hasFrame
     }
 
@@ -136,7 +136,6 @@ class HumbleImageView : AppCompatImageView {
 
     internal fun addTransition(drawable: HumbleBitmapDrawable) {
         this.humbleTransition = HumbleTransition(this, imageViewDrawables, drawable)
-        updateImageViewDrawables()
         if (ViewCompat.isAttachedToWindow(this)) {
             this.humbleTransition?.start()
         } else {
@@ -151,7 +150,7 @@ class HumbleImageView : AppCompatImageView {
                 presenter.recycleDrawable(recyclableDrawable)
             }
             humbleTransition = null
-            updateImageViewDrawables()
+            synchronizeCurrentImageViewDrawables()
         }
     }
 
@@ -166,17 +165,26 @@ class HumbleImageView : AppCompatImageView {
         return false
     }
 
-    private fun updateImageViewDrawables() {
+    /**
+     * Must be call each time the drawable is set
+     */
+    private fun synchronizeCurrentImageViewDrawables() {
+        // Warning: imageViewDrawables can be null, because the
+        // constructor of ImageView call override methods
+        if (imageViewDrawables != null) {
+            imageViewDrawables[CURRENT_IDX].mDrawable = this.drawable
+        }
+    }
+
+    /**
+     * Must be call each time the view bounds change
+     */
+    private fun configureFromImageView() {
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
             for (index in 0 until imageViewDrawables.size) {
-                val imageViewDrawable = imageViewDrawables[index]
-                if (index == 0) {
-                    imageViewDrawable.mDrawable = this.drawable
-                }
-                imageViewDrawable.copyImageView()
-                imageViewDrawable.configureBounds()
+                imageViewDrawables[index].configureFromImageView()
             }
         }
     }

@@ -15,6 +15,10 @@ import android.widget.ImageView.ScaleType
 internal class ImageViewDrawable(private val imageView: ImageView) {
 
     var mDrawable: Drawable? = null
+        set(value) {
+            field = value
+            configureFromImageView()
+        }
 
     private var mDrawableWidth: Int = 0
     private var mDrawableHeight: Int = 0
@@ -49,7 +53,12 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
             Pair(ScaleType.FIT_CENTER, Matrix.ScaleToFit.CENTER),
             Pair(ScaleType.FIT_END, Matrix.ScaleToFit.END))
 
-    fun copyImageView() {
+    fun configureFromImageView() {
+        copyImageView()
+        configureBounds()
+    }
+
+    private fun copyImageView() {
         mDrawableWidth = mDrawable?.intrinsicWidth ?: 0
         mDrawableHeight = mDrawable?.intrinsicHeight ?: 0
         mHaveFrame = imageView.width > 0 || imageView.height > 0
@@ -68,7 +77,7 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
         mTop = imageView.top
     }
 
-    fun configureBounds() {
+    private fun configureBounds() {
         if (mDrawable == null || !mHaveFrame) {
             return
         }

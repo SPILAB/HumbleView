@@ -10,8 +10,14 @@ import spilab.net.humbleimageview.HumbleImageView
 class ImagesListAdapter(private val imagesUrls: Array<String>) :
         RecyclerView.Adapter<ImagesListAdapter.ViewHolder>() {
 
-    class ViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder)
-
+    class ViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
+        fun bind(url: String) {
+            val humbleImageView = viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
+            // TODO: Add documentation to explain why we should set the place holder again
+            humbleImageView.setImageResource(R.drawable.ic_photo_black_48px)
+            humbleImageView.setUrl(url)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ImagesListAdapter.ViewHolder {
@@ -21,10 +27,7 @@ class ImagesListAdapter(private val imagesUrls: Array<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val humbleImageView = holder.viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
-        // TODO: Add documentation to explain why we should set the place holder again
-        humbleImageView.setImageResource(R.drawable.ic_photo_black_48px)
-        humbleImageView.setUrl(imagesUrls[position])
+        holder.bind(imagesUrls[position])
     }
 
     override fun getItemCount() = imagesUrls.size
