@@ -11,8 +11,12 @@ import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleimageview.android.ImageViewDrawable
-import spilab.net.humbleimageview.model.*
-import spilab.net.humbleimageview.model.drawable.DrawableResource
+import spilab.net.humbleimageview.log.HumbleLogs
+import spilab.net.humbleimageview.model.HumbleBitmapId
+import spilab.net.humbleimageview.model.HumbleViewConfig
+import spilab.net.humbleimageview.model.ViewSize
+import spilab.net.humbleimageview.model.drawable.DrawableFromResource
+import spilab.net.humbleimageview.model.drawable.DrawableFromResourcePool
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
 import spilab.net.humbleimageview.view.HumbleTransition
@@ -70,7 +74,7 @@ class HumbleImageView : AppCompatImageView {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         lastKnowSize = ViewSize(w, h)
-        presenter.model.viewSize = lastKnowSize
+        presenter.setViewSize(lastKnowSize, imageViewDrawables)
     }
 
     override fun onAttachedToWindow() {
@@ -101,17 +105,20 @@ class HumbleImageView : AppCompatImageView {
     override fun setImageResource(resId: Int) {
         var drawable: Drawable? = null
         if (lastKnowSize.isValid()) {
-            drawable = presenter.getRecycledDrawableResource(resId, lastKnowSize, alpha)
+            drawable = presenter.getRecycledDrawableResource(resId, lastKnowSize)
+            drawable = drawable?.constantState?.newDrawable()?.mutate()
+            HumbleLogs.log("setImageResource from recycled drawable.")
         }
         if (drawable == null) {
             drawable = AppCompatResources.getDrawable(context, resId)
             if (drawable != null) {
-                drawable = DrawableResource(drawable, resId)
-                presenter.recycleDrawable(drawable)
+                DrawableFromResourcePool.put(drawable, DrawableFromResource(resId, lastKnowSize))
             }
+            HumbleLogs.log("setImageResource create a new drawable.")
         }
-        setImageDrawable(drawable)
-        configureFromImageView()
+        drawable?.alpha = (alpha * 255.0f).toInt()
+        super.setImageDrawable(drawable)
+        synchronizeCurrentImageViewDrawables()
     }
 
     override fun setImageURI(uri: Uri?) {
@@ -129,7 +136,6 @@ class HumbleImageView : AppCompatImageView {
         humbleTransition?.setupAlpha()
         for (index in 0 until imageViewDrawables.size) {
             imageViewDrawables[index].onDraw(canvas)
-            presenter.updateDrawableResourceViewSize(imageViewDrawables[index].mDrawable, lastKnowSize)
         }
         drawDebug(canvas)
     }

@@ -2,11 +2,11 @@ package spilab.net.humbleimageview.presenter
 
 import android.graphics.drawable.Drawable
 import spilab.net.humbleimageview.HumbleImageView
+import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.*
 import spilab.net.humbleimageview.model.bitmap.BitmapPool
 import spilab.net.humbleimageview.model.drawable.DrawableDecoder
 import spilab.net.humbleimageview.model.drawable.DrawableFromResourcePool
-import spilab.net.humbleimageview.model.drawable.DrawableResource
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView) {
@@ -34,23 +34,20 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
         humbleViewImage.addTransition(drawable)
     }
 
-    fun updateDrawableResourceViewSize(drawable: Drawable?, viewSize: ViewSize) {
-        if (drawable is DrawableResource) {
-            drawable.viewSize = viewSize
-        }
-    }
-
     fun recycleDrawable(recyclableDrawable: Drawable?) {
-        if (recyclableDrawable is DrawableResource) {
-            DrawableFromResourcePool.put(recyclableDrawable)
-        } else if (recyclableDrawable is HumbleBitmapDrawable) {
+        if (recyclableDrawable is HumbleBitmapDrawable) {
             BitmapPool.put(recyclableDrawable.bitmap)
         }
     }
 
-    fun getRecycledDrawableResource(resId: Int, viewSize: ViewSize, alpha: Float): DrawableResource? {
-        val drawable = DrawableFromResourcePool.find(resId, viewSize)
-        drawable?.alpha = (alpha * 255.0f).toInt()
-        return drawable
+    fun getRecycledDrawableResource(resId: Int, viewSize: ViewSize): Drawable? {
+        return DrawableFromResourcePool.find(resId, viewSize)
+    }
+
+    fun setViewSize(lastKnowSize: ViewSize, imageViewDrawables: Array<ImageViewDrawable>) {
+        model.viewSize = lastKnowSize
+        imageViewDrawables.forEach {
+            DrawableFromResourcePool.updateViewSize(it.mDrawable, lastKnowSize)
+        }
     }
 }

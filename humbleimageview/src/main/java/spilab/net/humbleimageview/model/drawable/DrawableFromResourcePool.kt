@@ -1,32 +1,28 @@
 package spilab.net.humbleimageview.model.drawable
 
-import spilab.net.humbleimageview.log.HumbleLogs
+import android.graphics.drawable.Drawable
 import spilab.net.humbleimageview.model.ViewSize
-import java.lang.ref.WeakReference
+import java.util.*
 
 internal object DrawableFromResourcePool {
 
-    private val drawables = mutableListOf<WeakReference<DrawableResource>>()
+    private val drawables = WeakHashMap<Drawable, DrawableFromResource>()
 
-    fun put(drawableFromResource: DrawableResource) {
-        drawables.add(WeakReference(drawableFromResource))
+    inline fun put(drawable: Drawable, drawableFromResource: DrawableFromResource) {
+        drawables[drawable] = drawableFromResource
     }
 
-    fun find(resId: Int, viewSize: ViewSize): DrawableResource? {
-        var recycleDrawable: DrawableResource? = null
-        val iterator = drawables.iterator()
-        while (iterator.hasNext()) {
-            val drawable = iterator.next().get()
-            if (drawable == null) {
-                iterator.remove()
-            } else {
-                if (drawable.resId == resId && drawable.viewSize == viewSize) {
-                    recycleDrawable = drawable
-                    break
-                }
+    fun find(resId: Int, viewSize: ViewSize): Drawable? {
+        for (mutableEntry in drawables) {
+            if (mutableEntry.value.resId == resId
+                    && mutableEntry.value.viewSize == viewSize) {
+                return mutableEntry.key
             }
         }
-        HumbleLogs.log("ResourcePool recycled=$recycleDrawable for resId=$resId, viewSize=$viewSize.")
-        return recycleDrawable
+        return null
+    }
+
+    inline fun updateViewSize(mDrawable: Drawable?, viewSize: ViewSize) {
+        drawables[mDrawable]?.viewSize = viewSize
     }
 }
