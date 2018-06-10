@@ -103,20 +103,7 @@ class HumbleImageView : AppCompatImageView {
     }
 
     override fun setImageResource(resId: Int) {
-        var drawable: Drawable? = null
-        if (lastKnowSize.isValid()) {
-            drawable = presenter.getRecycledDrawableResource(resId, lastKnowSize)
-            drawable = drawable?.constantState?.newDrawable()?.mutate()
-            HumbleLogs.log("setImageResource from recycled drawable.")
-        }
-        if (drawable == null) {
-            drawable = AppCompatResources.getDrawable(context, resId)
-            if (drawable != null) {
-                DrawableFromResourcePool.put(drawable, DrawableFromResource(resId, lastKnowSize))
-            }
-            HumbleLogs.log("setImageResource create a new drawable.")
-        }
-        drawable?.alpha = (alpha * 255.0f).toInt()
+        val drawable = presenter.getImageResource(context, resId, lastKnowSize, alpha)
         super.setImageDrawable(drawable)
         synchronizeCurrentImageViewDrawables()
     }
