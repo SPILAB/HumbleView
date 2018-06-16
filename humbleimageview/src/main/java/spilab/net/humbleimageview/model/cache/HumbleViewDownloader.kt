@@ -31,6 +31,7 @@ internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpUR
         if (bitmapId == humbleBitmapId) {
             return
         }
+
         bitmapId = humbleBitmapId
         task = HumbleViewExecutor.executorService.submit({
             var drawable: HumbleBitmapDrawable? = null

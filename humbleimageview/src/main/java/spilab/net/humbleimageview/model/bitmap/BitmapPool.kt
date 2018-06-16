@@ -2,39 +2,34 @@ package spilab.net.humbleimageview.model.bitmap
 
 import android.graphics.Bitmap
 import spilab.net.humbleimageview.log.HumbleLogs
-import java.lang.ref.WeakReference
+import java.util.*
 
 internal object BitmapPool {
 
-    private val bitmaps = mutableListOf<WeakReference<Bitmap>>()
+    private val bitmaps = WeakHashMap<Bitmap, Boolean>()
 
     @Synchronized
     fun put(bitmap: Bitmap) {
-        bitmaps.add(WeakReference(bitmap))
+        HumbleLogs.log("BitmapPool put=$bitmap.")
+        bitmaps[bitmap] = true
     }
 
     @Synchronized
     fun find(width: Int, height: Int): Bitmap? {
+        HumbleLogs.log("BitmapPool searching in ${bitmaps.size} elements.")
         var recycleBitmap: Bitmap? = null
-        var recycleIterator: MutableIterator<WeakReference<Bitmap>>? = null
-        val iterator = bitmaps.iterator()
-        while (iterator.hasNext()) {
-            val bmp = iterator.next().get()
-            if (bmp == null) {
-                iterator.remove()
-            } else {
-                if (bmp.width >= width && bmp.height >= height) {
-                    if (recycleBitmap == null || recycleBitmap.byteCount > bmp.byteCount) {
-                        recycleBitmap = bmp
-                        recycleIterator = iterator
-                    }
+        for (bitmap in bitmaps) {
+            val bmp = bitmap.key
+            if (bmp.width >= width && bmp.height >= height) {
+                if (recycleBitmap == null || recycleBitmap.allocationByteCount > bmp.allocationByteCount) {
+                    recycleBitmap = bmp
                 }
             }
         }
-        if (recycleIterator != null) {
-            recycleIterator.remove()
+        if (recycleBitmap != null) {
+            bitmaps.remove(recycleBitmap)
         }
-        HumbleLogs.log("BitmapPool recycled=$recycleBitmap for width=$width, height=$height.")
+        HumbleLogs.log("BitmapPool found=$recycleBitmap for width=$width, height=$height.")
         return recycleBitmap
     }
 }

@@ -7,26 +7,23 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.support.v4.view.ViewCompat
-import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleimageview.android.ImageViewDrawable
-import spilab.net.humbleimageview.log.HumbleLogs
 import spilab.net.humbleimageview.model.HumbleBitmapId
 import spilab.net.humbleimageview.model.HumbleViewConfig
 import spilab.net.humbleimageview.model.ViewSize
-import spilab.net.humbleimageview.model.drawable.DrawableFromResource
-import spilab.net.humbleimageview.model.drawable.DrawableFromResourcePool
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
 import spilab.net.humbleimageview.view.HumbleTransition
 import spilab.net.humbleimageview.view.HumbleViewImageDebug
 
 
-class HumbleImageView : AppCompatImageView {
+class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionListener {
 
     companion object {
         const val CURRENT_IDX = 0
+        const val NEXT_IDX = 1
     }
 
     private var humbleTransition: HumbleTransition? = null
@@ -74,17 +71,19 @@ class HumbleImageView : AppCompatImageView {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         lastKnowSize = ViewSize(w, h)
-        presenter.setViewSize(lastKnowSize, imageViewDrawables)
+        presenter.setViewSize(lastKnowSize)
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        synchronizeCurrentImageViewDrawables()
         presenter.start()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        presenter.stop()
+        humbleTransition?.completeAnimation()
+        presenter.stop(imageViewDrawables)
     }
 
     override fun setImageIcon(icon: Icon?) {
@@ -103,8 +102,7 @@ class HumbleImageView : AppCompatImageView {
     }
 
     override fun setImageResource(resId: Int) {
-        val drawable = presenter.getImageResource(context, resId, lastKnowSize, alpha)
-        super.setImageDrawable(drawable)
+        super.setImageResource(resId)
         synchronizeCurrentImageViewDrawables()
     }
 
@@ -128,23 +126,15 @@ class HumbleImageView : AppCompatImageView {
     }
 
     internal fun addTransition(drawable: HumbleBitmapDrawable) {
-        this.humbleTransition = HumbleTransition(this, imageViewDrawables, drawable)
         if (ViewCompat.isAttachedToWindow(this)) {
-            this.humbleTransition?.start()
-        } else {
-            completeAnimation()
+            humbleTransition = HumbleTransition(imageViewDrawables, drawable, this, this)
+            humbleTransition?.start()
         }
     }
 
-    internal fun completeAnimation() {
-        if (humbleTransition != null) {
-            val recyclableDrawable = humbleTransition!!.completeAnimationBySwitchingDrawable()
-            if (recyclableDrawable != null) {
-                presenter.recycleDrawable(recyclableDrawable)
-            }
-            humbleTransition = null
-            synchronizeCurrentImageViewDrawables()
-        }
+    override fun onTansitionCompleted() {
+        this.humbleTransition = null
+        presenter.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
     }
 
     internal fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
@@ -159,13 +149,18 @@ class HumbleImageView : AppCompatImageView {
     }
 
     /**
+     * Synchronize with the exact current state of the ImageView
      * Must be call each time the drawable is set
+     * And each time the view is attached
      */
     private fun synchronizeCurrentImageViewDrawables() {
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
+             presenter.recycleImageViewDrawable(imageViewDrawables[CURRENT_IDX])
             imageViewDrawables[CURRENT_IDX].mDrawable = this.drawable
+            imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
+            imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = (alpha * 255.0f).toInt()
         }
     }
 

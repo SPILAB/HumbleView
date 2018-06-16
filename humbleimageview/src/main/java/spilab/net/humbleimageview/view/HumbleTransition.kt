@@ -1,17 +1,23 @@
 package spilab.net.humbleimageview.view
 
-import android.graphics.drawable.Drawable
 import android.os.SystemClock
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class HumbleTransition(private val humbleViewImage: HumbleImageView,
-                                private val imageViewDrawables: Array<ImageViewDrawable>, drawable: HumbleBitmapDrawable) : Runnable {
+internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewDrawable>,
+                                drawable: HumbleBitmapDrawable,
+                                private val humbleViewImage: HumbleImageView,
+                                private val humbleTransitionListener: HumbleTransitionListener) : Runnable {
+
     companion object {
         var DEFAULT_FADING_TIME_MILLIS = 1500L
         const val CURRENT_IDX = 0
         const val NEXT_IDX = 1
+    }
+
+    interface HumbleTransitionListener {
+        fun onTansitionCompleted()
     }
 
     private val maxAlpha: Int
@@ -21,10 +27,12 @@ internal class HumbleTransition(private val humbleViewImage: HumbleImageView,
 
     init {
         imageViewDrawables[NEXT_IDX].mDrawable = drawable
-        imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
         imageViewDrawables[NEXT_IDX].mDrawable?.mutate()
+        imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
         fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS, { SystemClock.uptimeMillis() })
         maxAlpha = humbleViewImage.imageAlpha
+        imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha
+        imageViewDrawables[NEXT_IDX].mDrawable?.alpha = 0
     }
 
     fun start() {
@@ -40,13 +48,11 @@ internal class HumbleTransition(private val humbleViewImage: HumbleImageView,
         }
     }
 
-    fun completeAnimationBySwitchingDrawable(): Drawable? {
-        val recyclable = imageViewDrawables[CURRENT_IDX].mDrawable
-        imageViewDrawables[CURRENT_IDX].mDrawable = null
-        imageViewDrawables[NEXT_IDX].mDrawable?.alpha = maxAlpha
-        humbleViewImage.setImageDrawable(imageViewDrawables[NEXT_IDX].mDrawable)
+    fun completeAnimation() {
+        imageViewDrawables[CURRENT_IDX].mDrawable = imageViewDrawables[NEXT_IDX].mDrawable
+        imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha
         imageViewDrawables[NEXT_IDX].mDrawable = null
-        return recyclable
+        humbleTransitionListener.onTansitionCompleted()
     }
 
     private fun animationLoop() {
@@ -58,7 +64,7 @@ internal class HumbleTransition(private val humbleViewImage: HumbleImageView,
             animationLoop()
             humbleViewImage.postInvalidate()
         } else {
-            humbleViewImage.completeAnimation()
+            completeAnimation()
         }
     }
 

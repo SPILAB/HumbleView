@@ -18,6 +18,7 @@ internal class HumbleBitmapFactory(private val androidBitmapFactory: AndroidBitm
         val recycleBitmap = BitmapPool.find(options.outWidth / options.inSampleSize,
                 options.outHeight / options.inSampleSize)
         options.inBitmap = recycleBitmap
+        options.inMutable = true
         return androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
     }
 
