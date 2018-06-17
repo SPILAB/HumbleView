@@ -2,7 +2,6 @@ package spilab.net.humbleimageview.model
 
 import android.content.res.Resources
 import android.os.Handler
-import spilab.net.humbleimageview.android.AndroidHttpURLConnection
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawableRequest
@@ -37,7 +36,6 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
                             currentId!!,
                             uiThreadHandler,
                             resources,
-                            AndroidHttpURLConnection(),
                             this)
                 }
             }

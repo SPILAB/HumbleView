@@ -10,13 +10,13 @@ internal object BitmapPool {
 
     @Synchronized
     fun put(bitmap: Bitmap) {
-        HumbleLogs.log("BitmapPool put=$bitmap.")
+        HumbleLogs.log("BitmapPool put=%s.", bitmap.toString())
         bitmaps[bitmap] = true
     }
 
     @Synchronized
     fun find(width: Int, height: Int): Bitmap? {
-        HumbleLogs.log("BitmapPool searching in ${bitmaps.size} elements.")
+        HumbleLogs.log("BitmapPool searching in %s elements.", bitmaps.size.toString())
         var recycleBitmap: Bitmap? = null
         for (bitmap in bitmaps) {
             val bmp = bitmap.key
@@ -29,7 +29,8 @@ internal object BitmapPool {
         if (recycleBitmap != null) {
             bitmaps.remove(recycleBitmap)
         }
-        HumbleLogs.log("BitmapPool found=$recycleBitmap for width=$width, height=$height.")
+        HumbleLogs.log("BitmapPool found=%s for width=%s, height=%s.",
+                recycleBitmap.toString(), width.toString(), height.toString())
         return recycleBitmap
     }
 }

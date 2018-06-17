@@ -1,18 +1,18 @@
 package spilab.net.humbleimageview.log
 
 import android.util.Log
-import spilab.net.humbleimageview.model.HumbleViewConfig
+import spilab.net.humbleimageview.model.HumbleViewAPI
 
 internal class HumbleLogs {
 
     companion object {
 
-        fun log(msg: String) {
-            humbleLog.log(msg)
+        fun log(msg: String, vararg args: Any?) {
+            humbleLog.log(String.format(msg, *args))
         }
 
         private val humbleLog: HumbleLog by lazy {
-            if (HumbleViewConfig.log) {
+            if (HumbleViewAPI.log) {
                 return@lazy HumbleLogEnable()
             }
             return@lazy HumbleLogDisable()

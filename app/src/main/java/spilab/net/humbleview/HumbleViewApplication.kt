@@ -1,8 +1,7 @@
 package spilab.net.humbleview
 
 import android.app.Application
-import com.squareup.leakcanary.LeakCanary
-import spilab.net.humbleimageview.model.HumbleViewConfig
+import spilab.net.humbleimageview.model.HumbleViewAPI
 
 class HumbleViewApplication : Application() {
 
@@ -18,8 +17,7 @@ class HumbleViewApplication : Application() {
         */
 
         // TODO: TEMPORARY POC
-        HumbleViewConfig.installHTTPCache(applicationContext)
-        HumbleViewConfig.log = true
-        // HumbleViewConfig.debug = true
+        HumbleViewAPI.log = true
+        // HumbleViewAPI.debug = true
     }
 }

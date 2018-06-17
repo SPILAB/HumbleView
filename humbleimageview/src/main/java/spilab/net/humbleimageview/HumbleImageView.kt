@@ -11,7 +11,7 @@ import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.HumbleBitmapId
-import spilab.net.humbleimageview.model.HumbleViewConfig
+import spilab.net.humbleimageview.model.HumbleViewAPI
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
@@ -178,7 +178,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     }
 
     private inline fun drawDebug(canvas: Canvas?) {
-        if ((debug || HumbleViewConfig.debug) && canvas != null) {
+        if ((debug || HumbleViewAPI.debug) && canvas != null) {
             val currentDrawable = drawable
             var sampleSize = -1
             if (currentDrawable is HumbleBitmapDrawable) {
