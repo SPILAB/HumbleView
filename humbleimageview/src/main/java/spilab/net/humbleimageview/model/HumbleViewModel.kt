@@ -1,5 +1,6 @@
 package spilab.net.humbleimageview.model
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Handler
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
@@ -7,7 +8,8 @@ import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawableRequest
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
 
-internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
+internal class HumbleViewModel(private val context: Context,
+                               private val presenter: HumbleViewPresenter,
                                private var resources: Resources,
                                private val uiThreadHandler: Handler) : DrawableDecoderTask.DrawableDecoderTaskListener {
 
@@ -33,10 +35,12 @@ internal class HumbleViewModel(private val presenter: HumbleViewPresenter,
                 if (humbleBitmapDrawableRequest?.humbleBitmapId != currentId) {
                     humbleBitmapDrawableRequest?.cancel()
                     humbleBitmapDrawableRequest = HumbleBitmapDrawableRequest(
+                            context,
                             currentId!!,
                             uiThreadHandler,
                             resources,
-                            this)
+                            this
+                    )
                 }
             }
         }

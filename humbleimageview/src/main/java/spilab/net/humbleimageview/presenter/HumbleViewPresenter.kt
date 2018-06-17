@@ -10,7 +10,9 @@ import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView) {
 
-    var model: HumbleViewModel = HumbleViewModel(this,
+    var model: HumbleViewModel = HumbleViewModel(
+            humbleViewImage.context.applicationContext,
+            this,
             humbleViewImage.resources,
             Handler(Looper.getMainLooper()))
 

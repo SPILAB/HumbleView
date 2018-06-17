@@ -1,5 +1,6 @@
 package spilab.net.humbleimageview.model.drawable
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Handler
 import okhttp3.Call
@@ -9,10 +10,10 @@ import okhttp3.Response
 import spilab.net.humbleimageview.log.HumbleLogs
 import spilab.net.humbleimageview.model.HumbleBitmapId
 import spilab.net.humbleimageview.model.HumbleViewAPI
-import spilab.net.humbleimageview.model.bitmap.BitmapPool
 import java.io.IOException
 
-internal class HumbleBitmapDrawableRequest(val humbleBitmapId: HumbleBitmapId,
+internal class HumbleBitmapDrawableRequest(private val context: Context,
+                                           val humbleBitmapId: HumbleBitmapId,
                                            private val uiThreadHandler: Handler,
                                            private var resources: Resources,
                                            private val drawableDecoderTaskListener: DrawableDecoderTask.DrawableDecoderTaskListener)
@@ -23,7 +24,7 @@ internal class HumbleBitmapDrawableRequest(val humbleBitmapId: HumbleBitmapId,
 
     init {
         val request = Request.Builder().url(humbleBitmapId.url).build()
-        requestCall = HumbleViewAPI.okHttpClient.newCall(request)
+        requestCall = HumbleViewAPI.getOkHttpClient(context).newCall(request)
         requestCall.enqueue(this)
     }
 
