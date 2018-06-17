@@ -157,7 +157,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
-             presenter.recycleImageViewDrawable(imageViewDrawables[CURRENT_IDX])
+            presenter.recycleImageViewDrawable(imageViewDrawables[CURRENT_IDX])
             imageViewDrawables[CURRENT_IDX].mDrawable = this.drawable
             imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
             imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = (alpha * 255.0f).toInt()

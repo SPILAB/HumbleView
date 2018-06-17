@@ -2,27 +2,26 @@ package spilab.net.humbleimageview.model.cache
 
 import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHttpURLConnection
-import spilab.net.humbleimageview.model.*
-import spilab.net.humbleimageview.model.drawable.DrawableDecoder
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.model.HumbleBitmapId
+import spilab.net.humbleimageview.model.HumbleViewExecutor
 import java.io.InputStream
-import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
 import java.util.concurrent.Future
 
 
-internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpURLConnection,
-                                    private val bitmapDrawableDecoder: DrawableDecoder,
-                                    private val handler: Handler,
-                                    model: HumbleViewModel) {
-
-    private val model: WeakReference<HumbleViewModel> = WeakReference(model)
+internal class HumbleViewDownloader(private val uiThreadHandler: Handler,
+                                    private val httpURLConnection: AndroidHttpURLConnection,
+                                    private val humbleViewDownloaderListener: HumbleViewDownloaderListener) {
 
     @get:Synchronized
     @set:Synchronized
     private var bitmapId: HumbleBitmapId? = null
 
     private var task: Future<*>? = null
+
+    interface HumbleViewDownloaderListener {
+        fun onDownloadComplete(bitmapData: ByteArray)
+    }
 
     internal fun start(humbleBitmapId: HumbleBitmapId) {
         if (bitmapId != humbleBitmapId) {
@@ -33,8 +32,7 @@ internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpUR
         }
 
         bitmapId = humbleBitmapId
-        task = HumbleViewExecutor.executorService.submit({
-            var drawable: HumbleBitmapDrawable? = null
+        task = HumbleViewExecutor.executorService.submit {
             var urlConnection: HttpURLConnection? = null
             var inputStream: InputStream? = null
             try {
@@ -43,22 +41,19 @@ internal class HumbleViewDownloader(private val httpURLConnection: AndroidHttpUR
                 if (statusCode == 200) {
                     inputStream = urlConnection.inputStream
                     if (inputStream != null) {
-                        drawable = bitmapDrawableDecoder.decodeBitmapDrawableForViewSize(inputStream, humbleBitmapId)
+                        val bitmapData = inputStream.readBytes()
+                        uiThreadHandler.post {
+                            humbleViewDownloaderListener.onDownloadComplete(bitmapData)
+                        }
                     }
-                }
-                if (drawable != null) {
-                    handler.post({
-                        model.get()?.onBitmapReady(drawable)
-                        resetCurrentBitmapId()
-                    })
                 }
             } catch (t: Throwable) {
                 resetCurrentBitmapId()
             } finally {
-                inputStream?.close()
                 urlConnection?.disconnect()
+                inputStream?.close()
             }
-        })
+        }
     }
 
     internal fun cancel() {

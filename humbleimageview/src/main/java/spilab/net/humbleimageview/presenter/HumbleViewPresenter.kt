@@ -1,19 +1,18 @@
 package spilab.net.humbleimageview.presenter
 
+import android.os.Handler
+import android.os.Looper
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.*
 import spilab.net.humbleimageview.model.bitmap.BitmapPool
-import spilab.net.humbleimageview.model.drawable.DrawableDecoder
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView) {
 
-    var model: HumbleViewModel = HumbleViewModel(
-            this,
-            DrawableDecoder(
-                    resources = humbleViewImage.resources),
-            context = humbleViewImage.context.applicationContext)
+    var model: HumbleViewModel = HumbleViewModel(this,
+            humbleViewImage.resources,
+            Handler(Looper.getMainLooper()))
 
     fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
         return humbleViewImage.isCurrentOrNextDrawableId(bitmapId)
@@ -24,7 +23,7 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
     }
 
     fun stop(imageViewDrawables: Array<ImageViewDrawable>) {
-        model.cancelDownloadIfNeeded()
+        model.cancel()
         for (imageViewDrawable in imageViewDrawables) {
             recycleImageViewDrawable(imageViewDrawable)
         }
