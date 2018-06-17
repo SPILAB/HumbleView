@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("spilab.net.humbleviewimage.test", appContext.getPackageName());
+        assertEquals("spilab.net.humbleimageview.test", appContext.getPackageName());
     }
 }

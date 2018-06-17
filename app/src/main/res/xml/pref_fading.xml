@@ -1,0 +1,10 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="300"
+        android:entries="@array/pref_fading_speed_list_titles"
+        android:entryValues="@array/pref_fading_speed_list_values"
+        android:key="pref_fading_speed_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_fading_speed" />
+</PreferenceScreen>
