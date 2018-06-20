@@ -3,12 +3,17 @@ package spilab.net.humbleview.settings
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.preference.*
+import android.view.Menu
 import android.view.MenuItem
+import spilab.net.humbleview.HumbleViewApplication
 import spilab.net.humbleview.R
+import android.preference.PreferenceManager
+
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -22,9 +27,30 @@ import spilab.net.humbleview.R
  */
 class SettingsActivity : AppCompatPreferenceActivity() {
 
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActionBar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            HumbleViewApplication.onSettingsUpdate(applicationContext, key)
+        }
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onPanelClosed(featureId: Int, menu: Menu?) {
+        super.onPanelClosed(featureId, menu)
     }
 
     /**
@@ -65,7 +91,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_fading)
             setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("pref_fading_speed_list"))
+            bindPreferenceSummaryToValue(findPreference(PREF_FADING_SPEED_LIST))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,7 +110,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_cache)
             setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("pref_cache_size_list"))
+            bindPreferenceSummaryToValue(findPreference(PREF_CACHE_SIZE_LIST))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -98,6 +124,9 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
 
     companion object {
+
+        val PREF_CACHE_SIZE_LIST = "pref_cache_size_list"
+        val PREF_FADING_SPEED_LIST = "pref_fading_speed_list"
 
         fun createIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)

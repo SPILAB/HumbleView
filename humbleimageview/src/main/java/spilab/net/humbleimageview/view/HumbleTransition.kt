@@ -3,6 +3,7 @@ package spilab.net.humbleimageview.view
 import android.os.SystemClock
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.model.HumbleViewAPI
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewDrawable>,
@@ -11,7 +12,6 @@ internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewD
                                 private val humbleTransitionListener: HumbleTransitionListener) : Runnable {
 
     companion object {
-        var DEFAULT_FADING_TIME_MILLIS = 1500L
         const val CURRENT_IDX = 0
         const val NEXT_IDX = 1
     }
@@ -29,7 +29,7 @@ internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewD
         imageViewDrawables[NEXT_IDX].mDrawable = drawable
         imageViewDrawables[NEXT_IDX].mDrawable?.mutate()
         imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
-        fadingAnimationTimer = AnimationTimer(DEFAULT_FADING_TIME_MILLIS, { SystemClock.uptimeMillis() })
+        fadingAnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis, { SystemClock.uptimeMillis() })
         maxAlpha = humbleViewImage.imageAlpha
         imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha
         imageViewDrawables[NEXT_IDX].mDrawable?.alpha = 0
