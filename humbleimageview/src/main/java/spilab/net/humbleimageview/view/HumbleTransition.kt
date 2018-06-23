@@ -3,7 +3,7 @@ package spilab.net.humbleimageview.view
 import android.os.SystemClock
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
-import spilab.net.humbleimageview.model.HumbleViewAPI
+import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewDrawable>,

@@ -2,7 +2,7 @@ package spilab.net.humbleview
 
 import android.app.Application
 import android.content.Context
-import spilab.net.humbleimageview.model.HumbleViewAPI
+import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleview.settings.SettingsActivity
 import android.preference.PreferenceManager
 
@@ -14,8 +14,8 @@ class HumbleViewApplication : Application() {
             val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
             when (key) {
                 SettingsActivity.PREF_CACHE_SIZE_LIST -> {
-                    HumbleViewAPI.setCacheSize(sharedPref.getString(SettingsActivity.PREF_CACHE_SIZE_LIST,
-                            HumbleViewAPI.DEFAULT_CACHE_SIZE.toString()).toLong())
+                    HumbleViewAPI.http.setHttpCacheSize(sharedPref.getString(SettingsActivity.PREF_CACHE_SIZE_LIST,
+                            HumbleViewAPI.http.toString()).toLong())
                 }
                 SettingsActivity.PREF_FADING_SPEED_LIST -> {
                     HumbleViewAPI.fadingSpeedMillis = sharedPref.getString(SettingsActivity.PREF_FADING_SPEED_LIST,

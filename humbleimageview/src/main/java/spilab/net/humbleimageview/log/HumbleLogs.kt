@@ -1,7 +1,7 @@
 package spilab.net.humbleimageview.log
 
 import android.util.Log
-import spilab.net.humbleimageview.model.HumbleViewAPI
+import spilab.net.humbleimageview.api.HumbleViewAPI
 
 internal class HumbleLogs {
 

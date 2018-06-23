@@ -9,7 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import spilab.net.humbleimageview.log.HumbleLogs
 import spilab.net.humbleimageview.model.HumbleBitmapId
-import spilab.net.humbleimageview.model.HumbleViewAPI
+import spilab.net.humbleimageview.api.HumbleViewAPI
 import java.io.IOException
 
 internal class HumbleBitmapDrawableRequest(private val context: Context,
@@ -24,7 +24,7 @@ internal class HumbleBitmapDrawableRequest(private val context: Context,
 
     init {
         val request = Request.Builder().url(humbleBitmapId.url).build()
-        requestCall = HumbleViewAPI.getOkHttpClient(context).newCall(request)
+        requestCall = HumbleViewAPI.http.getOkHttpClient(context).newCall(request)
         requestCall.enqueue(this)
     }
 

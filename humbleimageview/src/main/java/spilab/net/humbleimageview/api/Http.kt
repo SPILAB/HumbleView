@@ -1,0 +1,57 @@
+package spilab.net.humbleimageview.api
+
+import android.content.Context
+import android.os.AsyncTask
+import okhttp3.Cache
+import okhttp3.OkHttpClient
+import java.io.File
+
+class Http {
+
+    val DEFAULT_CACHE_SIZE = 32L * 1024L * 1024L // 32 MiB
+
+    private var cacheSizeMB = DEFAULT_CACHE_SIZE
+    private var okHttpClient: OkHttpClient? = null
+
+    @Synchronized
+    fun setHttpCacheSize(cacheSizeMB: Long) {
+        destroyOkHttpClient()
+        this.cacheSizeMB = cacheSizeMB
+    }
+
+    @Synchronized
+    internal fun getOkHttpClient(context: Context): OkHttpClient {
+        if (okHttpClient == null) {
+            okHttpClient = OkHttpClient()
+                    .newBuilder()
+                    .cache(getHttpCache(context))
+                    .build()
+        }
+        return okHttpClient!!
+    }
+
+    private inline fun getHttpCache(context: Context): Cache? {
+        if (cacheSizeMB > 0) {
+            return Cache(getDefaultHttpCacheDir(context), DEFAULT_CACHE_SIZE)
+        } else {
+            return null
+        }
+    }
+
+    private inline fun getDefaultHttpCacheDir(context: Context): File {
+        val cacheDir = File(context.cacheDir, "humbleviewhttpcache")
+        cacheDir.mkdirs()
+        return cacheDir
+    }
+
+    private inline fun destroyOkHttpClient() {
+        AsyncTask.execute {
+            synchronized(this) {
+                okHttpClient?.dispatcher()?.executorService()?.shutdown()
+                okHttpClient?.connectionPool()?.evictAll()
+                okHttpClient?.cache()?.delete()
+                okHttpClient = null
+            }
+        }
+    }
+}
