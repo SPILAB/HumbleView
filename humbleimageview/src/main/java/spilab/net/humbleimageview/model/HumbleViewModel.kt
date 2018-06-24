@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.os.Handler
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawableRequest
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
 
 internal class HumbleViewModel(private val context: Context,
@@ -13,8 +12,10 @@ internal class HumbleViewModel(private val context: Context,
                                private var resources: Resources,
                                private val uiThreadHandler: Handler) : DrawableDecoderTask.DrawableDecoderTaskListener {
 
-    private var currentId: HumbleBitmapId? = null
-    private var humbleBitmapDrawableRequest: HumbleBitmapDrawableRequest? = null
+    private var currentId: HumbleResourceId? = null
+    private var humbleResourceRequest: HumbleResourceRequest? = null
+
+    var offlineCache: Boolean = false
 
     var url: String? = null
         set(value) {
@@ -30,13 +31,14 @@ internal class HumbleViewModel(private val context: Context,
 
     fun updateImageIfNeeded() {
         if (url != null && viewSize != null) {
-            currentId = HumbleBitmapId(url!!, viewSize!!)
+            currentId = HumbleResourceId(url!!, viewSize!!)
             if (!presenter.isCurrentOrNextDrawableId(currentId!!)) {
-                if (humbleBitmapDrawableRequest?.humbleBitmapId != currentId) {
-                    humbleBitmapDrawableRequest?.cancel()
-                    humbleBitmapDrawableRequest = HumbleBitmapDrawableRequest(
+                if (humbleResourceRequest?.humbleResourceId != currentId) {
+                    humbleResourceRequest?.cancel()
+                    humbleResourceRequest = HumbleResourceRequest(
                             context,
                             currentId!!,
+                            offlineCache,
                             uiThreadHandler,
                             resources,
                             this
@@ -47,15 +49,15 @@ internal class HumbleViewModel(private val context: Context,
     }
 
     fun cancel() {
-        humbleBitmapDrawableRequest?.cancel()
-        humbleBitmapDrawableRequest = null
+        humbleResourceRequest?.cancel()
+        humbleResourceRequest = null
         currentId = null
     }
 
     override
     fun onDrawableDecoded(humbleBitmapDrawable: HumbleBitmapDrawable) {
-        humbleBitmapDrawableRequest = null
-        if (currentId == humbleBitmapDrawable.humbleBitmapId) {
+        humbleResourceRequest = null
+        if (currentId == humbleBitmapDrawable.humbleResourceId) {
             presenter.addTransitionDrawable(humbleBitmapDrawable)
         }
     }

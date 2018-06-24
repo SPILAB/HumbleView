@@ -10,7 +10,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleimageview.android.ImageViewDrawable
-import spilab.net.humbleimageview.model.HumbleBitmapId
+import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
@@ -53,6 +53,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
         try {
             presenter.model.url = styledAttributes.getString(R.styleable.HumbleImageView_url)
+            presenter.model.offlineCache = styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false)
             debug = styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false)
         } finally {
             styledAttributes.recycle()
@@ -137,11 +138,11 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         presenter.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
     }
 
-    internal fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
+    internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
         for (index in 0 until imageViewDrawables.size) {
             val drawable = imageViewDrawables[index].mDrawable
             if (drawable is HumbleBitmapDrawable
-                    && drawable.humbleBitmapId == bitmapId) {
+                    && drawable.humbleResourceId == humbleResourceId) {
                 return true
             }
         }

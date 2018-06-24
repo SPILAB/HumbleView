@@ -28,7 +28,9 @@
         <activity android:name=".decodescale.DecodeScale" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/activity_title_settings"></activity>
+            android:label="@string/activity_title_settings" />
+        <activity android:name=".offline.Offline" />
+        <activity android:name=".offline.OfflineActivity"></activity>
     </application>
 
 </manifest>

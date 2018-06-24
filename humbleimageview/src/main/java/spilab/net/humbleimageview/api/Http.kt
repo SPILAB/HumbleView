@@ -8,7 +8,9 @@ import java.io.File
 
 class Http {
 
-    val DEFAULT_CACHE_SIZE = 32L * 1024L * 1024L // 32 MiB
+    companion object {
+        private const val DEFAULT_CACHE_SIZE = 32L * 1024L * 1024L // 32 MiB
+    }
 
     private var cacheSizeMB = DEFAULT_CACHE_SIZE
     private var okHttpClient: OkHttpClient? = null
@@ -31,15 +33,15 @@ class Http {
     }
 
     private inline fun getHttpCache(context: Context): Cache? {
-        if (cacheSizeMB > 0) {
-            return Cache(getDefaultHttpCacheDir(context), DEFAULT_CACHE_SIZE)
+        return if (cacheSizeMB > 0) {
+            Cache(getDefaultHttpCacheDir(context), DEFAULT_CACHE_SIZE)
         } else {
-            return null
+            null
         }
     }
 
     private inline fun getDefaultHttpCacheDir(context: Context): File {
-        val cacheDir = File(context.cacheDir, "humbleviewhttpcache")
+        val cacheDir = File(context.cacheDir, HumbleViewAPI.HTTP_CACHE_DIRECTORY)
         cacheDir.mkdirs()
         return cacheDir
     }

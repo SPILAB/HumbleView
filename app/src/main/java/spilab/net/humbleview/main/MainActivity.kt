@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import spilab.net.humbleview.R
 import spilab.net.humbleview.decodescale.DecodeScale
 import spilab.net.humbleview.imageslist.ImagesListActivity
+import spilab.net.humbleview.offline.OfflineActivity
 import spilab.net.humbleview.settings.SettingsActivity
 import spilab.net.humbleview.singleimage.SingleImageActivity
 
@@ -31,11 +32,13 @@ class MainActivity : AppCompatActivity(), MainSamplesAdapter.MainSamplesAdapterL
                     MainSamplesAdapter.SampleButton(R.string.decode_scale,
                             "https://c1.staticflickr.com/5/4227/34581375010_6d4e176472_h.jpg",
                             DecodeScale.createIntent(this@MainActivity)),
+                    MainSamplesAdapter.SampleButton(R.string.offline,
+                            "https://c2.staticflickr.com/6/5708/31080852092_3161d94ef1_h.jpg",
+                            OfflineActivity.createIntent(this@MainActivity)),
                     MainSamplesAdapter.SampleButton(R.string.settings,
                             "https://c1.staticflickr.com/1/653/22711070429_7982d6131e_h.jpg",
                             SettingsActivity.createIntent(this@MainActivity))
-            ),
-                    this@MainActivity)
+            ), this@MainActivity)
         }
     }
 

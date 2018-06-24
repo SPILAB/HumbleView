@@ -3,9 +3,9 @@ package spilab.net.humbleimageview.model.drawable
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import spilab.net.humbleimageview.model.HumbleBitmapId
+import spilab.net.humbleimageview.model.HumbleResourceId
 
 internal class HumbleBitmapDrawable(bitmap: Bitmap,
-                                    val humbleBitmapId: HumbleBitmapId,
+                                    val humbleResourceId: HumbleResourceId,
                                     res: Resources,
                                     val sampleSize: Int) : BitmapDrawable(res, bitmap)

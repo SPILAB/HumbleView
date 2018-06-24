@@ -16,8 +16,8 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
             humbleViewImage.resources,
             Handler(Looper.getMainLooper()))
 
-    fun isCurrentOrNextDrawableId(bitmapId: HumbleBitmapId): Boolean {
-        return humbleViewImage.isCurrentOrNextDrawableId(bitmapId)
+    fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
+        return humbleViewImage.isCurrentOrNextDrawableId(humbleResourceId)
     }
 
     fun start() {
