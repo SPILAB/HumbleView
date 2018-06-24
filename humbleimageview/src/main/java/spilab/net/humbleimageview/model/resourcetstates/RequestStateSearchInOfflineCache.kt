@@ -2,23 +2,29 @@ package spilab.net.humbleimageview.model.resourcetstates
 
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.model.cache.OfflineCache
+import spilab.net.humbleimageview.model.cache.OfflineCacheRead
+import java.util.concurrent.Future
 
 
 internal class RequestStateSearchInOfflineCache(stateContext: ResourceStateContext) :
-        RequestState(stateContext) {
+        RequestState(stateContext), OfflineCacheRead.OfflineCacheReadListener {
 
     private var offlineCache: OfflineCache = HumbleViewAPI.cache.getOfflineCache(stateContext.context.applicationContext)
+    private var task: Future<*>
 
     init {
-        val bitmapData = offlineCache.get(stateContext.humbleResourceId.url)
-        if (bitmapData != null) {
-            stateContext.requestState = RequestStateDecode(stateContext, bitmapData)
-        } else {
-            stateContext.requestState = RequestStateDownload(stateContext)
-        }
+        task = offlineCache.get(stateContext.humbleResourceId.url, this)
+    }
+
+    override fun onFileRead(data: ByteArray) {
+        stateContext.requestState = RequestStateDecode(stateContext, data)
+    }
+
+    override fun onFileNotFound() {
+        stateContext.requestState = RequestStateDownload(stateContext)
     }
 
     override fun cancel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        task.cancel(false)
     }
 }
