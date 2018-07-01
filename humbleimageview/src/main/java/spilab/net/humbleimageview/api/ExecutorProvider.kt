@@ -4,11 +4,11 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors.newFixedThreadPool
 import kotlin.math.max
 
-class ExecutorProvider {
+open class ExecutorProvider {
 
     private var executorService: ExecutorService? = null
 
-    fun getExecutorService(): ExecutorService {
+    open fun getExecutorService(): ExecutorService {
         if (executorService == null) {
             val threadCount = max(2, Runtime.getRuntime().availableProcessors() - 1)
             executorService = newFixedThreadPool(threadCount)

@@ -14,7 +14,16 @@ import spilab.net.humbleimageview.common.AndroidHandlerMock
 import spilab.net.humbleimageview.common.SynchronousOfflineCache
 import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
 import java.io.File
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
+
+
+class MockExecutorProvider(private val mockExecutorService: ExecutorService) : ExecutorProvider() {
+
+    override fun getExecutorService(): ExecutorService {
+        return mockExecutorService
+    }
+}
 
 @RunWith(AndroidJUnit4::class)
 class OfflineCacheTest {
@@ -25,15 +34,14 @@ class OfflineCacheTest {
     @Before
     fun setUp() {
         synchronousOfflineCache = SynchronousOfflineCache()
-        val appContext = InstrumentationRegistry.getTargetContext()
-        offlineCache = OfflineCache(synchronousOfflineCache.mockExecutorService,
-                AndroidHandlerMock(Handler(Looper.getMainLooper())))
+        val mockExecutorProvider = MockExecutorProvider(synchronousOfflineCache.mockExecutorService)
+        offlineCache = OfflineCache(mockExecutorProvider, AndroidHandlerMock(Handler(Looper.getMainLooper())))
     }
 
     @After
     fun teardown() {
         val appContext = InstrumentationRegistry.getTargetContext()
-        val cache = offlineCache.getOfflineCache(appContext)
+        synchronousOfflineCache.clear(offlineCache.getOfflineCache(appContext))
     }
 
     @Test

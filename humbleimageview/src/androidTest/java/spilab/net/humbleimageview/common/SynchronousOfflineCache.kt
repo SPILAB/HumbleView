@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry
 import io.mockk.CapturingSlot
 import io.mockk.every
 import io.mockk.mockk
+
 import io.mockk.slot
 import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
 import java.io.File
