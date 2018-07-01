@@ -1,6 +1,7 @@
 package spilab.net.humbleimageview.model.resourcetstates
 
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
+import java.util.concurrent.Future
 
 internal class RequestStateDecode(stateContext: ResourceStateContext, bitmapData: ByteArray) : RequestState(stateContext) {
 
@@ -10,12 +11,13 @@ internal class RequestStateDecode(stateContext: ResourceStateContext, bitmapData
             stateContext.humbleResourceId,
             stateContext.drawableDecoderTaskListener,
             stateContext.uiThreadHandler)
+    private var task: Future<*>
 
     init {
-        drawableDecoderTask.submit()
+        task = drawableDecoderTask.submit()
     }
 
     override fun cancel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        task.cancel(true)
     }
 }

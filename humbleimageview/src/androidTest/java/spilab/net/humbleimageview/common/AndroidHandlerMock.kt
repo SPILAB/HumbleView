@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.model.cache
+package spilab.net.humbleimageview.common
 
 import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHandler

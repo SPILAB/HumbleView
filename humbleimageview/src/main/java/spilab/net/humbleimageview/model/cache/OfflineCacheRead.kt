@@ -6,20 +6,15 @@ import java.io.File
 internal class OfflineCacheRead(private val cacheDirectory: File,
                                 private val fileName: String,
                                 private val uiThreadHandler: AndroidHandler,
-                                private val offlineCacheReadListener: OfflineCacheReadListener) : Runnable {
-
-    interface OfflineCacheReadListener {
-        fun onFileRead(data: ByteArray)
-        fun onFileNotFound()
-    }
+                                private val offlineCacheInterfaceReadListener: OfflineCacheInterface.OfflineCacheReadListener) : Runnable {
 
     override fun run() {
         val file = File(cacheDirectory, fileName)
         if (file.exists()) {
             val data = file.readBytes()
-            uiThreadHandler.post(Runnable { offlineCacheReadListener.onFileRead(data) })
+            uiThreadHandler.post(Runnable { offlineCacheInterfaceReadListener.onFileRead(data) })
         } else {
-            uiThreadHandler.post(Runnable { offlineCacheReadListener.onFileNotFound() })
+            uiThreadHandler.post(Runnable { offlineCacheInterfaceReadListener.onFileNotFound() })
         }
     }
 }

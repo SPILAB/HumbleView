@@ -30,8 +30,7 @@ class ImagesListActivity : AppCompatActivity() {
                     "https://c1.staticflickr.com/3/2865/9677214147_e011d8562e_h.jpg",
                     "https://c1.staticflickr.com/1/463/19757310168_8c7300f9ec_h.jpg",
                     "https://c1.staticflickr.com/1/370/19853422393_68049a6a16_h.jpg",
-                    /*"https://c1.staticflickr.com/1/421/19223572274_d036a006e4_h.jpg",*/
-                    "https://prout.jpg",
+                    "https://c1.staticflickr.com/1/421/19223572274_d036a006e4_h.jpg",
                     "https://c1.staticflickr.com/1/541/19571492784_25f8f4241a_h.jpg",
                     "https://c1.staticflickr.com/5/4203/34480445003_aca00787ba_h.jpg",
                     "https://c1.staticflickr.com/5/4415/36924982015_3dd4e684f3_h.jpg",

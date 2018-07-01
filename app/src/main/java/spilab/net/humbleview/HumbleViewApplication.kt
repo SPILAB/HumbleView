@@ -5,6 +5,8 @@ import android.content.Context
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleview.settings.SettingsActivity
 import android.preference.PreferenceManager
+import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
+import java.util.concurrent.Future
 
 
 class HumbleViewApplication : Application() {
@@ -39,6 +41,5 @@ class HumbleViewApplication : Application() {
         onSettingsUpdate(this.applicationContext, SettingsActivity.PREF_FADING_SPEED_LIST)
         // TODO: TEMPORARY POC
         HumbleViewAPI.log = true
-        // HumbleViewAPI.debug = true
     }
 }

@@ -5,18 +5,13 @@ import java.io.File
 
 internal class OfflineCacheList(private val cacheDirectory: File,
                                 private val uiThreadHandler: AndroidHandler,
-                                private val offlineCacheListListener: OfflineCacheListListener) : Runnable {
-
-    interface OfflineCacheListListener {
-        fun onFileList(filesList: List<String>)
-
-    }
+                                private val offlineCacheInterfaceListListener: OfflineCacheInterface.OfflineCacheListListener) : Runnable {
 
     override fun run() {
-        val filesList = mutableListOf<String>()
+        val filesList = mutableListOf<File>()
         cacheDirectory.walk().filter { it.isFile }.forEach {
-            filesList.add(it.name)
+            filesList.add(it)
         }
-        uiThreadHandler.post(Runnable { offlineCacheListListener.onFileList(filesList.toList()) })
+        uiThreadHandler.post(Runnable { offlineCacheInterfaceListListener.onFileList(filesList.toList()) })
     }
 }

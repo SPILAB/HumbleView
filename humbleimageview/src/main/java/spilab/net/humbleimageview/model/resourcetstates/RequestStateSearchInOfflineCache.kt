@@ -1,19 +1,18 @@
 package spilab.net.humbleimageview.model.resourcetstates
 
 import spilab.net.humbleimageview.api.HumbleViewAPI
-import spilab.net.humbleimageview.model.cache.OfflineCache
-import spilab.net.humbleimageview.model.cache.OfflineCacheRead
+import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
 import java.util.concurrent.Future
 
 
 internal class RequestStateSearchInOfflineCache(stateContext: ResourceStateContext) :
-        RequestState(stateContext), OfflineCacheRead.OfflineCacheReadListener {
+        RequestState(stateContext), OfflineCacheInterface.OfflineCacheReadListener {
 
-    private var offlineCache: OfflineCache = HumbleViewAPI.cache.getOfflineCache(stateContext.context.applicationContext)
+    private var offlineCacheInterface: OfflineCacheInterface = HumbleViewAPI.offlineCache.getOfflineCache(stateContext.context.applicationContext)
     private var task: Future<*>
 
     init {
-        task = offlineCache.get(stateContext.humbleResourceId.url, this)
+        task = offlineCacheInterface.get(stateContext.humbleResourceId.url, this)
     }
 
     override fun onFileRead(data: ByteArray) {

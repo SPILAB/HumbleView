@@ -5,14 +5,10 @@ import java.io.File
 
 internal class OfflineCacheClear(private val cacheDirectory: File,
                                  private val uiThreadHandler: AndroidHandler,
-                                 private val offlineCacheClearListener: OfflineCacheClearListener) : Runnable {
-
-    interface OfflineCacheClearListener {
-        fun onCacheCleared()
-    }
+                                 private val offlineCacheInterfaceClearListener: OfflineCacheInterface.OfflineCacheClearListener) : Runnable {
 
     override fun run() {
         cacheDirectory.deleteRecursively()
-        uiThreadHandler.post(Runnable { offlineCacheClearListener.onCacheCleared() })
+        uiThreadHandler.post(Runnable { offlineCacheInterfaceClearListener.onCacheCleared() })
     }
 }

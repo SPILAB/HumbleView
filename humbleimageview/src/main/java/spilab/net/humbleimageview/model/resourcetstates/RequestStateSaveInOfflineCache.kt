@@ -1,16 +1,15 @@
 package spilab.net.humbleimageview.model.resourcetstates
 
 import spilab.net.humbleimageview.api.HumbleViewAPI
-import spilab.net.humbleimageview.model.cache.OfflineCache
-import spilab.net.humbleimageview.model.cache.OfflineCacheWrite
+import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
 import java.util.concurrent.Future
 
 
 internal class RequestStateSaveInOfflineCache(stateContext: ResourceStateContext,
                                               bitmapData: ByteArray) :
-        RequestState(stateContext), OfflineCacheWrite.OfflineCacheWriteListener {
+        RequestState(stateContext), OfflineCacheInterface.OfflineCacheWriteListener {
 
-    private var offlineCache: OfflineCache = HumbleViewAPI.cache.getOfflineCache(stateContext.context.applicationContext)
+    private var offlineCache: OfflineCacheInterface = HumbleViewAPI.offlineCache.getOfflineCache(stateContext.context.applicationContext)
     private var task: Future<*>
 
     init {
