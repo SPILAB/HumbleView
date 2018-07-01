@@ -5,9 +5,8 @@ import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.model.cache.DefaultOfflineCache
 import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
 import java.io.File
-import java.util.concurrent.ExecutorService
 
-class OfflineCache internal constructor(private val executorService: ExecutorService,
+class OfflineCache internal constructor(private val executorProvider: ExecutorProvider,
                                         private val androidHandler: AndroidHandler) {
 
     private var cacheDirectory: File? = null
@@ -28,7 +27,7 @@ class OfflineCache internal constructor(private val executorService: ExecutorSer
     internal fun getOfflineCache(appContext: Context): OfflineCacheInterface {
         if (offlineCache == null) {
             val cache = DefaultOfflineCache(getCacheDirectory(appContext),
-                    executorService, androidHandler)
+                    executorProvider.getExecutorService(), androidHandler)
             offlineCache = cache
         }
         return offlineCache!!

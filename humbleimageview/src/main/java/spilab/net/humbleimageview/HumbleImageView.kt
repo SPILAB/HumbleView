@@ -119,6 +119,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     }
 
     override fun onDraw(canvas: Canvas) {
+        humbleTransition?.startIfNeeded()
         humbleTransition?.setupAlpha()
         for (index in 0 until imageViewDrawables.size) {
             imageViewDrawables[index].onDraw(canvas)
@@ -129,11 +130,10 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     internal fun addTransition(drawable: HumbleBitmapDrawable) {
         if (ViewCompat.isAttachedToWindow(this)) {
             humbleTransition = HumbleTransition(imageViewDrawables, drawable, this, this)
-            humbleTransition?.start()
         }
     }
 
-    override fun onTansitionCompleted() {
+    override fun onTransitionCompleted() {
         this.humbleTransition = null
         presenter.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
     }

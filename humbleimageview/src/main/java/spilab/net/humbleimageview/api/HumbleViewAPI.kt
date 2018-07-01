@@ -20,9 +20,9 @@ class HumbleViewAPI {
                 HumbleLogs.enable = value
             }
 
-        val executor = Executor()
-        val http = Http()
-        val offlineCache = OfflineCache(executor.executorService,
+        val executorProvider = ExecutorProvider()
+        val http = Http(executorProvider)
+        val offlineCache = OfflineCache(executorProvider,
                 AndroidHandler(Handler(Looper.getMainLooper())))
 
         internal const val HTTP_CACHE_DIRECTORY = "humbleviewhttpcache"

@@ -17,32 +17,33 @@ internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewD
     }
 
     interface HumbleTransitionListener {
-        fun onTansitionCompleted()
+        fun onTransitionCompleted()
     }
 
     private val maxAlpha: Int
     private var fadingAlpha: Int = 0
 
-    private val fadingAnimationTimer: AnimationTimer
+    private var fadingAnimationTimer: AnimationTimer? = null
 
     init {
         imageViewDrawables[NEXT_IDX].mDrawable = drawable
         imageViewDrawables[NEXT_IDX].mDrawable?.mutate()
         imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
-        fadingAnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis, { SystemClock.uptimeMillis() })
         maxAlpha = humbleViewImage.imageAlpha
         imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha
         imageViewDrawables[NEXT_IDX].mDrawable?.alpha = 0
+        animationLoop()
     }
 
-    fun start() {
-        fadingAnimationTimer.start()
-        animationLoop()
+    fun startIfNeeded() {
+        if (fadingAnimationTimer == null) {
+            fadingAnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() }
+        }
     }
 
     inline fun setupAlpha() {
         if (!isCompleted()) {
-            fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
+            fadingAlpha = (fadingAnimationTimer!!.getNormalized(maxAlpha.toFloat())).toInt()
             imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha - fadingAlpha
             imageViewDrawables[NEXT_IDX].mDrawable?.alpha = fadingAlpha
         }
@@ -52,7 +53,7 @@ internal class HumbleTransition(private val imageViewDrawables: Array<ImageViewD
         imageViewDrawables[CURRENT_IDX].mDrawable = imageViewDrawables[NEXT_IDX].mDrawable
         imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = maxAlpha
         imageViewDrawables[NEXT_IDX].mDrawable = null
-        humbleTransitionListener.onTansitionCompleted()
+        humbleTransitionListener.onTransitionCompleted()
     }
 
     private fun animationLoop() {

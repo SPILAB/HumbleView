@@ -3,10 +3,11 @@ package spilab.net.humbleimageview.api
 import android.content.Context
 import android.os.AsyncTask
 import okhttp3.Cache
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import java.io.File
 
-class Http {
+class Http(val executorProvider: ExecutorProvider) {
 
     companion object {
         private const val DEFAULT_CACHE_SIZE = 32L * 1024L * 1024L // 32 MiB
@@ -26,6 +27,7 @@ class Http {
         if (okHttpClient == null) {
             okHttpClient = OkHttpClient()
                     .newBuilder()
+                    .dispatcher(Dispatcher(executorProvider.getExecutorService()))
                     .cache(getHttpCache(context))
                     .build()
         }
@@ -49,7 +51,7 @@ class Http {
     private inline fun destroyOkHttpClient() {
         AsyncTask.execute {
             synchronized(this) {
-                okHttpClient?.dispatcher()?.executorService()?.shutdown()
+                executorProvider.reset()
                 okHttpClient?.connectionPool()?.evictAll()
                 okHttpClient?.cache()?.delete()
                 okHttpClient = null
