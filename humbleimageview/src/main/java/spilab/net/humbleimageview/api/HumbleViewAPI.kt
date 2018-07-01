@@ -4,7 +4,6 @@ import android.os.Handler
 import android.os.Looper
 import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.log.HumbleLogs
-import spilab.net.humbleimageview.model.HumbleViewExecutor
 
 
 class HumbleViewAPI {
@@ -21,8 +20,9 @@ class HumbleViewAPI {
                 HumbleLogs.enable = value
             }
 
+        val executor = Executor()
         val http = Http()
-        val offlineCache = OfflineCache(HumbleViewExecutor.executorService,
+        val offlineCache = OfflineCache(executor.executorService,
                 AndroidHandler(Handler(Looper.getMainLooper())))
 
         internal const val HTTP_CACHE_DIRECTORY = "humbleviewhttpcache"

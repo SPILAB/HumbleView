@@ -3,7 +3,7 @@ package spilab.net.humbleimageview.model.drawable
 import android.content.res.Resources
 import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.model.HumbleResourceId
-import spilab.net.humbleimageview.model.HumbleViewExecutor
+import spilab.net.humbleimageview.api.Executor
 import spilab.net.humbleimageview.model.bitmap.HumbleBitmapFactory
 import java.util.concurrent.Future
 
@@ -19,7 +19,7 @@ internal class DrawableDecoderTask(private val bitmapData: ByteArray,
     }
 
     internal fun submit(): Future<*> {
-        return HumbleViewExecutor.executorService.submit {
+        return Executor.executorService.submit {
             val bitmap = humbleBitmapFactory.decodeBitmapForSize(bitmapData,
                     humbleResourceId.viewSize.width, humbleResourceId.viewSize.height)
             if (bitmap != null) {
