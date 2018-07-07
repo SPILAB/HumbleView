@@ -1,11 +1,13 @@
 package spilab.net.humbleimageview.presenter
 
+import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
+import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.bitmap.BitmapPool
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
@@ -17,11 +19,17 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
         model.drawableEventsListener = this
     }
 
-    fun start() {
+    private lateinit var loadedImageScaleType: LoadedImageScaleType
+
+    fun initLoadedImageScaleType(styledAttributes: TypedArray) {
+        loadedImageScaleType = LoadedImageScaleType(styledAttributes)
+    }
+
+    fun onAttachedToWindow() {
         model.updateImageIfNeeded()
     }
 
-    fun stop(imageViewDrawables: Array<ImageViewDrawable>) {
+    fun onDetachedFromWindow(imageViewDrawables: Array<ImageViewDrawable>) {
         model.cancel()
         for (imageViewDrawable in imageViewDrawables) {
             recycleImageViewDrawable(imageViewDrawable)
@@ -30,10 +38,6 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
 
     fun setUrl(url: String?) {
         model.url = url
-    }
-
-    fun getUrl(): String? {
-        return model.url
     }
 
     fun setOfflineCache(offlineCache: Boolean) {

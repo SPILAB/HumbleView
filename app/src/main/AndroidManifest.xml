@@ -23,14 +23,20 @@
             android:name=".singleimage.SingleImageActivity"
             android:label="@string/activity_title_single_image" />
         <activity
+            android:name=".scaletype.ScaleTypeActivity"
+            android:label="@string/activity_title_scale_type"></activity>
+        <activity
             android:name=".imageslist.ImagesListActivity"
             android:label="@string/activity_title_images_list" />
-        <activity android:name=".decodescale.DecodeScale" />
+        <activity
+            android:name=".decodescale.DecodeScale"
+            android:label="@string/activity_title_decode_scale" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/activity_title_settings" />
-        <activity android:name=".offline.Offline" />
-        <activity android:name=".offline.OfflineActivity"></activity>
+        <activity
+            android:name=".offline.OfflineActivity"
+            android:label="@string/activity_title_offline" />
     </application>
 
 </manifest>

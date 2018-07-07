@@ -60,16 +60,15 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         val styledAttributes = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.HumbleImageView, defStyleAttr, 0)
-
-        try {
-            presenter?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
-            presenter?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
-            presenter?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
-            presenter?.setLoadedImageScaleType(getLoadedScaleType(
-                    styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, 3))
-            )
-        } finally {
-            styledAttributes.recycle()
+        if (styledAttributes != null) {
+            try {
+                presenter?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
+                presenter?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
+                presenter?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
+                presenter?.initLoadedImageScaleType(styledAttributes)
+            } finally {
+                styledAttributes.recycle()
+            }
         }
         presenter!!.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
@@ -78,8 +77,8 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         presenter?.setUrl(url)
     }
 
-    fun getUrl(): String? {
-        return presenter?.getUrl()
+    fun setOfflineCache(offlineCache: Boolean) {
+        presenter?.setOfflineCache(offlineCache)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -91,13 +90,13 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
-        presenter?.start()
+        presenter?.onAttachedToWindow()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         humbleTransition?.completeAnimation()
-        presenter?.stop(imageViewDrawables)
+        presenter?.onDetachedFromWindow(imageViewDrawables)
     }
 
     override fun setImageIcon(icon: Icon?) {

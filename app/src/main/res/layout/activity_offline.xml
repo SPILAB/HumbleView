@@ -7,7 +7,7 @@
     tools:context=".offline.OfflineActivity">
 
     <spilab.net.humbleimageview.HumbleImageView
-        android:id="@+id/imageA"
+        android:id="@+id/offlineImageFromLayoutXml"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/halfSmallMargin"
@@ -15,7 +15,7 @@
         android:layout_marginRight="@dimen/smallMargin"
         android:layout_marginTop="@dimen/smallMargin"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/imageB"
+        app:layout_constraintBottom_toTopOf="@+id/offlineImageFromCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg" />
 
     <spilab.net.humbleimageview.HumbleImageView
-        android:id="@+id/imageB"
+        android:id="@+id/offlineImageFromCode"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/smallMargin"
@@ -37,8 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageA"
-        app:offlineCache="true"
+        app:layout_constraintTop_toBottomOf="@+id/offlineImageFromLayoutXml"
         app:srcCompat="@drawable/ic_photo_black_48px"
         app:url="https://c1.staticflickr.com/5/4306/35340832973_13f2853de3_h.jpg" />
 </android.support.constraint.ConstraintLayout>

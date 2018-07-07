@@ -9,6 +9,7 @@ import spilab.net.humbleview.R
 import spilab.net.humbleview.decodescale.DecodeScale
 import spilab.net.humbleview.imageslist.ImagesListActivity
 import spilab.net.humbleview.offline.OfflineActivity
+import spilab.net.humbleview.scaletype.ScaleTypeActivity
 import spilab.net.humbleview.settings.SettingsActivity
 import spilab.net.humbleview.singleimage.SingleImageActivity
 
@@ -23,16 +24,19 @@ class MainActivity : AppCompatActivity(), MainSamplesAdapter.MainSamplesAdapterL
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = MainSamplesAdapter(arrayOf(
-                    MainSamplesAdapter.SampleButton(R.string.single_image,
+                    MainSamplesAdapter.SampleButton(R.string.activity_title_single_image,
                             "https://c1.staticflickr.com/3/2865/9677214147_e011d8562e_h.jpg",
                             SingleImageActivity.createIntent(this@MainActivity)),
-                    MainSamplesAdapter.SampleButton(R.string.images_list,
+                    MainSamplesAdapter.SampleButton(R.string.activity_title_scale_type,
+                            "https://c1.staticflickr.com/5/4734/25337159498_f7a6a5a5e5_h.jpg",
+                            ScaleTypeActivity.createIntent(this@MainActivity)),
+                    MainSamplesAdapter.SampleButton(R.string.activity_title_images_list,
                             "https://c2.staticflickr.com/8/7306/12631226523_d2926814c7_b.jpg",
                             ImagesListActivity.createIntent(this@MainActivity)),
-                    MainSamplesAdapter.SampleButton(R.string.decode_scale,
+                    MainSamplesAdapter.SampleButton(R.string.activity_title_decode_scale,
                             "https://c1.staticflickr.com/5/4227/34581375010_6d4e176472_h.jpg",
                             DecodeScale.createIntent(this@MainActivity)),
-                    MainSamplesAdapter.SampleButton(R.string.offline,
+                    MainSamplesAdapter.SampleButton(R.string.activity_title_offline,
                             "https://c2.staticflickr.com/6/5708/31080852092_3161d94ef1_h.jpg",
                             OfflineActivity.createIntent(this@MainActivity)),
                     MainSamplesAdapter.SampleButton(R.string.settings,

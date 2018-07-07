@@ -2,12 +2,11 @@
     <string name="app_name">HumbleView</string>
     <string name="flickrImage">Image from FlickR</string>
     <string name="activity_title_single_image">Single image</string>
+    <string name="activity_title_scale_type">Scale type</string>
     <string name="activity_title_images_list">Images list</string>
     <string name="activity_title_settings">Settings</string>
-    <string name="single_image">SINGLE IMAGE</string>
-    <string name="images_list">IMAGES LIST</string>
-    <string name="decode_scale">DECODE SCALE</string>
-    <string name="offline">OFFLINE</string>
+    <string name="activity_title_decode_scale">Decode scale</string>
+    <string name="activity_title_offline">Offline</string>
     <string name="settings">SETTINGS</string>
 
     <!-- Strings related to Settings -->
