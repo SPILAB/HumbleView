@@ -6,10 +6,9 @@ import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.presenter.HumbleViewPresenter
+import spilab.net.humbleimageview.presenter.DrawableEventsListener
 
 internal class HumbleViewModel(private val context: Context,
-                               private val presenter: HumbleViewPresenter,
                                private var resources: Resources,
                                private val uiThreadHandler: Handler) : DrawableDecoderTask.DrawableDecoderTaskListener {
 
@@ -32,10 +31,12 @@ internal class HumbleViewModel(private val context: Context,
 
     var debug = false
 
+    var drawableEventsListener: DrawableEventsListener? = null
+
     fun updateImageIfNeeded() {
         if (url != null && viewSize != null) {
             currentId = HumbleResourceId(url!!, viewSize!!)
-            if (!presenter.isCurrentOrNextDrawableId(currentId!!)) {
+            if (drawableEventsListener?.isCurrentOrNextDrawableIdEqualTo(currentId!!) == false) {
                 if (humbleResourceRequest?.humbleResourceId != currentId) {
                     humbleResourceRequest?.cancel()
                     humbleResourceRequest = HumbleResourceRequest(
@@ -61,7 +62,7 @@ internal class HumbleViewModel(private val context: Context,
     fun onDrawableDecoded(humbleBitmapDrawable: HumbleBitmapDrawable) {
         humbleResourceRequest = null
         if (currentId == humbleBitmapDrawable.humbleResourceId) {
-            presenter.addTransitionDrawable(humbleBitmapDrawable)
+            drawableEventsListener?.onDrawableReady(humbleBitmapDrawable)
         }
     }
 }

@@ -6,12 +6,15 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.api.HumbleViewAPI
+import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
@@ -48,7 +51,12 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
-        presenter = HumbleViewPresenter(this)
+
+        val model: HumbleViewModel = HumbleViewModel(context.applicationContext,
+                resources, Handler(Looper.getMainLooper()))
+        presenter = HumbleViewPresenter(this, model)
+
+
         val styledAttributes = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.HumbleImageView, defStyleAttr, 0)

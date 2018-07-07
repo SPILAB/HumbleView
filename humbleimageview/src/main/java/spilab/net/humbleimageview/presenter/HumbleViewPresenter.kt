@@ -1,25 +1,20 @@
 package spilab.net.humbleimageview.presenter
 
 import android.graphics.drawable.Drawable
-import android.os.Handler
-import android.os.Looper
 import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
-import spilab.net.humbleimageview.model.*
+import spilab.net.humbleimageview.model.HumbleResourceId
+import spilab.net.humbleimageview.model.HumbleViewModel
+import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.bitmap.BitmapPool
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView) {
+internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
+                                   private val model: HumbleViewModel) : DrawableEventsListener {
 
-    var model: HumbleViewModel = HumbleViewModel(
-            humbleViewImage.context.applicationContext,
-            this,
-            humbleViewImage.resources,
-            Handler(Looper.getMainLooper()))
-
-    fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
-        return humbleViewImage.isCurrentOrNextDrawableId(humbleResourceId)
+    init {
+        model.drawableEventsListener = this
     }
 
     fun start() {
@@ -79,15 +74,19 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
         }
     }
 
-    fun addTransitionDrawable(drawable: HumbleBitmapDrawable) {
-        humbleViewImage.addTransition(drawable)
-    }
-
     fun recycleImageViewDrawable(recyclableDrawable: ImageViewDrawable) {
         val recyclableBitmap = (recyclableDrawable.mDrawable as? HumbleBitmapDrawable)?.bitmap
         recyclableDrawable.mDrawable = null
         if (recyclableBitmap != null) {
             BitmapPool.put(recyclableBitmap)
         }
+    }
+
+    override fun isCurrentOrNextDrawableIdEqualTo(humbleResourceId: HumbleResourceId): Boolean {
+        return humbleViewImage.isCurrentOrNextDrawableId(humbleResourceId)
+    }
+
+    override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
+        humbleViewImage.addTransition(drawable)
     }
 }
