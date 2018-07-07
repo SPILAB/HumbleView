@@ -45,6 +45,8 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         applyCustomAttributes(context, attrs, defStyleAttr)
     }
 
+    private lateinit var loadedImageScaleType: ScaleType
+
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
         val styledAttributes = context.theme.obtainStyledAttributes(
@@ -55,6 +57,9 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
             presenter.model.url = styledAttributes.getString(R.styleable.HumbleImageView_url)
             presenter.model.offlineCache = styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false)
             debug = styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false)
+            loadedImageScaleType = getLoadedScaleType(
+                    styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, 3)
+            )
         } finally {
             styledAttributes.recycle()
         }
@@ -187,5 +192,19 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
             }
             viewDebug.onDraw(canvas, sampleSize, humbleTransition)
         }
+    }
+
+    private fun getLoadedScaleType(scaleType: Int): ScaleType {
+        when (scaleType) {
+            0 -> return ScaleType.MATRIX
+            1 -> return ScaleType.FIT_XY
+            2 -> return ScaleType.FIT_START
+            3 -> return ScaleType.FIT_CENTER
+            4 -> return ScaleType.FIT_END
+            5 -> return ScaleType.CENTER
+            6 -> return ScaleType.CENTER_CROP
+            7 -> return ScaleType.CENTER_INSIDE
+        }
+        return ScaleType.FIT_CENTER
     }
 }
