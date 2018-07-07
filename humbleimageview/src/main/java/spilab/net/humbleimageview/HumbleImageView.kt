@@ -32,7 +32,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     private val viewDebug by lazy {
         HumbleViewImageDebug(this.context)
     }
-    private var presenter = HumbleViewPresenter(this)
+    private var presenter: HumbleViewPresenter? = null
     private var debug = false
 
     constructor(context: Context) : this(context, null)
@@ -49,13 +49,14 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
+        presenter = HumbleViewPresenter(this)
         val styledAttributes = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.HumbleImageView, defStyleAttr, 0)
 
         try {
-            presenter.model.url = styledAttributes.getString(R.styleable.HumbleImageView_url)
-            presenter.model.offlineCache = styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false)
+            presenter?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
+            presenter?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
             debug = styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false)
             loadedImageScaleType = getLoadedScaleType(
                     styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, 3)
@@ -63,58 +64,58 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         } finally {
             styledAttributes.recycle()
         }
-        synchronizeCurrentImageViewDrawables()
+        presenter!!.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     fun setUrl(url: String) {
-        presenter.model.url = url
+        presenter?.setUrl(url)
     }
 
     fun getUrl(): String? {
-        return presenter.model.url
+        return presenter?.getUrl()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         lastKnowSize = ViewSize(w, h)
-        presenter.setViewSize(lastKnowSize)
+        presenter?.setViewSize(lastKnowSize)
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        synchronizeCurrentImageViewDrawables()
-        presenter.start()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.start()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         humbleTransition?.completeAnimation()
-        presenter.stop(imageViewDrawables)
+        presenter?.stop(imageViewDrawables)
     }
 
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
-        synchronizeCurrentImageViewDrawables()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     override fun setImageBitmap(bm: Bitmap?) {
         super.setImageBitmap(bm)
-        synchronizeCurrentImageViewDrawables()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
         super.setImageDrawable(drawable)
-        synchronizeCurrentImageViewDrawables()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     override fun setImageResource(resId: Int) {
         super.setImageResource(resId)
-        synchronizeCurrentImageViewDrawables()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     override fun setImageURI(uri: Uri?) {
         super.setImageURI(uri)
-        synchronizeCurrentImageViewDrawables()
+        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
     }
 
     override fun setFrame(l: Int, t: Int, r: Int, b: Int): Boolean {
@@ -140,7 +141,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     override fun onTransitionCompleted() {
         this.humbleTransition = null
-        presenter.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
+        presenter?.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
     }
 
     internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
@@ -152,22 +153,6 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
             }
         }
         return false
-    }
-
-    /**
-     * Synchronize with the exact current state of the ImageView
-     * Must be call each time the drawable is set
-     * And each time the view is attached
-     */
-    private fun synchronizeCurrentImageViewDrawables() {
-        // Warning: imageViewDrawables can be null, because the
-        // constructor of ImageView call override methods
-        if (imageViewDrawables != null) {
-            presenter.recycleImageViewDrawable(imageViewDrawables[CURRENT_IDX])
-            imageViewDrawables[CURRENT_IDX].mDrawable = this.drawable
-            imageViewDrawables[CURRENT_IDX].mDrawable?.mutate()
-            imageViewDrawables[CURRENT_IDX].mDrawable?.alpha = (alpha * 255.0f).toInt()
-        }
     }
 
     /**
