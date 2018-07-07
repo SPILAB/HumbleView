@@ -30,6 +30,8 @@ internal class HumbleViewModel(private val context: Context,
             updateImageIfNeeded()
         }
 
+    var debug = false
+
     fun updateImageIfNeeded() {
         if (url != null && viewSize != null) {
             currentId = HumbleResourceId(url!!, viewSize!!)

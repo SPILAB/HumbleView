@@ -3,6 +3,7 @@ package spilab.net.humbleimageview.presenter
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.*
@@ -44,6 +45,22 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
         model.offlineCache = offlineCache
     }
 
+    fun setLoadedImageScaleType(loadedScaleType: ImageView.ScaleType) {
+        // TODO
+    }
+
+    fun setDebug(boolean: Boolean) {
+        model.debug = boolean
+    }
+
+    fun getDebug(): Boolean {
+        return model.debug
+    }
+
+    fun setViewSize(lastKnowSize: ViewSize) {
+        model.viewSize = lastKnowSize
+    }
+
     /**
      * Synchronize with the exact current state of the ImageView
      * Must be call each time the drawable is set
@@ -72,9 +89,5 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView)
         if (recyclableBitmap != null) {
             BitmapPool.put(recyclableBitmap)
         }
-    }
-
-    fun setViewSize(lastKnowSize: ViewSize) {
-        model.viewSize = lastKnowSize
     }
 }

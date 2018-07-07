@@ -33,7 +33,6 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         HumbleViewImageDebug(this.context)
     }
     private var presenter: HumbleViewPresenter? = null
-    private var debug = false
 
     constructor(context: Context) : this(context, null)
 
@@ -57,9 +56,9 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         try {
             presenter?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
             presenter?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
-            debug = styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false)
-            loadedImageScaleType = getLoadedScaleType(
-                    styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, 3)
+            presenter?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
+            presenter?.setLoadedImageScaleType(getLoadedScaleType(
+                    styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, 3))
             )
         } finally {
             styledAttributes.recycle()
@@ -169,7 +168,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     }
 
     private inline fun drawDebug(canvas: Canvas?) {
-        if ((debug || HumbleViewAPI.debug) && canvas != null) {
+        if ((presenter?.getDebug() == true || HumbleViewAPI.debug) && canvas != null) {
             val currentDrawable = drawable
             var sampleSize = -1
             if (currentDrawable is HumbleBitmapDrawable) {
