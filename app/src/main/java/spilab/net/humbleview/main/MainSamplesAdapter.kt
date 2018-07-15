@@ -35,7 +35,7 @@ class MainSamplesAdapter(private val samplesButtons: Array<SampleButton>,
             viewHolder.findViewById<TextView>(R.id.textView)
                     .setText(sampleButton.text)
             with(viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)) {
-                setImageDrawable(ColorDrawable(resources.getColor(R.color.md_grey_500)))
+                setImageDrawable(ColorDrawable(resources.getColor(R.color.md_brown_200)))
                 setUrl(sampleButton.url)
             }
         }
