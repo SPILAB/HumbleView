@@ -15,6 +15,7 @@ import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.model.HumbleViewModel
+import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.presenter.HumbleViewPresenter
@@ -70,7 +71,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
                 styledAttributes.recycle()
             }
         }
-        presenter!!.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     fun setUrl(url: String) {
@@ -89,7 +90,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
         presenter?.onAttachedToWindow()
     }
 
@@ -101,32 +102,32 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     override fun setImageBitmap(bm: Bitmap?) {
         super.setImageBitmap(bm)
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
         super.setImageDrawable(drawable)
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     override fun setImageResource(resId: Int) {
         super.setImageResource(resId)
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     override fun setImageURI(uri: Uri?) {
         super.setImageURI(uri)
-        presenter?.synchronizeCurrentImageViewDrawables(imageViewDrawables, this.drawable, alpha)
+        presenter?.synchronizeCurrentImageViewDrawables(this, imageViewDrawables, alpha)
     }
 
     override fun setFrame(l: Int, t: Int, r: Int, b: Int): Boolean {
         val hasFrame = super.setFrame(l, t, r, b)
-        configureFromImageView()
+        presenter?.configureFromImageView(this, imageViewDrawables)
         return hasFrame
     }
 
@@ -139,9 +140,11 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         drawDebug(canvas)
     }
 
-    internal fun addTransition(drawable: HumbleBitmapDrawable) {
+    internal fun addTransition(drawable: HumbleBitmapDrawable,
+                               loadedImageScaleType: LoadedImageScaleType) {
         if (ViewCompat.isAttachedToWindow(this)) {
-            humbleTransition = HumbleTransition(imageViewDrawables, drawable, this, this)
+            humbleTransition = HumbleTransition(this, imageViewDrawables, drawable,
+                    loadedImageScaleType, this)
         }
     }
 
@@ -152,26 +155,13 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
         for (index in 0 until imageViewDrawables.size) {
-            val drawable = imageViewDrawables[index].mDrawable
+            val drawable = imageViewDrawables[index].getDrawable()
             if (drawable is HumbleBitmapDrawable
                     && drawable.humbleResourceId == humbleResourceId) {
                 return true
             }
         }
         return false
-    }
-
-    /**
-     * Must be call each time the view bounds change
-     */
-    private fun configureFromImageView() {
-        // Warning: imageViewDrawables can be null, because the
-        // constructor of ImageView call override methods
-        if (imageViewDrawables != null) {
-            for (index in 0 until imageViewDrawables.size) {
-                imageViewDrawables[index].configureFromImageView()
-            }
-        }
     }
 
     private inline fun drawDebug(canvas: Canvas?) {
@@ -197,5 +187,9 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
             7 -> return ScaleType.CENTER_INSIDE
         }
         return ScaleType.FIT_CENTER
+    }
+
+    fun setLoadedImageScaleType(scaleType: ScaleType) {
+        presenter?.setLoadedImageScaleType(scaleType)
     }
 }

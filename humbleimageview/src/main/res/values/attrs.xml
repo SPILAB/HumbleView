@@ -5,14 +5,14 @@
         <attr name="offlineCache" format="boolean" />
         <attr name="debug" format="boolean" />
         <attr name="loadedImageScaleType" format="enum">
-            <enum name="MATRIX" value="0" />
-            <enum name="FIT_XY" value="1" />
-            <enum name="FIT_START" value="2" />
-            <enum name="FIT_CENTER" value="3" />
-            <enum name="FIT_END" value="4" />
-            <enum name="CENTER" value="5" />
-            <enum name="CENTER_CROP" value="6" />
-            <enum name="CENTER_INSIDE" value="7" />
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
         </attr>
     </declare-styleable>
 </resources>

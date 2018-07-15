@@ -1,7 +1,6 @@
 package spilab.net.humbleimageview.presenter
 
 import android.content.res.TypedArray
-import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
@@ -12,7 +11,7 @@ import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.model.bitmap.BitmapPool
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
+internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
                                    private val model: HumbleViewModel) : DrawableEventsListener {
 
     init {
@@ -44,8 +43,8 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
         model.offlineCache = offlineCache
     }
 
-    fun setLoadedImageScaleType(loadedScaleType: ImageView.ScaleType) {
-        // TODO
+    fun setLoadedImageScaleType(scaleType: ImageView.ScaleType) {
+        loadedImageScaleType.setLoadedImageScaleType(scaleType)
     }
 
     fun setDebug(boolean: Boolean) {
@@ -61,36 +60,52 @@ internal class HumbleViewPresenter(private val humbleViewImage: HumbleImageView,
     }
 
     /**
+     * Must be call each time the view bounds change
+     */
+    fun configureFromImageView(imageView: ImageView,
+                               imageViewDrawables: Array<ImageViewDrawable>?) {
+        // Warning: imageViewDrawables can be null, because the
+        // constructor of ImageView call override methods
+        if (imageViewDrawables != null) {
+            for (index in 0 until imageViewDrawables!!.size) {
+                val iv = imageViewDrawables!![index]
+                iv.configureFromImageView(loadedImageScaleType.getScaleType(imageView, iv.getDrawable()))
+            }
+        }
+    }
+
+    /**
      * Synchronize with the exact current state of the ImageView
      * Must be call each time the drawable is set
      * And each time the view is attached
      */
-    fun synchronizeCurrentImageViewDrawables(imageViewDrawables: Array<ImageViewDrawable>?,
-                                             drawable: Drawable?,
+    fun synchronizeCurrentImageViewDrawables(imageView: ImageView,
+                                             imageViewDrawables: Array<ImageViewDrawable>?,
                                              alpha: Float) {
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
             recycleImageViewDrawable(imageViewDrawables[HumbleImageView.CURRENT_IDX])
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].mDrawable = drawable
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].mDrawable?.mutate()
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].mDrawable?.alpha = (alpha * 255.0f).toInt()
+            imageViewDrawables[HumbleImageView.CURRENT_IDX].setDrawable(imageView.drawable,
+                    loadedImageScaleType.getScaleType(imageView, imageView.drawable))
+            imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.mutate()
+            imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.alpha = (alpha * 255.0f).toInt()
         }
     }
 
     fun recycleImageViewDrawable(recyclableDrawable: ImageViewDrawable) {
-        val recyclableBitmap = (recyclableDrawable.mDrawable as? HumbleBitmapDrawable)?.bitmap
-        recyclableDrawable.mDrawable = null
+        val recyclableBitmap = (recyclableDrawable.getDrawable() as? HumbleBitmapDrawable)?.bitmap
+        recyclableDrawable.setDrawable(null, ImageViewDrawable.DEFAUL_SCALE_TYPE)
         if (recyclableBitmap != null) {
             BitmapPool.put(recyclableBitmap)
         }
     }
 
     override fun isCurrentOrNextDrawableIdEqualTo(humbleResourceId: HumbleResourceId): Boolean {
-        return humbleViewImage.isCurrentOrNextDrawableId(humbleResourceId)
+        return humbleImageView.isCurrentOrNextDrawableId(humbleResourceId)
     }
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
-        humbleViewImage.addTransition(drawable)
+        humbleImageView.addTransition(drawable, loadedImageScaleType)
     }
 }

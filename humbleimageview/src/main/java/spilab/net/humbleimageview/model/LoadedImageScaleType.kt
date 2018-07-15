@@ -1,8 +1,10 @@
 package spilab.net.humbleimageview.model
 
 import android.content.res.TypedArray
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import spilab.net.humbleimageview.R
+import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class LoadedImageScaleType(styledAttributes: TypedArray) {
 
@@ -10,8 +12,9 @@ internal class LoadedImageScaleType(styledAttributes: TypedArray) {
         const val SCALE_TYPE_UNSET = -1
     }
 
-    private var useImageViewScale = true
-    private var loadedImageScaleType = ImageView.ScaleType.FIT_CENTER
+    data class LoadedScaleType(val useImageViewScale: Boolean, val scaleType: ImageView.ScaleType)
+
+    private var currentLoadedScaleType = LoadedScaleType(true, ImageView.ScaleType.FIT_CENTER)
 
     init {
         val scaleType = styledAttributes.getInteger(R.styleable.HumbleImageView_loadedImageScaleType, SCALE_TYPE_UNSET)
@@ -20,9 +23,15 @@ internal class LoadedImageScaleType(styledAttributes: TypedArray) {
         }
     }
 
-    fun setLoadedImageScaleType(loadedImageScaleType: ImageView.ScaleType) {
-        this.loadedImageScaleType = loadedImageScaleType
-        useImageViewScale = false
+    fun setLoadedImageScaleType(scaleType: ImageView.ScaleType) {
+        currentLoadedScaleType = LoadedScaleType(false, scaleType)
+    }
+
+    fun getScaleType(imageView: ImageView, drawable: Drawable?): ImageView.ScaleType {
+        if (drawable is HumbleBitmapDrawable && !currentLoadedScaleType.useImageViewScale) {
+            return currentLoadedScaleType.scaleType
+        }
+        return imageView.scaleType
     }
 
     private fun getLoadedScaleType(scaleType: Int): ImageView.ScaleType {

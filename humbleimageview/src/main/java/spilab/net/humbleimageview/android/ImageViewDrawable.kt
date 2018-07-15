@@ -14,11 +14,11 @@ import android.widget.ImageView.ScaleType
  */
 internal class ImageViewDrawable(private val imageView: ImageView) {
 
-    var mDrawable: Drawable? = null
-        set(value) {
-            field = value
-            configureFromImageView()
-        }
+    companion object {
+        val DEFAUL_SCALE_TYPE = ScaleType.FIT_CENTER
+    }
+
+    private var mDrawable: Drawable? = null
 
     private var mDrawableWidth: Int = 0
     private var mDrawableHeight: Int = 0
@@ -28,7 +28,7 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
     private var mPaddingTop: Int = 0
     private var mPaddingBottom: Int = 0
 
-    private var mScaleType: ImageView.ScaleType = ScaleType.FIT_CENTER
+    private var mScaleType: ImageView.ScaleType = DEFAUL_SCALE_TYPE
     private var mHaveFrame: Boolean = false
 
     private var mMatrix = Matrix()
@@ -53,12 +53,22 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
             Pair(ScaleType.FIT_CENTER, Matrix.ScaleToFit.CENTER),
             Pair(ScaleType.FIT_END, Matrix.ScaleToFit.END))
 
-    fun configureFromImageView() {
-        copyImageView()
+
+    fun setDrawable(drawable: Drawable?, scaleType: ImageView.ScaleType) {
+        mDrawable = drawable
+        configureFromImageView(scaleType)
+    }
+
+    fun getDrawable(): Drawable? {
+        return mDrawable
+    }
+
+    fun configureFromImageView(scaleType: ImageView.ScaleType) {
+        copyImageView(scaleType)
         configureBounds()
     }
 
-    private fun copyImageView() {
+    private fun copyImageView(scaleType: ScaleType) {
         mDrawableWidth = mDrawable?.intrinsicWidth ?: 0
         mDrawableHeight = mDrawable?.intrinsicHeight ?: 0
         mHaveFrame = imageView.width > 0 || imageView.height > 0
@@ -66,7 +76,7 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
         mPaddingRight = imageView.paddingRight
         mPaddingTop = imageView.paddingTop
         mPaddingBottom = imageView.paddingBottom
-        mScaleType = imageView.scaleType
+        mScaleType = scaleType
         mMatrix.set(imageView.matrix)
         mCropToPadding = imageView.cropToPadding
         mScrollX = imageView.scrollX

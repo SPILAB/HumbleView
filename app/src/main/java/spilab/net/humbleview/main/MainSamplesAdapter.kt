@@ -1,6 +1,7 @@
 package spilab.net.humbleview.main
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class MainSamplesAdapter(private val samplesButtons: Array<SampleButton>,
             viewHolder.findViewById<TextView>(R.id.textView)
                     .setText(sampleButton.text)
             with(viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)) {
-                setImageResource(R.drawable.ic_photo_black_48px)
+                setImageDrawable(ColorDrawable(resources.getColor(R.color.md_grey_500)))
                 setUrl(sampleButton.url)
             }
         }
