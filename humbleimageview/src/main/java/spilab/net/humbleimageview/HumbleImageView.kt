@@ -48,12 +48,10 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
         applyCustomAttributes(context, attrs, defStyleAttr)
     }
 
-    private lateinit var loadedImageScaleType: ScaleType
-
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
 
-        val model: HumbleViewModel = HumbleViewModel(context.applicationContext,
+        val model = HumbleViewModel(context.applicationContext,
                 resources, Handler(Looper.getMainLooper()))
         presenter = HumbleViewPresenter(this, model)
 
@@ -150,7 +148,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     override fun onTransitionCompleted() {
         this.humbleTransition = null
-        presenter?.recycleImageViewDrawable(imageViewDrawables[NEXT_IDX])
+        presenter?.onTransitionCompleted(imageViewDrawables[NEXT_IDX])
     }
 
     internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
@@ -173,20 +171,6 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
             }
             viewDebug.onDraw(canvas, sampleSize, humbleTransition)
         }
-    }
-
-    private fun getLoadedScaleType(scaleType: Int): ScaleType {
-        when (scaleType) {
-            0 -> return ScaleType.MATRIX
-            1 -> return ScaleType.FIT_XY
-            2 -> return ScaleType.FIT_START
-            3 -> return ScaleType.FIT_CENTER
-            4 -> return ScaleType.FIT_END
-            5 -> return ScaleType.CENTER
-            6 -> return ScaleType.CENTER_CROP
-            7 -> return ScaleType.CENTER_INSIDE
-        }
-        return ScaleType.FIT_CENTER
     }
 
     fun setLoadedImageScaleType(scaleType: ScaleType) {

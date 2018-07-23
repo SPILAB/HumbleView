@@ -8,14 +8,18 @@ import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
-import spilab.net.humbleimageview.model.bitmap.BitmapPool
+import spilab.net.humbleimageview.feature.memory.BitmapPool
+import spilab.net.humbleimageview.feature.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
                                    private val model: HumbleViewModel) : DrawableEventsListener {
 
+    private val drawableRecycler: DrawableRecycler
+
     init {
         model.drawableEventsListener = this
+        drawableRecycler = DrawableRecycler()
     }
 
     private lateinit var loadedImageScaleType: LoadedImageScaleType
@@ -31,7 +35,7 @@ internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
     fun onDetachedFromWindow(imageViewDrawables: Array<ImageViewDrawable>) {
         model.cancel()
         for (imageViewDrawable in imageViewDrawables) {
-            recycleImageViewDrawable(imageViewDrawable)
+            drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
         }
     }
 
@@ -85,19 +89,11 @@ internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
-            recycleImageViewDrawable(imageViewDrawables[HumbleImageView.CURRENT_IDX])
+            drawableRecycler.recycleImageViewDrawable(imageViewDrawables[HumbleImageView.CURRENT_IDX])
             imageViewDrawables[HumbleImageView.CURRENT_IDX].setDrawable(imageView.drawable,
                     loadedImageScaleType.getScaleType(imageView, imageView.drawable))
             imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.mutate()
             imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.alpha = (alpha * 255.0f).toInt()
-        }
-    }
-
-    fun recycleImageViewDrawable(recyclableDrawable: ImageViewDrawable) {
-        val recyclableBitmap = (recyclableDrawable.getDrawable() as? HumbleBitmapDrawable)?.bitmap
-        recyclableDrawable.setDrawable(null, ImageViewDrawable.DEFAUL_SCALE_TYPE)
-        if (recyclableBitmap != null) {
-            BitmapPool.put(recyclableBitmap)
         }
     }
 
@@ -107,5 +103,9 @@ internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
         humbleImageView.addTransition(drawable, loadedImageScaleType)
+    }
+
+    fun onTransitionCompleted(imageViewDrawable: ImageViewDrawable) {
+        drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
     }
 }

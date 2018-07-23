@@ -3,20 +3,21 @@ package spilab.net.humbleimageview.model.bitmap
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import spilab.net.humbleimageview.android.AndroidBitmapFactory
+import spilab.net.humbleimageview.feature.memory.BitmapPool
 
 internal class HumbleBitmapFactory(private val androidBitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
 
-    var lastSampleSize: Int = 0
+    var inSampleSize: Int = 0
 
     fun decodeBitmapForSize(bitmapData: ByteArray, width: Int, height: Int): Bitmap? {
         val options: BitmapFactory.Options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
         options.inJustDecodeBounds = false
-        lastSampleSize = computeSampleSize(width, height, options)
-        options.inSampleSize = lastSampleSize
+        inSampleSize = computeSampleSize(width, height, options)
+        options.inSampleSize = inSampleSize
         val recycleBitmap = BitmapPool.find(options.outWidth / options.inSampleSize,
-                options.outHeight / options.inSampleSize)
+                options.outHeight / options.inSampleSize, inSampleSize)
         options.inBitmap = recycleBitmap
         options.inMutable = true
         return androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)

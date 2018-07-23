@@ -26,7 +26,7 @@ internal class DrawableDecoderTask(private val bitmapData: ByteArray,
                 val humbleBitmapDrawableRequest = HumbleBitmapDrawable(bitmap,
                         humbleResourceId,
                         resources,
-                        humbleBitmapFactory.lastSampleSize)
+                        humbleBitmapFactory.inSampleSize)
                 uiThreadHandler.post(Runnable {
                     drawableDecoderTaskListener.onDrawableDecoded(humbleBitmapDrawableRequest)
                 })
