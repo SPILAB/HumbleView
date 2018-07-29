@@ -141,9 +141,9 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
 
     override fun onVisibilityChanged(changedView: View?, visibility: Int) {
         super.onVisibilityChanged(changedView, visibility)
-         if (visibility == View.VISIBLE) features?.onResume() else features?.onPause()
+        if (visibility == View.VISIBLE) features?.onResume() else features?.onPause()
     }
-    
+
     internal fun addTransition(drawable: HumbleBitmapDrawable,
                                loadedImageScaleType: LoadedImageScaleType) {
         if (ViewCompat.isAttachedToWindow(this)) {
@@ -158,14 +158,7 @@ class HumbleImageView : AppCompatImageView, HumbleTransition.HumbleTransitionLis
     }
 
     internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
-        for (index in 0 until imageViewDrawables.size) {
-            val drawable = imageViewDrawables[index].getDrawable()
-            if (drawable is HumbleBitmapDrawable
-                    && drawable.humbleResourceId == humbleResourceId) {
-                return true
-            }
-        }
-        return false
+        return humbleResourceId.isPresentIn(imageViewDrawables)
     }
 
     private inline fun drawDebug(canvas: Canvas?) {
