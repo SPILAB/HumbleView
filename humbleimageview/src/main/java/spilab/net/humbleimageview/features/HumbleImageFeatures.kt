@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.presenter
+package spilab.net.humbleimageview.features
 
 import android.content.res.TypedArray
 import android.widget.ImageView
@@ -8,11 +8,10 @@ import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
-import spilab.net.humbleimageview.feature.memory.BitmapPool
-import spilab.net.humbleimageview.feature.memory.DrawableRecycler
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
+internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
                                    private val model: HumbleViewModel) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
@@ -37,6 +36,14 @@ internal class HumbleViewPresenter(private val humbleImageView: HumbleImageView,
         for (imageViewDrawable in imageViewDrawables) {
             drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
         }
+    }
+
+    fun onPause() {
+        model.cancel()
+    }
+
+    fun onResume() {
+        // not implemented
     }
 
     fun setUrl(url: String?) {

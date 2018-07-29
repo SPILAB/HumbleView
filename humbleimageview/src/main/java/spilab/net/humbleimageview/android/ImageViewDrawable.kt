@@ -54,7 +54,7 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
             Pair(ScaleType.FIT_END, Matrix.ScaleToFit.END))
 
 
-    fun setDrawable(drawable: Drawable?, scaleType: ImageView.ScaleType) {
+    fun setDrawable(drawable: Drawable?, scaleType: ImageView.ScaleType = DEFAUL_SCALE_TYPE) {
         mDrawable = drawable
         configureFromImageView(scaleType)
     }

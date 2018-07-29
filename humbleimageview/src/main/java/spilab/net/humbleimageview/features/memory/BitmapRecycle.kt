@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.feature.memory
+package spilab.net.humbleimageview.features.memory
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap

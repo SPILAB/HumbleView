@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.presenter
+package spilab.net.humbleimageview.features
 
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable

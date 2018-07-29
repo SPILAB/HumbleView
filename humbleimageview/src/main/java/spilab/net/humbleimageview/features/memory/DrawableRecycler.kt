@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.feature.memory
+package spilab.net.humbleimageview.features.memory
 
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable

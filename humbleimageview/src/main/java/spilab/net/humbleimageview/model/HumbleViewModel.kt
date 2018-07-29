@@ -6,7 +6,7 @@ import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.presenter.DrawableEventsListener
+import spilab.net.humbleimageview.features.DrawableEventsListener
 
 internal class HumbleViewModel(private val context: Context,
                                private var resources: Resources,

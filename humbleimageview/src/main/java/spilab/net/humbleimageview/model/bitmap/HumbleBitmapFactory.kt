@@ -3,7 +3,7 @@ package spilab.net.humbleimageview.model.bitmap
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import spilab.net.humbleimageview.android.AndroidBitmapFactory
-import spilab.net.humbleimageview.feature.memory.BitmapPool
+import spilab.net.humbleimageview.features.memory.BitmapPool
 
 internal class HumbleBitmapFactory(private val androidBitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
 
