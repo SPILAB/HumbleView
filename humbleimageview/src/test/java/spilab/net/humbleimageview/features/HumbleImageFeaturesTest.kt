@@ -17,7 +17,7 @@ internal class HumbleImageFeaturesTest {
         val mockHumbleViewImage = mockk<HumbleImageView>()
         val mockHumbleViewModel = mockk<HumbleViewModel>(relaxed = true)
         val spyHumbleViewModel = spyk(mockHumbleViewModel, recordPrivateCalls = true)
-        humbleImageFeatures = HumbleImageFeatures(mockHumbleViewImage, spyHumbleViewModel, imageViewDrawables)
+        humbleImageFeatures = HumbleImageFeatures(mockHumbleViewImage, spyHumbleViewModel)
     }
 
     @Test

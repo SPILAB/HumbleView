@@ -13,8 +13,7 @@ import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
-                                   private val model: HumbleViewModel,
-                                   imageViewDrawables: Array<ImageViewDrawable>) : DrawableEventsListener {
+                                   private val model: HumbleViewModel) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
     private val featureTransition: FeatureTransition
@@ -83,8 +82,8 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
         if (imageViewDrawables != null) {
-            for (index in 0 until imageViewDrawables!!.size) {
-                val iv = imageViewDrawables!![index]
+            for (index in 0 until imageViewDrawables.size) {
+                val iv = imageViewDrawables[index]
                 iv.configureFromImageView(loadedImageScaleType.getScaleType(imageView, iv.getDrawable()))
             }
         }
@@ -115,14 +114,9 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
         featureTransition.addTransition(drawable, loadedImageScaleType)
-        // humbleImageView.addTransition(drawable, loadedImageScaleType)
-    }
-
-    fun onTransitionCompleted(imageViewDrawable: ImageViewDrawable) {
-        drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
     }
 
     fun prepareOnDraw() {
-        featureTransition?.prepareOnDraw()
+        featureTransition.prepareOnDraw()
     }
 }

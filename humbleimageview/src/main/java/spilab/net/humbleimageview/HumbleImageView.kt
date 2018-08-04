@@ -51,7 +51,7 @@ class HumbleImageView : AppCompatImageView {
 
         val model = HumbleViewModel(context.applicationContext,
                 resources, Handler(Looper.getMainLooper()))
-        features = HumbleImageFeatures(this, model, imageViewDrawables)
+        features = HumbleImageFeatures(this, model)
 
 
         val styledAttributes = context.theme.obtainStyledAttributes(
