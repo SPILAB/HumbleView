@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import spilab.net.humbleimageview.features.transition.CrossFadeTransition
 
 
 internal class HumbleViewImageDebug(context: Context) {
@@ -18,14 +19,16 @@ internal class HumbleViewImageDebug(context: Context) {
 
     private var padding: Float
 
-    fun onDraw(canvas: Canvas, sampleSize: Int, humbleTransition: HumbleTransition?) {
+    fun onDraw(canvas: Canvas, sampleSize: Int) {
         var bottom = 0.0f
         if (sampleSize != -1) {
             bottom = drawTextDebug(canvas, sampleSize.toString(), padding, padding)
         }
+        /*
         if (humbleTransition != null) {
             drawTextDebug(canvas, "a", padding, padding + bottom)
         }
+        */
     }
 
     private inline fun drawTextDebug(canvas: Canvas, text: String, posX: Float, posY: Float): Float {

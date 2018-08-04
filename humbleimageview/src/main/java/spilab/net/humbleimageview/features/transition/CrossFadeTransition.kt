@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.view
+package spilab.net.humbleimageview.features.transition
 
 import android.os.SystemClock
 import android.widget.ImageView
@@ -7,11 +7,11 @@ import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class HumbleTransition(private val imageView: ImageView,
-                                private val imageViewDrawables: Array<ImageViewDrawable>,
-                                drawable: HumbleBitmapDrawable,
-                                private val loadedImageScaleType: LoadedImageScaleType,
-                                private val humbleTransitionListener: HumbleTransitionListener) : Runnable {
+internal class CrossFadeTransition(private val imageView: ImageView,
+                                   private val imageViewDrawables: Array<ImageViewDrawable>,
+                                   drawable: HumbleBitmapDrawable,
+                                   private val loadedImageScaleType: LoadedImageScaleType,
+                                   private val humbleTransitionListener: HumbleTransitionListener) : Runnable {
 
     companion object {
         const val CURRENT_IDX = 0
@@ -37,18 +37,9 @@ internal class HumbleTransition(private val imageView: ImageView,
         animationLoop()
     }
 
-    fun startIfNeeded() {
-        if (fadingAnimationTimer == null) {
-            fadingAnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() }
-        }
-    }
-
-    inline fun setupAlpha() {
-        if (!isCompleted()) {
-            fadingAlpha = (fadingAnimationTimer!!.getNormalized(maxAlpha.toFloat())).toInt()
-            imageViewDrawables[CURRENT_IDX].getDrawable()?.alpha = maxAlpha - fadingAlpha
-            imageViewDrawables[NEXT_IDX].getDrawable()?.alpha = fadingAlpha
-        }
+    fun prepareOnDraw() {
+        startIfNeeded()
+        setupAlpha()
     }
 
     fun completeAnimation() {
@@ -69,6 +60,20 @@ internal class HumbleTransition(private val imageView: ImageView,
             imageView.postInvalidate()
         } else {
             completeAnimation()
+        }
+    }
+
+    private inline fun startIfNeeded() {
+        if (fadingAnimationTimer == null) {
+            fadingAnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() }
+        }
+    }
+
+    private inline fun setupAlpha() {
+        if (!isCompleted()) {
+            fadingAlpha = (fadingAnimationTimer!!.getNormalized(maxAlpha.toFloat())).toInt()
+            imageViewDrawables[CURRENT_IDX].getDrawable()?.alpha = maxAlpha - fadingAlpha
+            imageViewDrawables[NEXT_IDX].getDrawable()?.alpha = fadingAlpha
         }
     }
 

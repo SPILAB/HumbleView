@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.view
+package spilab.net.humbleimageview.features.transition
 
 import org.junit.Assert
 import org.junit.Before

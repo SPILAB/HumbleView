@@ -9,16 +9,20 @@ import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
-                                   private val model: HumbleViewModel) : DrawableEventsListener {
+                                   private val model: HumbleViewModel,
+                                   imageViewDrawables: Array<ImageViewDrawable>) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
+    private val featureTransition: FeatureTransition
 
     init {
         model.drawableEventsListener = this
         drawableRecycler = DrawableRecycler()
+        featureTransition = FeatureTransition(humbleImageView, drawableRecycler)
     }
 
     private lateinit var loadedImageScaleType: LoadedImageScaleType
@@ -32,6 +36,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     fun onDetachedFromWindow(imageViewDrawables: Array<ImageViewDrawable>) {
+        featureTransition.completeAnimation()
         model.cancel()
         for (imageViewDrawable in imageViewDrawables) {
             drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
@@ -109,10 +114,15 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
-        humbleImageView.addTransition(drawable, loadedImageScaleType)
+        featureTransition.addTransition(drawable, loadedImageScaleType)
+        // humbleImageView.addTransition(drawable, loadedImageScaleType)
     }
 
     fun onTransitionCompleted(imageViewDrawable: ImageViewDrawable) {
         drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
+    }
+
+    fun prepareOnDraw() {
+        featureTransition?.prepareOnDraw()
     }
 }

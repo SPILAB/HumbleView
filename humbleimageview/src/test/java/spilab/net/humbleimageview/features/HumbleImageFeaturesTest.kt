@@ -5,7 +5,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleimageview.HumbleImageView
-import spilab.net.humbleimageview.features.HumbleImageFeatures
 import spilab.net.humbleimageview.model.HumbleViewModel
 
 internal class HumbleImageFeaturesTest {
@@ -18,7 +17,7 @@ internal class HumbleImageFeaturesTest {
         val mockHumbleViewImage = mockk<HumbleImageView>()
         val mockHumbleViewModel = mockk<HumbleViewModel>(relaxed = true)
         val spyHumbleViewModel = spyk(mockHumbleViewModel, recordPrivateCalls = true)
-        humbleImageFeatures = HumbleImageFeatures(mockHumbleViewImage, spyHumbleViewModel)
+        humbleImageFeatures = HumbleImageFeatures(mockHumbleViewImage, spyHumbleViewModel, imageViewDrawables)
     }
 
     @Test
