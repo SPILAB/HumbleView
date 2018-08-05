@@ -78,6 +78,10 @@ class HumbleImageView : AppCompatImageView {
         features?.setOfflineCache(offlineCache)
     }
 
+    fun setLoadedImageScaleType(scaleType: ScaleType) {
+        features?.setLoadedImageScaleType(scaleType)
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         lastKnowSize = ViewSize(w, h)
@@ -145,16 +149,13 @@ class HumbleImageView : AppCompatImageView {
 
     private inline fun drawDebug(canvas: Canvas?) {
         if ((features?.getDebug() == true || HumbleViewAPI.debug) && canvas != null) {
-            val currentDrawable = drawable
-            var sampleSize = -1
-            if (currentDrawable is HumbleBitmapDrawable) {
-                sampleSize = currentDrawable.sampleSize
+            for (index in 0 until imageViewDrawables.size) {
+                val drawable = imageViewDrawables[index].getDrawable()
+                if (drawable is HumbleBitmapDrawable) {
+                    viewDebug.onDraw(canvas, drawable)
+                    return
+                }
             }
-            viewDebug.onDraw(canvas, sampleSize)
         }
-    }
-
-    fun setLoadedImageScaleType(scaleType: ScaleType) {
-        features?.setLoadedImageScaleType(scaleType)
     }
 }
