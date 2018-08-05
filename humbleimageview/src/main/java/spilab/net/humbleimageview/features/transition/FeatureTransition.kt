@@ -7,31 +7,43 @@ import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class FeatureTransition(private val imageViewDrawables: HumbleImageView,
-                                 private val drawableRecycler: DrawableRecycler) : CrossFadeTransition.HumbleTransitionListener {
+                                 private val drawableRecycler: DrawableRecycler) : Transition.TransitionListener {
 
-    private var humbleTransition: CrossFadeTransition? = null
+    private var humbleTransition: Transition? = null
 
     fun addTransition(drawable: HumbleBitmapDrawable,
                       loadedImageScaleType: LoadedImageScaleType) {
         if (ViewCompat.isAttachedToWindow(imageViewDrawables)) {
             humbleTransition = CrossFadeTransition(imageViewDrawables,
-                    imageViewDrawables.imageViewDrawables,
+                    imageViewDrawables,
                     drawable,
                     loadedImageScaleType,
                     this)
         }
     }
 
-    fun completeAnimation() {
-        humbleTransition?.completeAnimation()
+    override fun onTransitionCompleted() {
+        humbleTransition = null
+        drawableRecycler.recycleImageViewDrawable(imageViewDrawables.imageViewDrawables[HumbleImageView.NEXT_IDX])
     }
 
     fun prepareOnDraw() {
         humbleTransition?.prepareOnDraw()
     }
 
-    override fun onTransitionCompleted() {
-        this.humbleTransition = null
-        drawableRecycler.recycleImageViewDrawable(imageViewDrawables.imageViewDrawables[HumbleImageView.NEXT_IDX])
+    fun onPause() {
+        cancelCurrentTransition()
+        if (imageViewDrawables.imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
+            humbleTransition = PaletteTransition(imageViewDrawables.imageViewDrawables)
+        }
+    }
+
+    fun onDetached() {
+        cancelCurrentTransition()
+    }
+
+    private inline fun cancelCurrentTransition() {
+        humbleTransition?.cancel()
+        humbleTransition = null
     }
 }

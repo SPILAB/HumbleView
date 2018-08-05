@@ -35,7 +35,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     fun onDetachedFromWindow(imageViewDrawables: Array<ImageViewDrawable>) {
-        featureTransition.completeAnimation()
+        featureTransition.onDetached()
         model.cancel()
         for (imageViewDrawable in imageViewDrawables) {
             drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
@@ -43,11 +43,12 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     fun onPause() {
+        featureTransition.onPause()
         model.cancel()
     }
 
     fun onResume() {
-        // not implemented
+        model.updateImageIfNeeded()
     }
 
     fun setUrl(url: String?) {
