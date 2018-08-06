@@ -1,12 +1,10 @@
 package spilab.net.humbleimageview.features
 
-import android.content.res.TypedArray
 import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
-import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.features.transition.FeatureTransition
@@ -22,12 +20,6 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
         model.drawableEventsListener = this
         drawableRecycler = DrawableRecycler()
         featureTransition = FeatureTransition(humbleImageView, drawableRecycler)
-    }
-
-    private lateinit var loadedImageScaleType: LoadedImageScaleType
-
-    fun initLoadedImageScaleType(styledAttributes: TypedArray) {
-        loadedImageScaleType = LoadedImageScaleType(styledAttributes)
     }
 
     fun onAttachedToWindow() {
@@ -59,10 +51,6 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
         model.offlineCache = offlineCache
     }
 
-    fun setLoadedImageScaleType(scaleType: ImageView.ScaleType) {
-        loadedImageScaleType.setLoadedImageScaleType(scaleType)
-    }
-
     fun setDebug(boolean: Boolean) {
         model.debug = boolean
     }
@@ -85,27 +73,8 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
         if (imageViewDrawables != null) {
             for (index in 0 until imageViewDrawables.size) {
                 val iv = imageViewDrawables[index]
-                iv.configureFromImageView(loadedImageScaleType.getScaleType(imageView, iv.getDrawable()))
+                iv.configureFromImageView()
             }
-        }
-    }
-
-    /**
-     * Synchronize with the exact current state of the ImageView
-     * Must be call each time the drawable is set
-     * And each time the view is attached
-     */
-    fun synchronizeCurrentImageViewDrawables(imageView: ImageView,
-                                             imageViewDrawables: Array<ImageViewDrawable>?,
-                                             alpha: Float) {
-        // Warning: imageViewDrawables can be null, because the
-        // constructor of ImageView call override methods
-        if (imageViewDrawables != null) {
-            drawableRecycler.recycleImageViewDrawable(imageViewDrawables[HumbleImageView.CURRENT_IDX])
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].setDrawable(imageView.drawable,
-                    loadedImageScaleType.getScaleType(imageView, imageView.drawable))
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.mutate()
-            imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable()?.alpha = (alpha * 255.0f).toInt()
         }
     }
 
@@ -114,7 +83,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
-        featureTransition.addTransition(drawable, loadedImageScaleType)
+        featureTransition.addTransition(drawable)
     }
 
     fun prepareOnDraw() {

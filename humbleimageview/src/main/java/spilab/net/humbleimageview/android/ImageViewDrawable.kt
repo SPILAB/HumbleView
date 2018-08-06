@@ -6,19 +6,23 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
+import spilab.net.humbleimageview.features.transition.drawable.DrawableDelegate
+import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
 
 /**
  * The code is mainly a copy/past of the original Android ImageView,
  * from API level 27:
  * The matrix assign was was replaced with a set.
  */
-internal class ImageViewDrawable(private val imageView: ImageView) {
+internal class ImageViewDrawable(private val imageView: ImageView,
+                                 drawableDelegate: DrawableDelegate,
+                                 scaleDelegate: ScaleDelegate) {
 
     companion object {
         val DEFAUL_SCALE_TYPE = ScaleType.FIT_CENTER
     }
 
-    private var mDrawable: Drawable? = null
+    private var mDrawable: Drawable? by drawableDelegate
 
     private var mDrawableWidth: Int = 0
     private var mDrawableHeight: Int = 0
@@ -28,7 +32,7 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
     private var mPaddingTop: Int = 0
     private var mPaddingBottom: Int = 0
 
-    private var mScaleType: ImageView.ScaleType = DEFAUL_SCALE_TYPE
+    private var mScaleType: ImageView.ScaleType by scaleDelegate
     private var mHaveFrame: Boolean = false
 
     private var mMatrix = Matrix()
@@ -54,21 +58,30 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
             Pair(ScaleType.FIT_END, Matrix.ScaleToFit.END))
 
 
-    fun setDrawable(drawable: Drawable?, scaleType: ImageView.ScaleType = DEFAUL_SCALE_TYPE) {
+    fun setDrawable(drawable: Drawable?) {
         mDrawable = drawable
-        configureFromImageView(scaleType)
+        configureFromImageView()
     }
 
     fun getDrawable(): Drawable? {
         return mDrawable
     }
 
-    fun configureFromImageView(scaleType: ImageView.ScaleType) {
-        copyImageView(scaleType)
+    fun setScaleType(scaleType: ScaleType) {
+        mScaleType = scaleType
+        configureFromImageView()
+    }
+
+    fun getScaleType(): ScaleType {
+        return mScaleType
+    }
+
+    fun configureFromImageView() {
+        copyImageView()
         configureBounds()
     }
 
-    private fun copyImageView(scaleType: ScaleType) {
+    private fun copyImageView() {
         mDrawableWidth = mDrawable?.intrinsicWidth ?: 0
         mDrawableHeight = mDrawable?.intrinsicHeight ?: 0
         mHaveFrame = imageView.width > 0 || imageView.height > 0
@@ -76,7 +89,6 @@ internal class ImageViewDrawable(private val imageView: ImageView) {
         mPaddingRight = imageView.paddingRight
         mPaddingTop = imageView.paddingTop
         mPaddingBottom = imageView.paddingBottom
-        mScaleType = scaleType
         mMatrix.set(imageView.matrix)
         mCropToPadding = imageView.cropToPadding
         mScrollX = imageView.scrollX

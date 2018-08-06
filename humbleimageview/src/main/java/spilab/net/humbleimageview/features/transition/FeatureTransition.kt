@@ -3,7 +3,6 @@ package spilab.net.humbleimageview.features.transition
 import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
-import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class FeatureTransition(private val imageViewDrawables: HumbleImageView,
@@ -11,14 +10,10 @@ internal class FeatureTransition(private val imageViewDrawables: HumbleImageView
 
     private var humbleTransition: Transition? = null
 
-    fun addTransition(drawable: HumbleBitmapDrawable,
-                      loadedImageScaleType: LoadedImageScaleType) {
+    fun addTransition(drawable: HumbleBitmapDrawable) {
         if (ViewCompat.isAttachedToWindow(imageViewDrawables)) {
             humbleTransition = CrossFadeTransition(imageViewDrawables,
-                    imageViewDrawables,
-                    drawable,
-                    loadedImageScaleType,
-                    this)
+                    imageViewDrawables, drawable, this)
         }
     }
 

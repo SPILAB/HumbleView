@@ -3,15 +3,12 @@ package spilab.net.humbleimageview.features.transition
 import android.os.SystemClock
 import android.widget.ImageView
 import spilab.net.humbleimageview.HumbleImageView
-import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
-import spilab.net.humbleimageview.model.LoadedImageScaleType
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class CrossFadeTransition(private val imageView: ImageView,
                                    private val humbleImageView: HumbleImageView,
                                    drawable: HumbleBitmapDrawable,
-                                   private val loadedImageScaleType: LoadedImageScaleType,
                                    private val transitionListener: Transition.TransitionListener) : Runnable, Transition {
 
     private val maxAlpha: Int
@@ -20,7 +17,7 @@ internal class CrossFadeTransition(private val imageView: ImageView,
     private var fadingAnimationTimer: AnimationTimer? = null
 
     init {
-        humbleImageView.imageViewDrawables[Transition.NEXT_IDX].setDrawable(drawable, loadedImageScaleType.getScaleType(imageView, drawable))
+        humbleImageView.imageViewDrawables[Transition.NEXT_IDX].setDrawable(drawable)
         humbleImageView.imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.mutate()
         humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.mutate()
         maxAlpha = imageView.imageAlpha
@@ -69,10 +66,10 @@ internal class CrossFadeTransition(private val imageView: ImageView,
 
 
     private fun finish() {
-        humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].setDrawable(humbleImageView.imageViewDrawables[Transition.NEXT_IDX].getDrawable(),
-                loadedImageScaleType.getScaleType(imageView, humbleImageView.imageViewDrawables[Transition.NEXT_IDX].getDrawable()))
+        humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].setDrawable(humbleImageView.imageViewDrawables[Transition.NEXT_IDX].getDrawable())
+        humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].setScaleType(humbleImageView.imageViewDrawables[Transition.NEXT_IDX].getScaleType())
         humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
-        humbleImageView.imageViewDrawables[Transition.NEXT_IDX].setDrawable(null, ImageViewDrawable.DEFAUL_SCALE_TYPE)
+        humbleImageView.imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
         transitionListener.onTransitionCompleted()
     }
 }
