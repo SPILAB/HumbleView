@@ -6,7 +6,7 @@ import spilab.net.humbleimageview.R
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import kotlin.reflect.KProperty
 
-class ScaleSecondaryDelegate(private val imageView: ImageView) : ScaleDelegate {
+internal class ScaleSecondaryDelegate(private val imageView: ImageView) : ScaleDelegate {
 
     companion object {
         const val SCALE_TYPE_UNSET = -1

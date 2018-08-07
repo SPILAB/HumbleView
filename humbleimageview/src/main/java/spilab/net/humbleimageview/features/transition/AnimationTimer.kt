@@ -6,10 +6,16 @@ import kotlin.math.min
 internal class AnimationTimer(private val durationMillis: Long,
                               private val uptimeMillis: () -> Long) {
 
-    private var timerStartMillis = uptimeMillis()
+    companion object {
+        private const val NOT_STARTED = -1L
+    }
 
-    fun start() {
-        timerStartMillis = uptimeMillis()
+    private var timerStartMillis = NOT_STARTED
+
+    fun startIfNeeded() {
+        if (timerStartMillis == NOT_STARTED) {
+            timerStartMillis = uptimeMillis()
+        }
     }
 
     fun getNormalized(normalize: Float = 1.0f) = min(normalize,

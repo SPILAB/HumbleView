@@ -13,13 +13,14 @@ internal class FeatureTransition(private val imageViewDrawables: HumbleImageView
     fun addTransition(drawable: HumbleBitmapDrawable) {
         if (ViewCompat.isAttachedToWindow(imageViewDrawables)) {
             humbleTransition = CrossFadeTransition(imageViewDrawables,
-                    imageViewDrawables, drawable, this)
+                    imageViewDrawables.imageViewDrawables,
+                    drawable,
+                    this)
         }
     }
 
     override fun onTransitionCompleted() {
         humbleTransition = null
-        drawableRecycler.recycleImageViewDrawable(imageViewDrawables.imageViewDrawables[HumbleImageView.NEXT_IDX])
     }
 
     fun prepareOnDraw() {
@@ -29,7 +30,7 @@ internal class FeatureTransition(private val imageViewDrawables: HumbleImageView
     fun onPause() {
         cancelCurrentTransition()
         if (imageViewDrawables.imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
-            humbleTransition = PaletteTransition(imageViewDrawables.imageViewDrawables)
+            humbleTransition = PaletteTransition(imageViewDrawables.imageViewDrawables, this)
         }
     }
 

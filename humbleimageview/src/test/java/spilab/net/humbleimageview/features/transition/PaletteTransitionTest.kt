@@ -11,6 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 class PaletteTransitionTest {
@@ -20,21 +21,27 @@ class PaletteTransitionTest {
 
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
         val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>()
+        val mockListener = mockk<Transition.TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
+        val mockDrawableRecycler = mockk<DrawableRecycler>(relaxed = true)
 
 
-        PaletteTransition(imageViewDrawables, mockAndroidPalette)
+        PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette, mockDrawableRecycler)
         paletteResultCallback.captured.invoke(mockPalette)
         Assert.assertTrue(updatedDrawable.captured is ColorDrawable)
+        verify { mockDrawableRecycler.recycleImageViewDrawable(imageViewDrawables[0]) }
+        verify { mockDrawableRecycler.recycleImageViewDrawable(imageViewDrawables[1]) }
+        verify { mockListener.onTransitionCompleted() }
     }
 
     @Test
     fun `Given an view with an humble bitmap drawable, When cancel, Then cancel the task`() {
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
         val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>(relaxed = true)
+        val listener = mockk<Transition.TransitionListener>()
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
-        PaletteTransition(imageViewDrawables, mockAndroidPalette).cancel()
+        PaletteTransition(imageViewDrawables, listener, mockAndroidPalette).cancel()
 
         verify { mockAsyncTask.cancel(true) }
     }
