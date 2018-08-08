@@ -2,7 +2,7 @@
 
 ## Features
 
-The features listed below refers to the sample application.
+The following features are demonstrated in the sample application.
 
 #### Offline mode feature
 
@@ -22,27 +22,25 @@ Simply add app:offlineCache="true" in your layout to made the image available of
  ```
  
  
-#### Two scales types feature
+#### Loaded scale types feature
   
-The Activity ScaleTypeActivity shows the possibility to set two different scales types,
-One for your placeholder:
-```
-app:srcCompat="@drawable/ic_..."
-android:scaleType="center"
- ```
-And another one for the loaded image:
-```
-app:url="https://..."
-app:loadedImageScaleType="centerCrop"
-```
-
-By default the loaded image will use the same scale type than the place holder:
-
-You can set the loaded image scale type in your layout XML:
+The Activity ScaleTypeActivity shows the possibility to set different scales types,
+on for the loaded image and one for app:srcCompat, used as placeholder:
 ```
 <spilab.net.humbleimageview.HumbleImageView
-        ...
-        app:loadedImageScaleType="centerCrop"
+     app:srcCompat="@drawable/ic_photo_black_48px"
+     android:scaleType="center"
+     app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg"
+     app:loadedImageScaleType="centerCrop"
+```
+When the loading and transition of image set throught the url is complete,
+android:scaleType will be replaced by app:loadedImageScaleType.
+By default, the loaded image scale equals the image scale.
+```
+You can set the loaded image scale type in your layout XML:
+<spilab.net.humbleimageview.HumbleImageView
+     ...
+     app:loadedImageScaleType="centerCrop"
 ```
 Or in your code:
 ```
