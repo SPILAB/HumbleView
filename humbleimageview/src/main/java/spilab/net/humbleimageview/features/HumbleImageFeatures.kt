@@ -19,20 +19,17 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     init {
         model.drawableEventsListener = this
         drawableRecycler = DrawableRecycler()
-        featureTransition = FeatureTransition(humbleImageView, drawableRecycler)
+        featureTransition = FeatureTransition(humbleImageView)
     }
 
     fun onAttachedToWindow() {
         model.updateImageIfNeeded()
+        featureTransition?.onAttached()
     }
 
-    fun onDetachedFromWindow(imageViewDrawables: Array<ImageViewDrawable>) {
+    fun onDetachedFromWindow() {
         featureTransition.onDetached()
         model.cancel()
-        for (index in 0 until imageViewDrawables.size) {
-            val imageViewDrawable = imageViewDrawables[index]
-            drawableRecycler.recycleImageViewDrawable(imageViewDrawable)
-        }
     }
 
     fun onPause() {

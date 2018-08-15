@@ -99,7 +99,7 @@ class HumbleImageView : AppCompatImageView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        features?.onDetachedFromWindow(imageViewDrawables)
+        features?.onDetachedFromWindow()
     }
 
     override fun setFrame(l: Int, t: Int, r: Int, b: Int): Boolean {

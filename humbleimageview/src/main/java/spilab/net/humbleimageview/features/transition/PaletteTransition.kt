@@ -32,7 +32,17 @@ internal class PaletteTransition(private val imageViewDrawables: Array<ImageView
 
     override fun prepareOnDraw() {}
 
-    override fun cancel() {
+    override fun onAttached() {
+        // We stop this transition on attach to keep the bitmap
+        cancel()
+    }
+
+    override fun onDetached() {
+        cancel()
+    }
+
+    private fun cancel() {
         task.cancel(true)
+        transitionListener.onTransitionCompleted()
     }
 }

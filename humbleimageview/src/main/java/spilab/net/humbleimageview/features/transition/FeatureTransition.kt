@@ -2,44 +2,58 @@ package spilab.net.humbleimageview.features.transition
 
 import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
-import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class FeatureTransition(private val imageViewDrawables: HumbleImageView,
-                                 private val drawableRecycler: DrawableRecycler) : Transition.TransitionListener {
-
-    private var humbleTransition: Transition? = null
+internal class FeatureTransition(private val humbleImageView: HumbleImageView,
+                                 private var transitions: MutableList<Transition> = mutableListOf(),
+                                 private val androidPalette: AndroidPalette = AndroidPalette()) : Transition.TransitionListener {
 
     fun addTransition(drawable: HumbleBitmapDrawable) {
-        if (ViewCompat.isAttachedToWindow(imageViewDrawables)) {
-            humbleTransition = CrossFadeTransition(imageViewDrawables,
-                    imageViewDrawables.imageViewDrawables,
+        if (ViewCompat.isAttachedToWindow(humbleImageView)) {
+            transitions.add(CrossFadeTransition(humbleImageView,
+                    humbleImageView.imageViewDrawables,
                     drawable,
-                    this)
+                    this))
         }
     }
 
     override fun onTransitionCompleted() {
-        humbleTransition = null
+        transitions.clear()
     }
 
     fun prepareOnDraw() {
-        humbleTransition?.prepareOnDraw()
+        if (transitions.isNotEmpty()) {
+            transitions.last().prepareOnDraw()
+        }
     }
 
     fun onPause() {
         cancelCurrentTransition()
-        if (imageViewDrawables.imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
-            humbleTransition = PaletteTransition(imageViewDrawables.imageViewDrawables, this)
+        replaceBitmapWithColor()
+    }
+
+    fun onAttached() {
+        if (transitions.isNotEmpty()) {
+            transitions.last().onAttached()
         }
     }
 
     fun onDetached() {
         cancelCurrentTransition()
+        replaceBitmapWithColor()
     }
 
     private inline fun cancelCurrentTransition() {
-        humbleTransition?.cancel()
-        humbleTransition = null
+        if (transitions.isNotEmpty()) {
+            transitions.last().onDetached()
+        }
+        transitions.clear()
+    }
+
+    private fun replaceBitmapWithColor() {
+        if (humbleImageView.imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
+            transitions.add(PaletteTransition(humbleImageView.imageViewDrawables, this, androidPalette))
+        }
     }
 }

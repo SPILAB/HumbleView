@@ -32,7 +32,11 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         setupAlpha()
     }
 
-    override fun cancel() {
+    override fun onAttached() {
+        // Nothing to do.
+    }
+
+    override fun onDetached() {
         finish()
     }
 
@@ -51,7 +55,7 @@ internal class CrossFadeTransition(private val imageView: ImageView,
 
     private inline fun setupAlpha() {
         if (!isCompleted()) {
-            fadingAlpha = (fadingAnimationTimer!!.getNormalized(maxAlpha.toFloat())).toInt()
+            fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
             imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha - fadingAlpha
             imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.alpha = fadingAlpha
         }

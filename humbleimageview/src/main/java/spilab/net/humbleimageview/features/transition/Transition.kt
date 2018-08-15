@@ -12,5 +12,6 @@ interface Transition {
     }
 
     fun prepareOnDraw()
-    fun cancel()
+    fun onAttached()
+    fun onDetached()
 }
