@@ -68,7 +68,7 @@ class CrossFadeTransitionTest {
             mockDrawableNext.alpha = 0
             mockDrawableNext.alpha = 255
         }
-        verify { mockDrawableRecycler.recycleImageViewDrawable(imageViewDrawables[0]) }
+        verify { mockDrawableRecycler.recycleImageView(mockImageView) }
         verify { mockListener.onTransitionCompleted() }
     }
 }

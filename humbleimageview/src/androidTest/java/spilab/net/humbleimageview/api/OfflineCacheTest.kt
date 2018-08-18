@@ -24,14 +24,14 @@ class OfflineCacheTest {
     private lateinit var offlineCache: OfflineCache
 
     @Before
-    fun setUp() {
+    fun beforeTests() {
         synchronousOfflineCache = SynchronousOfflineCache()
         val mockExecutorProvider = MockExecutorProvider(synchronousOfflineCache.mockExecutorService)
         offlineCache = OfflineCache(mockExecutorProvider, AndroidHandlerMock(Handler(Looper.getMainLooper())))
     }
 
     @After
-    fun teardown() {
+    fun afterTests() {
         val appContext = InstrumentationRegistry.getTargetContext()
         synchronousOfflineCache.clear(offlineCache.getOfflineCache(appContext))
     }

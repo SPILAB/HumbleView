@@ -65,10 +65,11 @@ internal class CrossFadeTransition(private val imageView: ImageView,
 
 
     private fun finish() {
-        drawableRecycler.recycleImageViewDrawable(imageViewDrawables[Transition.CURRENT_IDX])
+        drawableRecycler.recycleImageView(imageView)
         imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
         imageViewDrawables[Transition.CURRENT_IDX].setScaleType(imageViewDrawables[Transition.NEXT_IDX].getScaleType())
-        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
+        fadingAlpha = maxAlpha
+        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
         imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
         transitionListener.onTransitionCompleted()
     }

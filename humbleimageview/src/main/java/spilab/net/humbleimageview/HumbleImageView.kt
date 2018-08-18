@@ -10,6 +10,7 @@ import android.view.View
 import spilab.net.humbleimageview.android.ImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.features.HumbleImageFeatures
+import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
 import spilab.net.humbleimageview.features.transition.scale.ScaleImageViewDelegate
@@ -104,8 +105,17 @@ class HumbleImageView : AppCompatImageView {
 
     override fun setFrame(l: Int, t: Int, r: Int, b: Int): Boolean {
         val hasFrame = super.setFrame(l, t, r, b)
-        features?.configureFromImageView(this, imageViewDrawables)
+        features?.configureFromImageView()
         return hasFrame
+    }
+
+    override fun setImageResource(resId: Int) {
+        var drawableFromResId = features?.getVectorDrawable(resId, width, height)
+        if (drawableFromResId == null) {
+            super.setImageResource(resId)
+            drawableFromResId = VectorDrawableFromResId(drawable, resId, width, height)
+        }
+        setImageDrawable(drawableFromResId)
     }
 
     override fun onVisibilityChanged(changedView: View?, visibility: Int) {

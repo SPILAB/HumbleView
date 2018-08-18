@@ -13,7 +13,7 @@ class HumbleResourceIdTest {
     private lateinit var humbleResourceId: HumbleResourceId
 
     @Before
-    fun setUp() {
+    fun beforeTests() {
         humbleResourceId = HumbleResourceId("url", ViewSize(4, 16))
     }
 

@@ -22,7 +22,7 @@ class DefaultOfflineCacheTest {
     private lateinit var offlineCache: DefaultOfflineCache
 
     @Before
-    fun setUp() {
+    fun beforeTests() {
         val appContext = InstrumentationRegistry.getTargetContext()
         synchronousOfflineCache = SynchronousOfflineCache()
         offlineCache = DefaultOfflineCache(getDefaultCacheDirectory(appContext),
@@ -31,7 +31,7 @@ class DefaultOfflineCacheTest {
     }
 
     @After
-    fun teardown() {
+    fun afterTest() {
         Assert.assertTrue(synchronousOfflineCache.clear(offlineCache))
     }
 

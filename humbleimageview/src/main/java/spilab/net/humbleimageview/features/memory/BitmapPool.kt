@@ -37,6 +37,7 @@ internal object BitmapPool {
         return recycleBitmap
     }
 
+    @Synchronized
     fun clear() {
         bitmaps.clear()
     }

@@ -21,7 +21,7 @@ class HumbleBitmapFactoryTest {
     private var inSampleSize = 0
 
     @Before
-    fun setUp() {
+    fun beforeTests() {
         inSampleSize = 0
         captureOptions = slot()
         every { mockAndroidBitmapFactory.decodeByteArray(any(), any(), any(), capture(captureOptions)) } answers {

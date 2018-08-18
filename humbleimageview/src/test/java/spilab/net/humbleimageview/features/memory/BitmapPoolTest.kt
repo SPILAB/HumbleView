@@ -10,7 +10,7 @@ import org.junit.Test
 class BitmapPoolTest {
 
     @After
-    fun tearDown() {
+    fun afterTests() {
         BitmapPool.clear()
     }
 

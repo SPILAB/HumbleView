@@ -1,12 +1,13 @@
 package spilab.net.humbleimageview.features
 
-import android.widget.ImageView
+import android.graphics.drawable.Drawable
 import spilab.net.humbleimageview.HumbleImageView
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.ViewSize
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.features.memory.VectorDrawablePool
 import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
@@ -64,16 +65,19 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     /**
      * Must be call each time the view bounds change
      */
-    fun configureFromImageView(imageView: ImageView,
-                               imageViewDrawables: Array<ImageViewDrawable>?) {
+    fun configureFromImageView() {
         // Warning: imageViewDrawables can be null, because the
         // constructor of ImageView call override methods
-        if (imageViewDrawables != null) {
-            for (index in 0 until imageViewDrawables.size) {
-                val iv = imageViewDrawables[index]
-                iv.configureFromImageView()
-            }
+        if (humbleImageView != null) {
+            configureImageViewDrawables()
+            configureImageViewDrawable()
         }
+    }
+
+    fun getVectorDrawable(resId: Int, width: Int, height: Int): Drawable? {
+        var drawableFromResId = VectorDrawablePool.find(resId, width, height)
+        drawableFromResId?.drawable?.alpha = (humbleImageView.alpha * 255.0f).toInt()
+        return drawableFromResId
     }
 
     override fun isCurrentOrNextDrawableIdEqualTo(humbleResourceId: HumbleResourceId): Boolean {
@@ -86,5 +90,23 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun prepareOnDraw() {
         featureTransition.prepareOnDraw()
+    }
+
+    private fun configureImageViewDrawables() {
+        val imageViewDrawables = humbleImageView.imageViewDrawables
+        if (imageViewDrawables != null) {
+            for (index in 0 until imageViewDrawables.size) {
+                val iv = imageViewDrawables[index]
+                iv.configureFromImageView()
+            }
+        }
+    }
+
+    private fun configureImageViewDrawable() {
+        val drawable = humbleImageView.drawable
+        if (drawable is VectorDrawableFromResId) {
+            drawable.width = humbleImageView.width
+            drawable.height = humbleImageView.height
+        }
     }
 }

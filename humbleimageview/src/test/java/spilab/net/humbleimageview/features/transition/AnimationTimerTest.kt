@@ -17,7 +17,7 @@ class AnimationTimerTest {
 
 
     @Before
-    fun setUp() {
+    fun beforeTests() {
         animationTimer = AnimationTimer(DURATION_MILLIS, uptimeMillisProvider)
     }
 
