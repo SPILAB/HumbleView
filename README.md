@@ -33,7 +33,7 @@ on for the loaded image and one for app:srcCompat, used as placeholder:
      app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg"
      app:loadedImageScaleType="centerCrop"
 ```
-When the loading and transition of image set throught the url is complete,
+When the loading and transition of image set thought the url is complete,
 android:scaleType will be replaced by app:loadedImageScaleType.
 By default, the loaded image scale equals the image scale.
 ```

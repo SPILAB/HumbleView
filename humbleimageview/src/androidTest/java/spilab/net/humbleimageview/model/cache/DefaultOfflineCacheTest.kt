@@ -36,7 +36,7 @@ class DefaultOfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_some_data_WHEN_put_in_cache_THEN_should_write_on_disk`() {
+    fun GIVEN_some_data_WHEN_put_in_cache_THEN_should_write_on_disk() {
         Assert.assertTrue(synchronousOfflineCache.put(offlineCache,
                 "https://www.flickr.com/photos/110273693@N04/26269766220/sizes/m/"))
         val files = synchronousOfflineCache.list(offlineCache)
@@ -44,14 +44,14 @@ class DefaultOfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_an_not_existing_file_WHEN_get_THEN_should_not_return_data`() {
+    fun GIVEN_an_not_existing_file_WHEN_get_THEN_should_not_return_data() {
         val data = synchronousOfflineCache.get(offlineCache,
                 "https://www.flickr.com/photos/110273693@N04/26269766220/sizes/m/")
         Assert.assertNull(data)
     }
 
     @Test
-    fun `GIVEN_an_existing_file_WHEN_get_THEN_should_return_data`() {
+    fun GIVEN_an_existing_file_WHEN_get_THEN_should_return_data() {
         val key = "https://www.flickr.com/photos/110273693@N04/26269766220/sizes/m/"
         synchronousOfflineCache.put(offlineCache, key)
         val data = synchronousOfflineCache.get(offlineCache, key)
@@ -59,7 +59,7 @@ class DefaultOfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_two_files_WHEN_list_THEN_should_return_two_file_name`() {
+    fun GIVEN_two_files_WHEN_list_THEN_should_return_two_file_name() {
         Assert.assertTrue(synchronousOfflineCache.put(offlineCache,
                 "https://www.flickr.com/photos/110273693@N04/26269766220/sizes/m/"))
         Assert.assertTrue(synchronousOfflineCache.put(offlineCache,

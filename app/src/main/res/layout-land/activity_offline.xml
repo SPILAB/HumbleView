@@ -22,7 +22,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:offlineCache="true"
         app:srcCompat="@drawable/ic_photo_black_48px"
-        app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg" />
+        app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg"
+        android:layout_marginStart="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin" />
 
     <spilab.net.humbleimageview.HumbleImageView
         android:id="@+id/offlineImageFromCode"
@@ -39,5 +41,7 @@
         app:layout_constraintStart_toEndOf="@+id/offlineImageFromLayoutXml"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_photo_black_48px"
-        app:url="https://c1.staticflickr.com/5/4306/35340832973_13f2853de3_h.jpg" />
+        app:url="https://c1.staticflickr.com/5/4306/35340832973_13f2853de3_h.jpg"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/smallMargin" />
 </android.support.constraint.ConstraintLayout>

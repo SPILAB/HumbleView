@@ -25,7 +25,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun onAttachedToWindow() {
         model.updateImageIfNeeded()
-        featureTransition?.onAttached()
+        featureTransition.onAttached()
     }
 
     fun onDetachedFromWindow() {
@@ -75,7 +75,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     fun getVectorDrawable(resId: Int, width: Int, height: Int): Drawable? {
-        var drawableFromResId = VectorDrawablePool.find(resId, width, height)
+        val drawableFromResId = VectorDrawablePool.find(resId, width, height)
         drawableFromResId?.drawable?.alpha = (humbleImageView.alpha * 255.0f).toInt()
         return drawableFromResId
     }

@@ -52,7 +52,7 @@ internal class FeatureTransition(private val humbleImageView: HumbleImageView,
     }
 
     private fun replaceBitmapWithColor() {
-        if (humbleImageView.imageViewDrawables[HumbleImageView.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
+        if (humbleImageView.imageViewDrawables[Transition.CURRENT_IDX].getDrawable() is HumbleBitmapDrawable) {
             transitions.add(PaletteTransition(humbleImageView.imageViewDrawables, this, androidPalette))
         }
     }

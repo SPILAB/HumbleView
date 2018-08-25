@@ -10,7 +10,7 @@ import spilab.net.humbleimageview.HumbleImageView
 class ImagesListAdapter(private val imagesUrls: Array<String>) :
         RecyclerView.Adapter<ImagesListAdapter.ViewHolder>() {
 
-    class ViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
+    class ViewHolder(private val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
         fun bind(url: String) {
             val humbleImageView = viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
             // TODO: Add documentation to explain why we should set the place holder again

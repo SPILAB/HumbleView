@@ -2,11 +2,9 @@ package spilab.net.humbleview
 
 import android.app.Application
 import android.content.Context
+import android.preference.PreferenceManager
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleview.settings.SettingsActivity
-import android.preference.PreferenceManager
-import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
-import java.util.concurrent.Future
 
 
 class HumbleViewApplication : Application() {

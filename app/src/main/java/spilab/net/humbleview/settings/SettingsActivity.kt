@@ -49,10 +49,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 .unregisterOnSharedPreferenceChangeListener(listener)
     }
 
-    override fun onPanelClosed(featureId: Int, menu: Menu?) {
-        super.onPanelClosed(featureId, menu)
-    }
-
     /**
      * Set up the [android.app.ActionBar], if the API is available.
      */
@@ -125,8 +121,8 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
     companion object {
 
-        val PREF_CACHE_SIZE_LIST = "pref_cache_size_list"
-        val PREF_FADING_SPEED_LIST = "pref_fading_speed_list"
+        const val PREF_CACHE_SIZE_LIST = "pref_cache_size_list"
+        const val PREF_FADING_SPEED_LIST = "pref_fading_speed_list"
 
         fun createIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)

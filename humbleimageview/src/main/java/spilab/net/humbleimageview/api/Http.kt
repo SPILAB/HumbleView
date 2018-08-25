@@ -7,7 +7,7 @@ import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import java.io.File
 
-class Http(val executorProvider: ExecutorProvider) {
+class Http(private val executorProvider: ExecutorProvider) {
 
     companion object {
         private const val DEFAULT_CACHE_SIZE = 32L * 1024L * 1024L // 32 MiB

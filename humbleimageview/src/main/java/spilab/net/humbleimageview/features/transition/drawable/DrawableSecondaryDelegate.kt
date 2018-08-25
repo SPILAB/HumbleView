@@ -3,7 +3,7 @@ package spilab.net.humbleimageview.features.transition.drawable
 import android.graphics.drawable.Drawable
 import kotlin.reflect.KProperty
 
-internal class DrawableSecondaryDelegate() : DrawableDelegate {
+internal class DrawableSecondaryDelegate : DrawableDelegate {
 
     private var drawable: Drawable? = null
 

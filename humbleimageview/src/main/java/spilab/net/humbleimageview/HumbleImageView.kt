@@ -24,11 +24,6 @@ import spilab.net.humbleimageview.view.HumbleViewImageDebug
 
 class HumbleImageView : AppCompatImageView {
 
-    companion object {
-        const val CURRENT_IDX = 0
-        const val NEXT_IDX = 1
-    }
-
     private val secondaryScaleType = ScaleSecondaryDelegate(this)
 
     internal val imageViewDrawables = arrayOf(
@@ -68,7 +63,7 @@ class HumbleImageView : AppCompatImageView {
                 features?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
                 features?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
                 features?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
-                secondaryScaleType.initScaleType(styledAttributes!!)
+                secondaryScaleType.initScaleType(styledAttributes)
             } finally {
                 styledAttributes.recycle()
             }

@@ -37,7 +37,7 @@ class OfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_default_parameters_WHEN_put_in_cache_THEN_put_in_default_cache_directory`() {
+    fun GIVEN_default_parameters_WHEN_put_in_cache_THEN_put_in_default_cache_directory() {
         val appContext = InstrumentationRegistry.getTargetContext()
         val cache = offlineCache.getOfflineCache(appContext)
         synchronousOfflineCache.put(cache, "testkey")
@@ -47,7 +47,7 @@ class OfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_a_cache_directory_WHEN_put_in_cache_THEN_put_in_the_specified_directory`() {
+    fun GIVEN_a_cache_directory_WHEN_put_in_cache_THEN_put_in_the_specified_directory() {
         val appContext = InstrumentationRegistry.getTargetContext()
         val cacheDir = File(appContext.filesDir, "testhumbleviewcache")
         cacheDir.mkdirs()
@@ -60,7 +60,7 @@ class OfflineCacheTest {
     }
 
     @Test
-    fun `GIVEN_a_custom_cache_WHEN_put_in_cache_THEN_use_the_custom_cache`() {
+    fun GIVEN_a_custom_cache_WHEN_put_in_cache_THEN_use_the_custom_cache() {
         val mockFuture: Future<String> = mockk()
         offlineCache.setOfflineCache(createCustomCache(mockFuture))
         val appContext = InstrumentationRegistry.getTargetContext()
