@@ -1,11 +1,11 @@
-package spilab.net.humbleimageview.model.bitmap
+package spilab.net.humbleimageview.features.decode
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import spilab.net.humbleimageview.android.AndroidBitmapFactory
 import spilab.net.humbleimageview.features.memory.BitmapPool
 
-internal class HumbleBitmapFactory(private val androidBitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
+internal class BitmapDecodeWithScale(private val androidBitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
 
     var inSampleSize: Int = 0
 

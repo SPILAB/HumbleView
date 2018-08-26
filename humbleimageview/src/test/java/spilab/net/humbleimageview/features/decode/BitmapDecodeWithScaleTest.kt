@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.model.bitmap
+package spilab.net.humbleimageview.features.decode
 
 import android.graphics.BitmapFactory.Options
 import io.mockk.CapturingSlot
@@ -10,9 +10,9 @@ import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidBitmapFactory
 
-class HumbleBitmapFactoryTest {
+class BitmapDecodeWithScaleTest {
 
-    private lateinit var humbleBitmapFactory: HumbleBitmapFactory
+    private lateinit var bitmapDecode: BitmapDecodeWithScale
     private lateinit var captureOptions: CapturingSlot<Options>
     private var mockAndroidBitmapFactory = mockk<AndroidBitmapFactory>()
 
@@ -33,14 +33,14 @@ class HumbleBitmapFactoryTest {
             }
             mockk()
         }
-        humbleBitmapFactory = HumbleBitmapFactory(mockAndroidBitmapFactory)
+        bitmapDecode = BitmapDecodeWithScale(mockAndroidBitmapFactory)
     }
 
     @Test
     fun `Given a view and bitmap of the same size, When decode for view, Then the bitmap should not be scaled`() {
         bitmapWidth = 128
         bitmapHeight = 64
-        humbleBitmapFactory.decodeBitmapForSize(ByteArray(8), 128, 64)
+        bitmapDecode.decodeBitmapForSize(ByteArray(8), 128, 64)
         Assert.assertEquals(1, inSampleSize)
     }
 
@@ -49,7 +49,7 @@ class HumbleBitmapFactoryTest {
         val bitmapBiggerThanViewBy = 4
         bitmapWidth = 128 * bitmapBiggerThanViewBy
         bitmapHeight = 64 * bitmapBiggerThanViewBy
-        humbleBitmapFactory.decodeBitmapForSize(ByteArray(8), 128, 64)
+        bitmapDecode.decodeBitmapForSize(ByteArray(8), 128, 64)
         Assert.assertEquals(bitmapBiggerThanViewBy, inSampleSize)
     }
 
@@ -58,7 +58,7 @@ class HumbleBitmapFactoryTest {
         val bitmapSmallerThanViewBy = 2
         bitmapWidth = 128 / bitmapSmallerThanViewBy
         bitmapHeight = 64 / bitmapSmallerThanViewBy
-        humbleBitmapFactory.decodeBitmapForSize(ByteArray(8), 128, 64)
+        bitmapDecode.decodeBitmapForSize(ByteArray(8), 128, 64)
         Assert.assertEquals(1, inSampleSize)
     }
 }
