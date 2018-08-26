@@ -1,12 +1,12 @@
 package spilab.net.humbleimageview.features.memory
 
 import android.widget.ImageView
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class DrawableRecycler {
 
-    fun recycleImageViewDrawable(recyclableDrawable: ImageViewDrawable) {
+    fun recycleImageViewDrawable(recyclableDrawable: AndroidImageViewDrawable) {
         val recyclableBitmap = (recyclableDrawable.getDrawable() as? HumbleBitmapDrawable)?.bitmap
         if (recyclableBitmap != null) {
             recyclableDrawable.setDrawable(null)

@@ -6,7 +6,7 @@ import io.mockk.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 class DrawableRecyclerTest {
@@ -29,7 +29,7 @@ class DrawableRecyclerTest {
         val mockBitmap = mockk<Bitmap>()
         val mockHumbleBitmapDrawable = mockk<HumbleBitmapDrawable>()
         every { mockHumbleBitmapDrawable.bitmap } returns mockBitmap
-        val mockImageViewDrawable = mockk<ImageViewDrawable>(relaxed = true)
+        val mockImageViewDrawable = mockk<AndroidImageViewDrawable>(relaxed = true)
         every { mockImageViewDrawable.getDrawable() } returns mockHumbleBitmapDrawable
 
         DrawableRecycler().recycleImageViewDrawable(mockImageViewDrawable)

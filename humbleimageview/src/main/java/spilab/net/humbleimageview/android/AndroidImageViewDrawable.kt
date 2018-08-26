@@ -12,11 +12,11 @@ import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
 /**
  * The code is mainly a copy/past of the original Android ImageView,
  * from API level 27:
- * The matrix assign was was replaced with a set.
+ * The matrix assign was replaced with a set.
  */
-internal class ImageViewDrawable(private val imageView: ImageView,
-                                 drawableDelegate: DrawableDelegate,
-                                 scaleDelegate: ScaleDelegate) {
+internal class AndroidImageViewDrawable(private val imageView: ImageView,
+                                        drawableDelegate: DrawableDelegate,
+                                        scaleDelegate: ScaleDelegate) {
 
     companion object {
         val DEFAUL_SCALE_TYPE = ScaleType.FIT_CENTER

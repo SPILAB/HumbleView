@@ -7,14 +7,13 @@ import android.os.Looper
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.features.HumbleImageFeatures
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
-import spilab.net.humbleimageview.features.transition.scale.ScaleImageViewDelegate
-import spilab.net.humbleimageview.features.transition.scale.ScaleSecondaryDelegate
+import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
 import spilab.net.humbleimageview.model.HumbleResourceId
 import spilab.net.humbleimageview.model.HumbleViewModel
 import spilab.net.humbleimageview.model.ViewSize
@@ -24,11 +23,11 @@ import spilab.net.humbleimageview.view.HumbleViewImageDebug
 
 class HumbleImageView : AppCompatImageView {
 
-    private val secondaryScaleType = ScaleSecondaryDelegate(this)
+    private val scaleDelegate = ScaleDelegate(this)
 
     internal val imageViewDrawables = arrayOf(
-            ImageViewDrawable(this, DrawableImageViewDelegate(this), ScaleImageViewDelegate(this)),
-            ImageViewDrawable(this, DrawableSecondaryDelegate(), secondaryScaleType)
+            AndroidImageViewDrawable(this, DrawableImageViewDelegate(this), scaleDelegate /* ScaleImageViewDelegate(this)*/),
+            AndroidImageViewDrawable(this, DrawableSecondaryDelegate(), scaleDelegate)
     )
 
     private var lastKnowSize = ViewSize()
@@ -63,7 +62,7 @@ class HumbleImageView : AppCompatImageView {
                 features?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
                 features?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
                 features?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
-                secondaryScaleType.initScaleType(styledAttributes)
+                scaleDelegate.initLoadedScaleType(styledAttributes)
             } finally {
                 styledAttributes.recycle()
             }
@@ -79,7 +78,7 @@ class HumbleImageView : AppCompatImageView {
     }
 
     fun setLoadedImageScaleType(scaleType: ScaleType) {
-        secondaryScaleType.setScaleType(scaleType)
+        scaleDelegate.setLoadedScaleType(scaleType)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

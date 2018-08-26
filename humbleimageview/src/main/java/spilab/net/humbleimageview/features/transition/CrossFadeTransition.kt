@@ -2,13 +2,13 @@ package spilab.net.humbleimageview.features.transition
 
 import android.os.SystemClock
 import android.widget.ImageView
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class CrossFadeTransition(private val imageView: ImageView,
-                                   private val imageViewDrawables: Array<ImageViewDrawable>,
+                                   private val imageViewDrawables: Array<AndroidImageViewDrawable>,
                                    drawable: HumbleBitmapDrawable,
                                    private val transitionListener: Transition.TransitionListener,
                                    private var fadingAnimationTimer: AnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() },
@@ -67,7 +67,6 @@ internal class CrossFadeTransition(private val imageView: ImageView,
     private fun finish() {
         drawableRecycler.recycleImageView(imageView)
         imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
-        imageViewDrawables[Transition.CURRENT_IDX].setScaleType(imageViewDrawables[Transition.NEXT_IDX].getScaleType())
         fadingAlpha = maxAlpha
         imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
         imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)

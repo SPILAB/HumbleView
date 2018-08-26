@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import io.mockk.*
 import org.junit.Test
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
@@ -13,8 +13,8 @@ class CrossFadeTransitionTest {
     private val mockImageView = mockk<ImageView>(relaxed = true)
     private val mockDrawableCurrent = mockk<Drawable>(relaxed = true)
     private val mockDrawableNext = mockk<Drawable>(relaxed = true)
-    private val mockImageCurrent = mockk<ImageViewDrawable>(relaxed = true)
-    private val mockImageNext = mockk<ImageViewDrawable>(relaxed = true)
+    private val mockImageCurrent = mockk<AndroidImageViewDrawable>(relaxed = true)
+    private val mockImageNext = mockk<AndroidImageViewDrawable>(relaxed = true)
     private val imageViewDrawables = arrayOf(mockImageCurrent, mockImageNext)
     private val mockDrawable = mockk<HumbleBitmapDrawable>()
     private val mockListener = mockk<Transition.TransitionListener>(relaxed = true)

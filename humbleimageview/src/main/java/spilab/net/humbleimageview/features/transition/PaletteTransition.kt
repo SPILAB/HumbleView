@@ -6,11 +6,11 @@ import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import android.support.v7.graphics.Palette
 import spilab.net.humbleimageview.android.AndroidPalette
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
-internal class PaletteTransition(private val imageViewDrawables: Array<ImageViewDrawable>,
+internal class PaletteTransition(private val imageViewDrawables: Array<AndroidImageViewDrawable>,
                                  private val transitionListener: Transition.TransitionListener,
                                  private val androidPalette: AndroidPalette = AndroidPalette(),
                                  private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Transition {

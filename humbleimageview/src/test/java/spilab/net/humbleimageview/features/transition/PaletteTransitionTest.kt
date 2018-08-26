@@ -10,7 +10,7 @@ import io.mockk.*
 import org.junit.Assert
 import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidPalette
-import spilab.net.humbleimageview.android.ImageViewDrawable
+import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
@@ -62,13 +62,13 @@ class PaletteTransitionTest {
         verify { mockListener.onTransitionCompleted() }
     }
 
-    private fun createImageViewDrawableMock(): Triple<Bitmap, CapturingSlot<Drawable>, Array<ImageViewDrawable>> {
+    private fun createImageViewDrawableMock(): Triple<Bitmap, CapturingSlot<Drawable>, Array<AndroidImageViewDrawable>> {
         val mockBitmap = mockk<Bitmap>()
 
         val mockHumbleBitmapDrawable = mockk<HumbleBitmapDrawable>()
         every { mockHumbleBitmapDrawable.bitmap } returns mockBitmap
 
-        val mockImageViewDrawable = mockk<ImageViewDrawable>()
+        val mockImageViewDrawable = mockk<AndroidImageViewDrawable>()
         every { mockImageViewDrawable.getDrawable() } returns mockHumbleBitmapDrawable
         val updatedDrawable = slot<Drawable>()
         every { mockImageViewDrawable.setDrawable(capture(updatedDrawable)) } answers {}
