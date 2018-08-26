@@ -44,6 +44,12 @@ internal class FeatureTransition(private val humbleImageView: HumbleImageView,
         replaceBitmapWithColor()
     }
 
+    fun drawableReplaced() {
+        if (transitions.isNotEmpty()) {
+            transitions.last().drawableReplaced()
+        }
+    }
+
     private inline fun cancelCurrentTransition() {
         if (transitions.isNotEmpty()) {
             transitions.last().onDetached()

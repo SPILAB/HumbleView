@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleimageview.common.MockHumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
+import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.model.HumbleViewModel
 
 internal class HumbleImageFeaturesTest {
@@ -54,5 +55,15 @@ internal class HumbleImageFeaturesTest {
         humbleImageFeatures.configureFromImageView()
         verify { mockDrawableFromResId.width = 123 }
         verify { mockDrawableFromResId.height = 456 }
+    }
+
+    @Test
+    fun `Given a humble view, When replaced drawable, Then should notify the transition`() {
+        val mockHumbleImageView = MockHumbleImageView()
+        val mockFeatureTransition = mockk<FeatureTransition>(relaxed = true)
+        val humbleImageFeatures = HumbleImageFeatures(mockHumbleImageView.humbleViewImage,
+                spyHumbleViewModel, mockFeatureTransition)
+        humbleImageFeatures.drawableReplaced()
+        verify { mockFeatureTransition.drawableReplaced() }
     }
 }

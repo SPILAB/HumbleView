@@ -12,15 +12,14 @@ import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
-                                   private val model: HumbleViewModel) : DrawableEventsListener {
+                                   private val model: HumbleViewModel,
+                                   private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView)) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
-    private val featureTransition: FeatureTransition
 
     init {
         model.drawableEventsListener = this
         drawableRecycler = DrawableRecycler()
-        featureTransition = FeatureTransition(humbleImageView)
     }
 
     fun onAttachedToWindow() {
@@ -72,6 +71,10 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
             configureImageViewDrawables()
             configureImageViewDrawable()
         }
+    }
+
+    fun drawableReplaced() {
+        featureTransition.drawableReplaced()
     }
 
     fun getVectorDrawable(resId: Int, width: Int, height: Int): Drawable? {

@@ -1,7 +1,11 @@
 package spilab.net.humbleimageview
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.AppCompatImageView
@@ -103,13 +107,35 @@ class HumbleImageView : AppCompatImageView {
         return hasFrame
     }
 
+    override fun setImageBitmap(bm: Bitmap?) {
+        super.setImageBitmap(bm)
+        features?.drawableReplaced()
+    }
+
+    override fun setImageDrawable(drawable: Drawable?) {
+        super.setImageDrawable(drawable)
+        features?.drawableReplaced()
+    }
+
+    override fun setImageIcon(icon: Icon?) {
+        super.setImageIcon(icon)
+        features?.drawableReplaced()
+    }
+
     override fun setImageResource(resId: Int) {
+        features?.drawableReplaced()
         var drawableFromResId = features?.getVectorDrawable(resId, width, height)
         if (drawableFromResId == null) {
             super.setImageResource(resId)
             drawableFromResId = VectorDrawableFromResId(drawable, resId, width, height)
         }
-        setImageDrawable(drawableFromResId)
+        super.setImageDrawable(drawableFromResId)
+    }
+
+    override fun setImageURI(uri: Uri?) {
+        super.setImageURI(uri)
+        features?.drawableReplaced()
+
     }
 
     override fun onVisibilityChanged(changedView: View?, visibility: Int) {

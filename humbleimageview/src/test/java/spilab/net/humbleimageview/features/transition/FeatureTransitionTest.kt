@@ -26,7 +26,7 @@ class FeatureTransitionTest {
     }
 
     @Test
-    fun `Given a view with a transition and a humble, When detached, Then should detach the current transition and create a palette transition`() {
+    fun `Given a view with a transition and a humble view, When detached, Then should detach the current transition and create a palette transition`() {
         val mockHumbleImageView = mockk<HumbleImageView>(relaxed = true)
         val mockDrawable = mockk<HumbleBitmapDrawable>(relaxed = true)
         val mockImageViewDrawable = mockk<AndroidImageViewDrawable>()
@@ -40,5 +40,14 @@ class FeatureTransitionTest {
         featureTransition.onDetached()
         verify { mockTransition.onDetached() }
         Assert.assertTrue(transitions[0] is PaletteTransition)
+    }
+
+    @Test
+    fun `Given a view with a transition and a humble view, When the bitmap is replaced, Then should notify the current transition`() {
+        val mockHumbleImageView = mockk<HumbleImageView>(relaxed = true)
+        val mockTransition = mockk<Transition>(relaxed = true)
+        val featureTransition = FeatureTransition(mockHumbleImageView, mutableListOf(mockTransition))
+        featureTransition.drawableReplaced()
+        verify { mockTransition.drawableReplaced() }
     }
 }

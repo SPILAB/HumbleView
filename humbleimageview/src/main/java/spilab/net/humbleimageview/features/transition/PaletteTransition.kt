@@ -41,6 +41,10 @@ internal class PaletteTransition(private val imageViewDrawables: Array<AndroidIm
         cancel()
     }
 
+    override fun drawableReplaced() {
+        cancel()
+    }
+
     private fun cancel() {
         task.cancel(true)
         transitionListener.onTransitionCompleted()

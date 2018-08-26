@@ -71,4 +71,20 @@ class CrossFadeTransitionTest {
         verify { mockDrawableRecycler.recycleImageView(mockImageView) }
         verify { mockListener.onTransitionCompleted() }
     }
+
+    @Test
+    fun `Given an cross fade, When the drawable is replaced, Then should stop the current cross fading`() {
+        every { mockImageCurrent.getDrawable() } returns mockDrawableCurrent
+        every { mockImageNext.getDrawable() } returns mockDrawableNext
+
+        every { mockImageView.imageAlpha } returns 255
+        every { mockAnimationTimer.getNormalized(255.0f) } returns 127.0f
+
+        val crossFadeTransition = CrossFadeTransition(mockImageView, imageViewDrawables, mockDrawable, mockListener, mockAnimationTimer, mockDrawableRecycler)
+        crossFadeTransition.drawableReplaced()
+        verify { mockDrawableCurrent.alpha = 255 }
+        verify { mockDrawableNext.alpha = 0 }
+        verify { mockImageNext.setDrawable(null) }
+        verify { mockListener.onTransitionCompleted() }
+    }
 }

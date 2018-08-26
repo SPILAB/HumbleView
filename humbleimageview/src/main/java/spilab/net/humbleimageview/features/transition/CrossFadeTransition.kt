@@ -40,6 +40,10 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         finish()
     }
 
+    override fun drawableReplaced() {
+        cancel()
+    }
+
     private fun animationLoop() {
         imageView.postOnAnimation(this)
     }
@@ -63,13 +67,20 @@ internal class CrossFadeTransition(private val imageView: ImageView,
 
     private inline fun isCompleted(): Boolean = fadingAlpha == maxAlpha
 
-
     private fun finish() {
         drawableRecycler.recycleImageView(imageView)
         imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
         fadingAlpha = maxAlpha
         imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
         imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
+        transitionListener.onTransitionCompleted()
+    }
+
+    private fun cancel() {
+        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
+        imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.alpha = 0
+        imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
+        fadingAlpha = maxAlpha
         transitionListener.onTransitionCompleted()
     }
 }
