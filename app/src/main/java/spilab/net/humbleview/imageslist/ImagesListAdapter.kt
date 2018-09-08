@@ -14,7 +14,7 @@ class ImagesListAdapter(private val imagesUrls: Array<String>) :
         fun bind(url: String) {
             val humbleImageView = viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
             // TODO: Add documentation to explain why we should set the place holder again
-            humbleImageView.setImageResource(R.drawable.ic_photo_black_48px)
+            humbleImageView.setImageResource(R.drawable.ic_photo_black)
             humbleImageView.setUrl(url)
         }
     }

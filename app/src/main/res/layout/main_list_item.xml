@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/flickrImage"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_photo_black_48px" />
+        app:srcCompat="@drawable/ic_photo_black" />
 
     <TextView
         android:id="@+id/textView"

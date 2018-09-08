@@ -28,7 +28,7 @@ The Activity ScaleTypeActivity shows the possibility to set different scales typ
 on for the loaded image and one for app:srcCompat, used as placeholder:
 ```
 <spilab.net.humbleimageview.HumbleImageView
-     app:srcCompat="@drawable/ic_photo_black_48px"
+     app:srcCompat="@drawable/ic_photo_black"
      android:scaleType="center"
      app:url="https://c1.staticflickr.com/1/501/20080796120_fa1b37a709_h.jpg"
      app:loadedImageScaleType="centerCrop"
