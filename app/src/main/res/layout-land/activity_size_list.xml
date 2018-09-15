@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sizelist.SizeListActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/smallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginStart="@dimen/smallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/halfSmallMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/smallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/halfSmallMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView11"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView12"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/halfSmallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView15"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/smallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView14"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageView13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/smallMargin"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/halfSmallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:url="https://farm8.staticflickr.com/7593/27009671293_6b19c34e57_k_d.jpg" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.875" />
+</android.support.constraint.ConstraintLayout>

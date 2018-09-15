@@ -7,12 +7,12 @@
     <application
         android:name=".HumbleViewApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:theme="@style/AppTheme">
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,22 +22,25 @@
         </activity>
         <activity
             android:name=".singleimage.SingleImageActivity"
-            android:label="@string/activity_title_single_image" />
+            android:label="@string/feature_single_image" />
         <activity
             android:name=".scaletype.ScaleTypeActivity"
-            android:label="@string/activity_title_scale_type" />
+            android:label="@string/feature_scale_type" />
         <activity
             android:name=".imageslist.ImagesListActivity"
-            android:label="@string/activity_title_images_list" />
+            android:label="@string/feature_images_list" />
         <activity
             android:name=".decodescale.DecodeScale"
-            android:label="@string/activity_title_decode_scale" />
+            android:label="@string/feature_decode_scale" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/activity_title_settings" />
+            android:label="@string/feature_settings" />
         <activity
             android:name=".offline.OfflineActivity"
-            android:label="@string/activity_title_offline" />
+            android:label="@string/feature_offline" />
+        <activity
+            android:name=".sizelist.SizeListActivity"
+            android:label="@string/feature_size_list" />
     </application>
 
 </manifest>
