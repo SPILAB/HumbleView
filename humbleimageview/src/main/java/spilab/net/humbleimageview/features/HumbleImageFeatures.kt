@@ -3,62 +3,61 @@ package spilab.net.humbleimageview.features
 import android.graphics.drawable.Drawable
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
-import spilab.net.humbleimageview.model.HumbleResourceId
-import spilab.net.humbleimageview.model.HumbleViewModel
-import spilab.net.humbleimageview.model.ViewSize
+import spilab.net.humbleimageview.features.request.ResourceId
+import spilab.net.humbleimageview.features.request.HumbleViewRequest
+import spilab.net.humbleimageview.view.ViewSize
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.features.memory.VectorDrawablePool
 import spilab.net.humbleimageview.features.transition.FeatureTransition
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.request.DrawableEventsListener
+import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.features.sizelist.UrlWithSize
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
-                                   private val model: HumbleViewModel,
+                                   private val request: HumbleViewRequest,
                                    private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView)) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
 
     init {
-        model.drawableEventsListener = this
+        request.drawableEventsListener = this
         drawableRecycler = DrawableRecycler()
     }
 
     fun onAttachedToWindow() {
-        model.updateImageIfNeeded()
+        request.requestImageIfNeeded()
         featureTransition.onAttached()
     }
 
     fun onDetachedFromWindow() {
         featureTransition.onDetached()
-        model.cancel()
+        request.cancel()
     }
 
     fun onPause() {
         featureTransition.onPause()
-        model.cancel()
+        request.cancel()
     }
 
     fun onResume() {
-        model.updateImageIfNeeded()
+        request.requestImageIfNeeded()
     }
 
     fun setUrl(url: String?) {
-        model.url = url
+        request.urls = SizeList.fromUrl(url)
+    }
+
+    fun setUrls(urls: SizeList) {
+        request.urls = urls
     }
 
     fun setOfflineCache(offlineCache: Boolean) {
-        model.offlineCache = offlineCache
-    }
-
-    fun setDebug(boolean: Boolean) {
-        model.debug = boolean
-    }
-
-    fun getDebug(): Boolean {
-        return model.debug
+        request.offlineCache = offlineCache
     }
 
     fun setViewSize(lastKnowSize: ViewSize) {
-        model.viewSize = lastKnowSize
+        request.viewSize = lastKnowSize
     }
 
     /**
@@ -83,7 +82,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
         return drawableFromResId
     }
 
-    override fun isCurrentOrNextDrawableIdEqualTo(humbleResourceId: HumbleResourceId): Boolean {
+    override fun isCurrentOrNextDrawableIdEqualTo(humbleResourceId: ResourceId): Boolean {
         return humbleImageView.isCurrentOrNextDrawableId(humbleResourceId)
     }
 

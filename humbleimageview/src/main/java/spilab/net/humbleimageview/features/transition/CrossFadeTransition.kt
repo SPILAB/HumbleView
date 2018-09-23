@@ -5,7 +5,7 @@ import android.widget.ImageView
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 
 internal class CrossFadeTransition(private val imageView: ImageView,
                                    private val imageViewDrawables: Array<AndroidImageViewDrawable>,

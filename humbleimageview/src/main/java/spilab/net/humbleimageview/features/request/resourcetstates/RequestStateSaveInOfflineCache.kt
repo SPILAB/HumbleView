@@ -1,7 +1,7 @@
-package spilab.net.humbleimageview.model.resourcetstates
+package spilab.net.humbleimageview.features.request.resourcetstates
 
 import spilab.net.humbleimageview.api.HumbleViewAPI
-import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
+import spilab.net.humbleimageview.features.offlinecache.OfflineCacheInterface
 import java.util.concurrent.Future
 
 
@@ -13,7 +13,7 @@ internal class RequestStateSaveInOfflineCache(stateContext: ResourceStateContext
     private var task: Future<*>
 
     init {
-        task = offlineCache.put(stateContext.humbleResourceId.url, bitmapData, this)
+        task = offlineCache.put(stateContext.humbleResourceId.urlWithSize.url, bitmapData, this)
     }
 
     override fun onFileWriteComplete() {

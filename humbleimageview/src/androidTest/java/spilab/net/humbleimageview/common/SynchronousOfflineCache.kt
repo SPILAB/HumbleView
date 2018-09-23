@@ -6,7 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 
 import io.mockk.slot
-import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
+import spilab.net.humbleimageview.features.offlinecache.OfflineCacheInterface
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future

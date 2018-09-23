@@ -6,15 +6,17 @@ import junit.framework.Assert
 import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.request.ResourceId
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.view.ViewSize
 
 class HumbleResourceIdTest {
 
-    private lateinit var humbleResourceId: HumbleResourceId
+    private lateinit var humbleResourceId: ResourceId
 
     @Before
     fun beforeTests() {
-        humbleResourceId = HumbleResourceId("url", ViewSize(4, 16))
+        humbleResourceId = ResourceId("urlWithSize", ViewSize(4, 16))
     }
 
     @Test
@@ -30,7 +32,7 @@ class HumbleResourceIdTest {
         val mockImageViewDrawable = mockk<AndroidImageViewDrawable>()
         every { mockImageViewDrawable.getDrawable() } returns null
         val mockHumbleBitmapDrawable = mockk<HumbleBitmapDrawable>()
-        every { mockHumbleBitmapDrawable.humbleResourceId } returns HumbleResourceId("another url", ViewSize(4, 16))
+        every { mockHumbleBitmapDrawable.resourceId } returns ResourceId("another urlWithSize", ViewSize(4, 16))
         val mockImageViewDrawableWithDrawable = mockk<AndroidImageViewDrawable>()
         every { mockImageViewDrawableWithDrawable.getDrawable() } returns mockHumbleBitmapDrawable
         val imageViewDrawables = arrayOf(mockImageViewDrawable, mockImageViewDrawableWithDrawable)
@@ -42,7 +44,7 @@ class HumbleResourceIdTest {
         val mockImageViewDrawable = mockk<AndroidImageViewDrawable>()
         every { mockImageViewDrawable.getDrawable() } returns null
         val mockHumbleBitmapDrawable = mockk<HumbleBitmapDrawable>()
-        every { mockHumbleBitmapDrawable.humbleResourceId } returns HumbleResourceId("url", ViewSize(4, 16))
+        every { mockHumbleBitmapDrawable.resourceId } returns ResourceId("urlWithSize", ViewSize(4, 16))
         val mockImageViewDrawableWithDrawable = mockk<AndroidImageViewDrawable>()
         every { mockImageViewDrawableWithDrawable.getDrawable() } returns mockHumbleBitmapDrawable
         val imageViewDrawables = arrayOf(mockImageViewDrawable, mockImageViewDrawableWithDrawable)

@@ -1,41 +1,40 @@
-package spilab.net.humbleimageview.model
+package spilab.net.humbleimageview.features.request
 
 import android.content.Context
 import android.content.res.Resources
 import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHandler
-import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.features.DrawableEventsListener
+import spilab.net.humbleimageview.drawable.DrawableDecoderTask
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.view.ViewSize
 
-internal class HumbleViewModel(private val context: Context,
-                               private var resources: Resources,
-                               private val uiThreadHandler: Handler) : DrawableDecoderTask.DrawableDecoderTaskListener {
+internal class HumbleViewRequest(private val context: Context,
+                                 private var resources: Resources,
+                                 private val uiThreadHandler: Handler) : DrawableDecoderTask.DrawableDecoderTaskListener {
 
-    private var currentId: HumbleResourceId? = null
+    private var currentId: ResourceId? = null
     private var humbleResourceRequest: HumbleResourceRequest? = null
 
     var offlineCache: Boolean = false
 
-    var url: String? = null
+    var urls: SizeList? = null
         set(value) {
             field = value
-            updateImageIfNeeded()
+            requestImageIfNeeded()
         }
 
     var viewSize: ViewSize? = null
         set(value) {
             field = value
-            updateImageIfNeeded()
+            requestImageIfNeeded()
         }
-
-    var debug = false
 
     var drawableEventsListener: DrawableEventsListener? = null
 
-    fun updateImageIfNeeded() {
-        if (url != null && viewSize != null) {
-            currentId = HumbleResourceId(url!!, viewSize!!)
+    fun requestImageIfNeeded() {
+        if (urls != null && viewSize != null) {
+            currentId = ResourceId(urls!!.getBestUrlWithSize(viewSize!!), viewSize!!)
             if (drawableEventsListener?.isCurrentOrNextDrawableIdEqualTo(currentId!!) == false) {
                 if (humbleResourceRequest?.humbleResourceId != currentId) {
                     humbleResourceRequest?.cancel()
@@ -61,7 +60,7 @@ internal class HumbleViewModel(private val context: Context,
     override
     fun onDrawableDecoded(humbleBitmapDrawable: HumbleBitmapDrawable) {
         humbleResourceRequest = null
-        if (currentId == humbleBitmapDrawable.humbleResourceId) {
+        if (currentId == humbleBitmapDrawable.resourceId) {
             drawableEventsListener?.onDrawableReady(humbleBitmapDrawable)
         }
     }

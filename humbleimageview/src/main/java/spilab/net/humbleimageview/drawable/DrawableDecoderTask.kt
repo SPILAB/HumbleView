@@ -1,15 +1,15 @@
-package spilab.net.humbleimageview.model.drawable
+package spilab.net.humbleimageview.drawable
 
 import android.content.res.Resources
 import spilab.net.humbleimageview.android.AndroidHandler
-import spilab.net.humbleimageview.model.HumbleResourceId
+import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.api.HumbleViewAPI
 import spilab.net.humbleimageview.features.decode.BitmapDecodeWithScale
 import java.util.concurrent.Future
 
 internal class DrawableDecoderTask(private val bitmapData: ByteArray,
                                    private val resources: Resources,
-                                   private val humbleResourceId: HumbleResourceId,
+                                   private val resourceId: ResourceId,
                                    private val drawableDecoderTaskListener: DrawableDecoderTaskListener,
                                    private val uiThreadHandler: AndroidHandler,
                                    private val bitmapDecode: BitmapDecodeWithScale = BitmapDecodeWithScale()) {
@@ -21,10 +21,10 @@ internal class DrawableDecoderTask(private val bitmapData: ByteArray,
     internal fun submit(): Future<*> {
         return HumbleViewAPI.executorProvider.getExecutorService().submit {
             val bitmap = bitmapDecode.decodeBitmapForSize(bitmapData,
-                    humbleResourceId.viewSize.width, humbleResourceId.viewSize.height)
+                    resourceId.viewSize.width, resourceId.viewSize.height)
             if (bitmap != null) {
                 val humbleBitmapDrawableRequest = HumbleBitmapDrawable(bitmap,
-                        humbleResourceId,
+                        resourceId,
                         resources,
                         bitmapDecode.inSampleSize)
                 uiThreadHandler.post(Runnable {

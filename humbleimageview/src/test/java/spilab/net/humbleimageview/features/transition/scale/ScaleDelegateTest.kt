@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import spilab.net.humbleimageview.R
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import kotlin.reflect.KProperty
 
 class ScaleDelegateTest {

@@ -12,17 +12,17 @@ import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.api.HumbleViewAPI
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.HumbleImageFeatures
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
+import spilab.net.humbleimageview.features.request.HumbleViewRequest
+import spilab.net.humbleimageview.features.request.ResourceId
+import spilab.net.humbleimageview.features.sizelist.SizeList
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
 import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
-import spilab.net.humbleimageview.model.HumbleResourceId
-import spilab.net.humbleimageview.model.HumbleViewModel
-import spilab.net.humbleimageview.model.ViewSize
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.view.HumbleViewImageDebug
+import spilab.net.humbleimageview.view.DebugView
+import spilab.net.humbleimageview.view.ViewSize
 
 
 class HumbleImageView : AppCompatImageView {
@@ -36,7 +36,7 @@ class HumbleImageView : AppCompatImageView {
 
     private var lastKnowSize = ViewSize()
     private val viewDebug by lazy {
-        HumbleViewImageDebug(this.context)
+        DebugView(this.context)
     }
     private var features: HumbleImageFeatures? = null
 
@@ -53,7 +53,7 @@ class HumbleImageView : AppCompatImageView {
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
 
-        val model = HumbleViewModel(context.applicationContext,
+        val model = HumbleViewRequest(context.applicationContext,
                 resources, Handler(Looper.getMainLooper()))
         features = HumbleImageFeatures(this, model)
 
@@ -65,7 +65,10 @@ class HumbleImageView : AppCompatImageView {
             try {
                 features?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
                 features?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
-                features?.setDebug(styledAttributes.getBoolean(R.styleable.HumbleImageView_debug, false))
+                val debugFlags = styledAttributes.getString(R.styleable.HumbleImageView_debugFlags)
+                if (debugFlags != null) {
+                    viewDebug.setDebugFlags(debugFlags)
+                }
                 scaleDelegate.initLoadedScaleType(styledAttributes)
             } finally {
                 styledAttributes.recycle()
@@ -73,16 +76,29 @@ class HumbleImageView : AppCompatImageView {
         }
     }
 
-    fun setUrl(url: String) {
+    fun setUrl(url: String): HumbleImageView {
         features?.setUrl(url)
+        return this
     }
 
-    fun setOfflineCache(offlineCache: Boolean) {
+    fun setUrls(urls: SizeList): HumbleImageView {
+        features?.setUrls(urls)
+        return this
+    }
+
+    fun setOfflineCache(offlineCache: Boolean): HumbleImageView {
         features?.setOfflineCache(offlineCache)
+        return this
     }
 
-    fun setLoadedImageScaleType(scaleType: ScaleType) {
+    fun setLoadedImageScaleType(scaleType: ScaleType): HumbleImageView {
         scaleDelegate.setLoadedScaleType(scaleType)
+        return this
+    }
+
+    fun setDebugFlags(debugFlags: Int): HumbleImageView {
+        viewDebug.setDebugFlags(debugFlags)
+        return this
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -151,12 +167,12 @@ class HumbleImageView : AppCompatImageView {
         drawDebug(canvas)
     }
 
-    internal fun isCurrentOrNextDrawableId(humbleResourceId: HumbleResourceId): Boolean {
-        return humbleResourceId.isPresentIn(imageViewDrawables)
+    internal fun isCurrentOrNextDrawableId(resourceId: ResourceId): Boolean {
+        return resourceId.isPresentIn(imageViewDrawables)
     }
 
     private fun drawDebug(canvas: Canvas?) {
-        if ((features?.getDebug() == true || HumbleViewAPI.debug) && canvas != null) {
+        if (canvas != null) {
             for (index in 0 until imageViewDrawables.size) {
                 val drawable = imageViewDrawables[index].getDrawable()
                 if (drawable is HumbleBitmapDrawable) {

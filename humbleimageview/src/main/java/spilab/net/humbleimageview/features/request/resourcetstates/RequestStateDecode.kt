@@ -1,6 +1,6 @@
-package spilab.net.humbleimageview.model.resourcetstates
+package spilab.net.humbleimageview.features.request.resourcetstates
 
-import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
+import spilab.net.humbleimageview.drawable.DrawableDecoderTask
 import java.util.concurrent.Future
 
 internal class RequestStateDecode(stateContext: ResourceStateContext, bitmapData: ByteArray) : RequestState(stateContext) {

@@ -3,7 +3,7 @@ package spilab.net.humbleimageview.features.transition
 import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.AndroidPalette
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 
 internal class FeatureTransition(private val humbleImageView: HumbleImageView,
                                  private var transitions: MutableList<Transition> = mutableListOf(),

@@ -10,12 +10,12 @@ import org.junit.Test
 import spilab.net.humbleimageview.common.MockHumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.transition.FeatureTransition
-import spilab.net.humbleimageview.model.HumbleViewModel
+import spilab.net.humbleimageview.features.request.HumbleViewRequest
 
 internal class HumbleImageFeaturesTest {
 
-    private lateinit var mockHumbleViewModel: HumbleViewModel
-    private lateinit var spyHumbleViewModel: HumbleViewModel
+    private lateinit var mockHumbleViewModel: HumbleViewRequest
+    private lateinit var spyHumbleViewModel: HumbleViewRequest
 
     @Before
     fun beforeTests() {

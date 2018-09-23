@@ -13,7 +13,6 @@ class HumbleViewAPI {
         const val DEFAULT_FADING_SPEED_MILLIS = 300L
 
         var fadingSpeedMillis = DEFAULT_FADING_SPEED_MILLIS
-        var debug = false
         var log
             get() = HumbleLogs.enable
             set(value) {

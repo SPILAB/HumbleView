@@ -12,7 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import spilab.net.humbleimageview.common.AndroidHandlerMock
 import spilab.net.humbleimageview.common.SynchronousOfflineCache
-import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
+import spilab.net.humbleimageview.features.offlinecache.OfflineCacheInterface
 import java.io.File
 import java.util.concurrent.Future
 

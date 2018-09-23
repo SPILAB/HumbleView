@@ -4,7 +4,7 @@ import android.content.res.TypedArray
 import android.widget.ImageView
 import spilab.net.humbleimageview.R
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import kotlin.reflect.KProperty
 
 internal class ScaleDelegate(private val imageView: ImageView) {

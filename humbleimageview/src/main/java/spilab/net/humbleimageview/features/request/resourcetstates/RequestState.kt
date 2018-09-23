@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.model.resourcetstates
+package spilab.net.humbleimageview.features.request.resourcetstates
 
 internal abstract class RequestState(val stateContext: ResourceStateContext) {
 

@@ -2,7 +2,7 @@ package spilab.net.humbleimageview.features.memory
 
 import android.widget.ImageView
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 
 internal class DrawableRecycler {
 

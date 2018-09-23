@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.model.cache
+package spilab.net.humbleimageview.features.offlinecache
 
 import java.io.File
 import java.util.concurrent.Future

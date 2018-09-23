@@ -12,7 +12,7 @@ import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.features.memory.DrawableRecycler
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 
 class PaletteTransitionTest {
 

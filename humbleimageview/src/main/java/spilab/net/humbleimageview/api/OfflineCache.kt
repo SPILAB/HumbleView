@@ -2,8 +2,8 @@ package spilab.net.humbleimageview.api
 
 import android.content.Context
 import spilab.net.humbleimageview.android.AndroidHandler
-import spilab.net.humbleimageview.model.cache.DefaultOfflineCache
-import spilab.net.humbleimageview.model.cache.OfflineCacheInterface
+import spilab.net.humbleimageview.features.offlinecache.DefaultOfflineCache
+import spilab.net.humbleimageview.features.offlinecache.OfflineCacheInterface
 import java.io.File
 
 class OfflineCache internal constructor(private val executorProvider: ExecutorProvider,

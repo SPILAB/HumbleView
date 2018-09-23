@@ -1,13 +1,13 @@
-package spilab.net.humbleimageview.model
+package spilab.net.humbleimageview.features.request
 
 import android.content.Context
 import android.content.res.Resources
 import spilab.net.humbleimageview.android.AndroidHandler
-import spilab.net.humbleimageview.model.drawable.DrawableDecoderTask
-import spilab.net.humbleimageview.model.resourcetstates.ResourceStateContext
+import spilab.net.humbleimageview.drawable.DrawableDecoderTask
+import spilab.net.humbleimageview.features.request.resourcetstates.ResourceStateContext
 
 internal class HumbleResourceRequest(context: Context,
-                                     val humbleResourceId: HumbleResourceId,
+                                     val humbleResourceId: ResourceId,
                                      val offlineCache: Boolean,
                                      uiThreadHandler: AndroidHandler,
                                      resources: Resources,

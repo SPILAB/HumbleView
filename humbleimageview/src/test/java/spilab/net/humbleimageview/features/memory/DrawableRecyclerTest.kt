@@ -7,7 +7,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.model.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 
 class DrawableRecyclerTest {
 

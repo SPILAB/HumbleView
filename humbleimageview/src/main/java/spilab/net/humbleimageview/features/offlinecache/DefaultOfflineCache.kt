@@ -1,4 +1,4 @@
-package spilab.net.humbleimageview.model.cache
+package spilab.net.humbleimageview.features.offlinecache
 
 import okio.ByteString
 import spilab.net.humbleimageview.android.AndroidHandler
