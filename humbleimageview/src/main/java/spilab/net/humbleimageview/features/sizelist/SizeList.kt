@@ -20,8 +20,8 @@ data class SizeList(val urlsWithSizes: List<UrlWithSize>) {
     fun getBestUrlWithSize(fromViewSize: ViewSize): UrlWithSize {
         var currentUrlWithSize: UrlWithSize = urlsWithSizes.first()
         for (urlWithSize in urlsWithSizes) {
-            if (matchViewWithOrHeight(fromViewSize.width, urlWithSize.viewSize.width, currentUrlWithSize.viewSize.width)
-                    && (matchViewWithOrHeight(fromViewSize.height, urlWithSize.viewSize.height, currentUrlWithSize.viewSize.height))
+            if (matchViewWithOrHeight(fromViewSize.width, urlWithSize.urlSize.width, currentUrlWithSize.urlSize.width)
+                    && (matchViewWithOrHeight(fromViewSize.height, urlWithSize.urlSize.height, currentUrlWithSize.urlSize.height))
                     && matchViewSize(fromViewSize, urlWithSize, currentUrlWithSize)) {
                 currentUrlWithSize = urlWithSize
             }
@@ -35,9 +35,9 @@ data class SizeList(val urlsWithSizes: List<UrlWithSize>) {
     }
 
     private fun matchViewSize(fromViewSize: ViewSize, urlWithSize: UrlWithSize, currentUrlWithSize: UrlWithSize): Boolean {
-        return ((fromViewSize.width > currentUrlWithSize.viewSize.width)
-                || (fromViewSize.height > currentUrlWithSize.viewSize.height)
-                || ((currentUrlWithSize.viewSize.width * currentUrlWithSize.viewSize.height) > (urlWithSize.viewSize.width * urlWithSize.viewSize.height)))
+        return ((fromViewSize.width > currentUrlWithSize.urlSize.width)
+                || (fromViewSize.height > currentUrlWithSize.urlSize.height)
+                || ((currentUrlWithSize.urlSize.width * currentUrlWithSize.urlSize.height) > (urlWithSize.urlSize.width * urlWithSize.urlSize.height)))
     }
 }
 
