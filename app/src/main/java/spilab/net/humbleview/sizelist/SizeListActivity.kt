@@ -40,14 +40,13 @@ class SizeListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_size_list)
-        mapOf(R.id.humbleImageViewBig to listA, R.id.humbleImageViewMediumA to listB,
+        for (entry in mapOf(R.id.humbleImageViewBig to listA, R.id.humbleImageViewMediumA to listB,
                 R.id.humbleImageViewMediumB to listC, R.id.humbleImageViewMediumC to listD,
                 R.id.humbleImageViewSmallA to listA, R.id.humbleImageViewSmallB to listB,
-                R.id.humbleImageViewSmallC to listC, R.id.humbleImageViewSmallD to listD)
-                .forEach { id, sizeList ->
-                    findViewById<HumbleImageView>(id)
-                            .setUrls(sizeList)
-                            .setDebugFlags(DebugViewFlags.REQUEST_VIEW_SIZE.value)
-                }
+                R.id.humbleImageViewSmallC to listC, R.id.humbleImageViewSmallD to listD)) {
+            findViewById<HumbleImageView>(entry.key)
+                    .setUrls(entry.value)
+                    .setDebugFlags(DebugViewFlags.REQUEST_VIEW_SIZE.value)
+        }
     }
 }
