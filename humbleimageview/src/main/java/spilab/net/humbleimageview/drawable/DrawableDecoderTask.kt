@@ -20,9 +20,10 @@ internal class DrawableDecoderTask(private val bitmapData: ByteArray,
 
     internal fun submit(): Future<*> {
         return HumbleViewAPI.executorProvider.getExecutorService().submit {
-            val bitmap = bitmapDecode.decodeBitmapForSize(bitmapData,
+            var bitmap = bitmapDecode.decodeBitmapForSize(bitmapData,
                     resourceId.viewSize.width, resourceId.viewSize.height)
             if (bitmap != null) {
+                bitmap = resourceId.bitmapTransform.transform(bitmap)
                 val humbleBitmapDrawableRequest = HumbleBitmapDrawable(bitmap,
                         resourceId,
                         resources,

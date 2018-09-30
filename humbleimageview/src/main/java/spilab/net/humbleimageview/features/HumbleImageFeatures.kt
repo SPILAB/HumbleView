@@ -13,6 +13,8 @@ import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.request.DrawableEventsListener
 import spilab.net.humbleimageview.features.sizelist.SizeList
 import spilab.net.humbleimageview.features.sizelist.UrlWithSize
+import spilab.net.humbleimageview.features.transform.BitmapTransformationFactory
+import javax.xml.transform.TransformerFactory
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
                                    private val request: HumbleViewRequest,
@@ -58,6 +60,13 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun setViewSize(lastKnowSize: ViewSize) {
         request.viewSize = lastKnowSize
+    }
+
+    fun setTransform(className: String?, values: String?) {
+        if (className != null) {
+            request.bitmapTransform = BitmapTransformationFactory
+                    .createInstance(className, values ?: "")
+        }
     }
 
     /**

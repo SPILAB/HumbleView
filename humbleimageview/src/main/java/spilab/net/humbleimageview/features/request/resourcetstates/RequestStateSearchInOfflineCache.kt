@@ -12,7 +12,7 @@ internal class RequestStateSearchInOfflineCache(stateContext: ResourceStateConte
     private var task: Future<*>
 
     init {
-        task = offlineCacheInterface.get(stateContext.humbleResourceId.urlWithSize.url, this)
+        task = offlineCacheInterface.get(stateContext.resourceId.urlWithSize.url, this)
     }
 
     override fun onFileRead(data: ByteArray) {

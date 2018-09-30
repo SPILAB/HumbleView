@@ -5,11 +5,11 @@
     style="@style/rippleFrame"
     android:layout_width="match_parent"
     android:layout_height="128dp"
-    android:layout_marginEnd="@dimen/smallMargin"
-    android:layout_marginLeft="@dimen/smallMargin"
-    android:layout_marginRight="@dimen/smallMargin"
     android:layout_marginStart="@dimen/smallMargin"
-    android:layout_marginTop="@dimen/smallMargin">
+    android:layout_marginLeft="@dimen/smallMargin"
+    android:layout_marginTop="@dimen/smallMargin"
+    android:layout_marginEnd="@dimen/smallMargin"
+    android:layout_marginRight="@dimen/smallMargin">
 
     <spilab.net.humbleimageview.HumbleImageView
         android:id="@+id/humbleImageView"

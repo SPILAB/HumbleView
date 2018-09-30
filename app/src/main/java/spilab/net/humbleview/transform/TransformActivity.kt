@@ -1,4 +1,4 @@
-package spilab.net.humbleview.imageslist
+package spilab.net.humbleview.transform
 
 import android.content.Context
 import android.content.Intent
@@ -8,23 +8,23 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import spilab.net.humbleview.R
 
-class ImagesListActivity : AppCompatActivity() {
+class TransformActivity : AppCompatActivity() {
 
     companion object {
 
         fun createIntent(context: Context): Intent {
-            return Intent(context, ImagesListActivity::class.java)
+            return Intent(context, TransformActivity::class.java)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_images_list)
+        setContentView(R.layout.activity_transform)
         val viewManager = LinearLayoutManager(this)
-        findViewById<RecyclerView>(R.id.ImagesListView).apply {
+        findViewById<RecyclerView>(R.id.TransformListView).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
-            adapter = ImagesListAdapter(arrayOf(
+            adapter = TransformListAdapter(arrayOf(
                     "https://c1.staticflickr.com/3/2865/9677214147_e011d8562e_h.jpg",
                     "https://c1.staticflickr.com/1/463/19757310168_8c7300f9ec_h.jpg",
                     "https://c1.staticflickr.com/1/370/19853422393_68049a6a16_h.jpg",

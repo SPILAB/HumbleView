@@ -14,7 +14,7 @@ internal class RequestStateDownload(stateContext: ResourceStateContext) :
     private val requestCall: Call
 
     init {
-        val request = Request.Builder().url(stateContext.humbleResourceId.urlWithSize.url).build()
+        val request = Request.Builder().url(stateContext.resourceId.urlWithSize.url).build()
         requestCall = HumbleViewAPI.http.getOkHttpClient(stateContext.context).newCall(request)
         requestCall.enqueue(this)
     }
@@ -37,6 +37,6 @@ internal class RequestStateDownload(stateContext: ResourceStateContext) :
     }
 
     override fun onFailure(call: Call?, e: IOException?) {
-        HumbleLogs.log("Cannot download bitmap from %s.", stateContext.humbleResourceId.urlWithSize)
+        HumbleLogs.log("Cannot download bitmap from %s.", stateContext.resourceId.urlWithSize)
     }
 }

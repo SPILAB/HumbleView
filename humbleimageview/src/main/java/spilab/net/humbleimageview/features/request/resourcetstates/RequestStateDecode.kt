@@ -8,7 +8,7 @@ internal class RequestStateDecode(stateContext: ResourceStateContext, bitmapData
     private var drawableDecoderTask: DrawableDecoderTask = DrawableDecoderTask(
             bitmapData,
             stateContext.resources,
-            stateContext.humbleResourceId,
+            stateContext.resourceId,
             stateContext.drawableDecoderTaskListener,
             stateContext.uiThreadHandler)
     private var task: Future<*>

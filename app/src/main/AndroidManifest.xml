@@ -41,6 +41,9 @@
         <activity
             android:name=".sizelist.SizeListActivity"
             android:label="@string/feature_size_list" />
+        <activity
+            android:name=".transform.TransformActivity"
+            android:label="@string/feature_transform" />
     </application>
 
 </manifest>

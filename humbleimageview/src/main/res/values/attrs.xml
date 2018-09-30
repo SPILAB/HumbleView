@@ -14,5 +14,7 @@
             <enum name="centerCrop" value="6" />
             <enum name="centerInside" value="7" />
         </attr>
+        <attr name="transform" format="string" />
+        <attr name="transformValues" format="string" />
     </declare-styleable>
 </resources>

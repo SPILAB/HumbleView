@@ -10,5 +10,6 @@
     android:layout_marginEnd="@dimen/smallMargin"
     android:layout_marginRight="@dimen/smallMargin"
     android:scaleType="fitCenter"
-    app:loadedImageScaleType="centerCrop"
-    app:srcCompat="@drawable/ic_photo_black" />
+    app:loadedImageScaleType="centerInside"
+    app:srcCompat="@drawable/ic_photo_black"
+    app:transform="spilab.net.humbleimageview.features.transform.RoundedBitmapTransformation" />

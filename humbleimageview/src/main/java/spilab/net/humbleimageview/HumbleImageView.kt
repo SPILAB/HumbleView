@@ -1,6 +1,7 @@
 package spilab.net.humbleimageview
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -65,14 +66,20 @@ class HumbleImageView : AppCompatImageView {
             try {
                 features?.setUrl(styledAttributes.getString(R.styleable.HumbleImageView_url))
                 features?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
-                val debugFlags = styledAttributes.getString(R.styleable.HumbleImageView_debugFlags)
-                if (debugFlags != null) {
-                    viewDebug.setDebugFlags(debugFlags)
-                }
+                features?.setTransform(styledAttributes.getString(R.styleable.HumbleImageView_transform),
+                        styledAttributes.getString(R.styleable.HumbleImageView_transformValues))
                 scaleDelegate.initLoadedScaleType(styledAttributes)
+                handleDebugAttributes(styledAttributes)
             } finally {
                 styledAttributes.recycle()
             }
+        }
+    }
+
+    private fun handleDebugAttributes(styledAttributes: TypedArray) {
+        val debugFlags = styledAttributes.getString(R.styleable.HumbleImageView_debugFlags)
+        if (debugFlags != null) {
+            viewDebug.setDebugFlags(debugFlags)
         }
     }
 

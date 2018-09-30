@@ -4,8 +4,9 @@ import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.view.ViewSize
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.sizelist.UrlWithSize
+import spilab.net.humbleimageview.features.transform.BitmapTransformation
 
-internal data class ResourceId(val urlWithSize: UrlWithSize, val viewSize: ViewSize) {
+internal data class ResourceId(val urlWithSize: UrlWithSize, val viewSize: ViewSize, val bitmapTransform: BitmapTransformation) {
 
     fun isPresentIn(imageViewDrawables: Array<AndroidImageViewDrawable>): Boolean {
         for (index in 0 until imageViewDrawables.size) {

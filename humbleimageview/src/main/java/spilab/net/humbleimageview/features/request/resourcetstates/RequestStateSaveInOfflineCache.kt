@@ -13,7 +13,7 @@ internal class RequestStateSaveInOfflineCache(stateContext: ResourceStateContext
     private var task: Future<*>
 
     init {
-        task = offlineCache.put(stateContext.humbleResourceId.urlWithSize.url, bitmapData, this)
+        task = offlineCache.put(stateContext.resourceId.urlWithSize.url, bitmapData, this)
     }
 
     override fun onFileWriteComplete() {

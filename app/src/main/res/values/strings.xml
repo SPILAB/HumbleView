@@ -10,6 +10,7 @@
     <string name="feature_decode_scale">Decode scale</string>
     <string name="feature_offline">Offline</string>
     <string name="feature_size_list">Size list</string>
+    <string name="feature_transform">Transform</string>
 
     <!-- Strings related to settings -->
     <string name="settings">Settings</string>

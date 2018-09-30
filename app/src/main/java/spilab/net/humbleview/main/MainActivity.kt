@@ -13,6 +13,7 @@ import spilab.net.humbleview.scaletype.ScaleTypeActivity
 import spilab.net.humbleview.settings.SettingsActivity
 import spilab.net.humbleview.singleimage.SingleImageActivity
 import spilab.net.humbleview.sizelist.SizeListActivity
+import spilab.net.humbleview.transform.TransformActivity
 
 
 class MainActivity : AppCompatActivity(), MainSamplesAdapter.MainSamplesAdapterListener {
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity(), MainSamplesAdapter.MainSamplesAdapterL
                     MainSamplesAdapter.SampleButton(R.string.feature_size_list,
                             "https://c2.staticflickr.com/4/3679/9673285370_fcba26e248_h.jpg",
                             SizeListActivity.createIntent(this@MainActivity)),
+                    MainSamplesAdapter.SampleButton(R.string.feature_transform,
+                            "https://c1.staticflickr.com/1/366/20132952468_71649929fc_h.jpg",
+                            TransformActivity.createIntent(this@MainActivity)),
                     MainSamplesAdapter.SampleButton(R.string.settings,
                             "https://c1.staticflickr.com/1/653/22711070429_7982d6131e_h.jpg",
                             SettingsActivity.createIntent(this@MainActivity))

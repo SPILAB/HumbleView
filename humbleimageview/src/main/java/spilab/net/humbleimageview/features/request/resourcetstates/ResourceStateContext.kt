@@ -8,7 +8,7 @@ import spilab.net.humbleimageview.drawable.DrawableDecoderTask
 
 internal class ResourceStateContext(val context: Context,
                                     val resources: Resources,
-                                    val humbleResourceId: ResourceId,
+                                    val resourceId: ResourceId,
                                     val offlineCache: Boolean,
                                     val uiThreadHandler: AndroidHandler,
                                     val drawableDecoderTaskListener: DrawableDecoderTask.DrawableDecoderTaskListener) {

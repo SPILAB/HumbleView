@@ -7,6 +7,8 @@ import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.features.transform.DefaultTransformation
+import spilab.net.humbleimageview.features.transform.BitmapTransformation
 import spilab.net.humbleimageview.view.ViewSize
 
 internal class HumbleViewRequest(private val context: Context,
@@ -30,11 +32,17 @@ internal class HumbleViewRequest(private val context: Context,
             requestImageIfNeeded()
         }
 
+    var bitmapTransform: BitmapTransformation = DefaultTransformation()
+        set(value) {
+            field = value
+            requestImageIfNeeded()
+        }
+
     var drawableEventsListener: DrawableEventsListener? = null
 
     fun requestImageIfNeeded() {
         if (urls != null && viewSize != null) {
-            currentId = ResourceId(urls!!.getBestUrlWithSize(viewSize!!), viewSize!!)
+            currentId = ResourceId(urls!!.getBestUrlWithSize(viewSize!!), viewSize!!, bitmapTransform)
             if (drawableEventsListener?.isCurrentOrNextDrawableIdEqualTo(currentId!!) == false) {
                 if (humbleResourceRequest?.humbleResourceId != currentId) {
                     humbleResourceRequest?.cancel()
