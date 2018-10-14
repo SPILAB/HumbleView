@@ -1,6 +1,7 @@
 package spilab.net.humbleimageview.features
 
 import android.graphics.drawable.Drawable
+import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.request.ResourceId
@@ -30,9 +31,11 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     fun onAttachedToWindow() {
         request.requestImageIfNeeded()
         featureTransition.onAttached()
+        slideShow?.onAttached()
     }
 
     fun onDetachedFromWindow() {
+        slideShow?.onDetached()
         featureTransition.onDetached()
         request.cancel()
     }
@@ -58,7 +61,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun setSlideshowUrls(urls: Array<out CharSequence>?) {
         if (urls != null) {
-            slideShow = SlideshowUrls.fromUrls(request, featureTransition, urls)
+            slideShow = SlideshowUrls.fromUrls(request, featureTransition, ViewCompat.isAttachedToWindow(humbleImageView), urls)
         }
     }
 

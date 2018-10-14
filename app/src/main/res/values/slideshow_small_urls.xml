@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="slideShowSmallUrls">
+        <item>https://c1.staticflickr.com/1/893/41629248124_8e5cbf2bda_z.jpg</item>
+        <item>https://c2.staticflickr.com/2/1760/40544646000_18e3c510e2_z.jpg</item>
+        <item>https://c2.staticflickr.com/2/1747/41629248734_4c3246ecf6_z.jpg</item>
+    </array>
+</resources>

@@ -34,8 +34,9 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:loadedImageScaleType="centerCrop"
         app:srcCompat="@drawable/ic_photo_black"
-        app:urls="@array/bigSlideShowUrls" />
+        app:urls="@array/slideShowBigUrls" />
 
     <spilab.net.humbleimageview.HumbleImageView
         android:id="@+id/humbleImageViewMedium"
@@ -51,7 +52,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toBottomOf="@+id/humbleImageViewSmall"
-        app:srcCompat="@drawable/ic_photo_black" />
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:urls="@array/slideShowMediumUrls" />
 
     <spilab.net.humbleimageview.HumbleImageView
         android:id="@+id/humbleImageViewSmall"
@@ -67,5 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_photo_black" />
+        app:loadedImageScaleType="centerCrop"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:urls="@array/slideShowSmallUrls" />
 </android.support.constraint.ConstraintLayout>
