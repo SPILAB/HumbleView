@@ -4,10 +4,15 @@ import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import java.util.*
 
 internal class FeatureTransition(private val humbleImageView: HumbleImageView,
                                  private var transitions: MutableList<Transition> = mutableListOf(),
-                                 private val androidPalette: AndroidPalette = AndroidPalette()) : Transition.TransitionListener {
+                                 private val androidPalette: AndroidPalette = AndroidPalette()) : Observable(), TransitionListener {
+
+    enum class State {
+        ON_TRANSITION_COMPLETED
+    }
 
     fun addTransition(drawable: HumbleBitmapDrawable) {
         if (ViewCompat.isAttachedToWindow(humbleImageView)) {
@@ -18,8 +23,14 @@ internal class FeatureTransition(private val humbleImageView: HumbleImageView,
         }
     }
 
+    fun isCompleted(): Boolean {
+        return transitions.isEmpty()
+    }
+
     override fun onTransitionCompleted() {
         transitions.clear()
+        setChanged()
+        notifyObservers(State.ON_TRANSITION_COMPLETED)
     }
 
     fun prepareOnDraw() {

@@ -50,7 +50,7 @@ internal class DebugView(context: Context) {
                 position = drawTextDebug(canvas, humbleBitmapDrawable.sampleSize.toString(), 0.0f, position)
             }
             if (DebugViewFlags.REQUEST_VIEW_SIZE.isEnable(flags)) {
-                position = drawTextDebug(canvas, humbleBitmapDrawable.resourceId.urlWithSize.urlSize.toString(), 0.0f, position)
+                drawTextDebug(canvas, humbleBitmapDrawable.resourceId.urlWithSize.urlSize.toString(), 0.0f, position)
             }
         }
     }

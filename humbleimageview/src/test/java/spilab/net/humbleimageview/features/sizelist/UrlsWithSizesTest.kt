@@ -7,11 +7,11 @@ import org.junit.runners.Parameterized
 import spilab.net.humbleimageview.view.ViewSize
 
 @RunWith(Parameterized::class)
-class SizeListTest(private val viewWidth: Int, private val viewHeight: Int,
-                   urlWidthA: Int, urlHeightA: Int,
-                   urlWidthB: Int, urlHeightB: Int,
-                   urlWidthC: Int, urlHeightC: Int,
-                   private val expectedUrl: String) {
+class UrlsWithSizesTest(private val viewWidth: Int, private val viewHeight: Int,
+                        urlWidthA: Int, urlHeightA: Int,
+                        urlWidthB: Int, urlHeightB: Int,
+                        urlWidthC: Int, urlHeightC: Int,
+                        private val expectedUrl: String) {
 
     companion object {
         @JvmStatic
@@ -29,7 +29,7 @@ class SizeListTest(private val viewWidth: Int, private val viewHeight: Int,
         }
     }
 
-    private var sizeList: SizeList = SizeList(listOf(
+    private var urlsWithSizes: UrlsWithSizes = UrlsWithSizes(listOf(
             UrlWithSize("url A", ViewSize(urlWidthA, urlHeightA)),
             UrlWithSize("url B", ViewSize(urlWidthB, urlHeightB)),
             UrlWithSize("url C", ViewSize(urlWidthC, urlHeightC)
@@ -38,6 +38,6 @@ class SizeListTest(private val viewWidth: Int, private val viewHeight: Int,
     @Test
     fun `Given different url size and view size, When get best url, Then should return the matching url`() {
         Assert.assertEquals(expectedUrl,
-                sizeList.getBestUrlWithSize(ViewSize(viewWidth, viewHeight)).url)
+                urlsWithSizes.getBestUrlWithSize(ViewSize(viewWidth, viewHeight)).url)
     }
 }

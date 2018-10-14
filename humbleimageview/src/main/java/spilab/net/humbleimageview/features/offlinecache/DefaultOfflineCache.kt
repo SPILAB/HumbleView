@@ -33,7 +33,7 @@ internal class DefaultOfflineCache(private val cacheDirectory: File,
                 offlineCacheInterfaceClearListener))
     }
 
-    private inline fun getFileName(key: String): String {
+    private fun getFileName(key: String): String {
         return ByteString.encodeUtf8(key).md5().hex()
     }
 }

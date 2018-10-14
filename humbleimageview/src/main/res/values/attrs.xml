@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="HumbleImageView">
         <attr name="url" format="string" />
+        <attr name="urls" format="reference" />
         <attr name="offlineCache" format="boolean" />
         <attr name="debugFlags" format="string" />
         <attr name="loadedImageScaleType" format="enum">

@@ -34,7 +34,7 @@ class Http(private val executorProvider: ExecutorProvider) {
         return okHttpClient!!
     }
 
-    private inline fun getHttpCache(context: Context): Cache? {
+    private fun getHttpCache(context: Context): Cache? {
         return if (cacheSizeMB > 0) {
             Cache(getDefaultHttpCacheDir(context), DEFAULT_CACHE_SIZE)
         } else {
@@ -42,13 +42,13 @@ class Http(private val executorProvider: ExecutorProvider) {
         }
     }
 
-    private inline fun getDefaultHttpCacheDir(context: Context): File {
+    private fun getDefaultHttpCacheDir(context: Context): File {
         val cacheDir = File(context.cacheDir, HumbleViewAPI.HTTP_CACHE_DIRECTORY)
         cacheDir.mkdirs()
         return cacheDir
     }
 
-    private inline fun destroyOkHttpClient() {
+    private fun destroyOkHttpClient() {
         AsyncTask.execute {
             synchronized(this) {
                 executorProvider.reset()

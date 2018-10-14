@@ -11,16 +11,16 @@ import spilab.net.humbleimageview.features.memory.VectorDrawablePool
 import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.request.DrawableEventsListener
-import spilab.net.humbleimageview.features.sizelist.SizeList
-import spilab.net.humbleimageview.features.sizelist.UrlWithSize
+import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
+import spilab.net.humbleimageview.features.slideshow.SlideshowUrls
 import spilab.net.humbleimageview.features.transform.BitmapTransformationFactory
-import javax.xml.transform.TransformerFactory
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
                                    private val request: HumbleViewRequest,
                                    private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView)) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
+    private var slideShow: SlideshowUrls? = null
 
     init {
         request.drawableEventsListener = this
@@ -47,11 +47,19 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     fun setUrl(url: String?) {
-        request.urls = SizeList.fromUrl(url)
+        if (url != null) {
+            request.urls = UrlsWithSizes.fromUrl(url)
+        }
     }
 
-    fun setUrls(urls: SizeList) {
+    fun setUrls(urls: UrlsWithSizes) {
         request.urls = urls
+    }
+
+    fun setSlideshowUrls(urls: Array<out CharSequence>?) {
+        if (urls != null) {
+            slideShow = SlideshowUrls.fromUrls(request, featureTransition, urls)
+        }
     }
 
     fun setOfflineCache(offlineCache: Boolean) {

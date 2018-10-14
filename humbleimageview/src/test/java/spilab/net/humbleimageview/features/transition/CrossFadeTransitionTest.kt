@@ -17,7 +17,7 @@ class CrossFadeTransitionTest {
     private val mockImageNext = mockk<AndroidImageViewDrawable>(relaxed = true)
     private val imageViewDrawables = arrayOf(mockImageCurrent, mockImageNext)
     private val mockDrawable = mockk<HumbleBitmapDrawable>()
-    private val mockListener = mockk<Transition.TransitionListener>(relaxed = true)
+    private val mockListener = mockk<TransitionListener>(relaxed = true)
     private val mockAnimationTimer = mockk<AnimationTimer>(relaxed = true)
     private val mockDrawableRecycler = mockk<DrawableRecycler>(relaxed = true)
 

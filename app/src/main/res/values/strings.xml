@@ -11,6 +11,7 @@
     <string name="feature_offline">Offline</string>
     <string name="feature_size_list">Size list</string>
     <string name="feature_transform">Transform</string>
+    <string name="feature_slideshow">Slideshow</string>
 
     <!-- Strings related to settings -->
     <string name="settings">Settings</string>

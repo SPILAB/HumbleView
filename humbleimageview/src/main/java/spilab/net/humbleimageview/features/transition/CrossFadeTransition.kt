@@ -10,9 +10,9 @@ import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 internal class CrossFadeTransition(private val imageView: ImageView,
                                    private val imageViewDrawables: Array<AndroidImageViewDrawable>,
                                    drawable: HumbleBitmapDrawable,
-                                   private val transitionListener: Transition.TransitionListener,
+                                   private val transitionListener: TransitionListener,
                                    private var fadingAnimationTimer: AnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() },
-                                   private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Runnable, Transition {
+                                   private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Runnable, TransitionDrawable() {
 
     private val maxAlpha: Int
     private var fadingAlpha: Int = 0
@@ -40,10 +40,6 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         finish()
     }
 
-    override fun drawableReplaced() {
-        cancel()
-    }
-
     private fun animationLoop() {
         imageView.postOnAnimation(this)
     }
@@ -57,7 +53,7 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         }
     }
 
-    private inline fun setupAlpha() {
+    private fun setupAlpha() {
         if (!isCompleted()) {
             fadingAlpha = (fadingAnimationTimer.getNormalized(maxAlpha.toFloat())).toInt()
             imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha - fadingAlpha
@@ -65,18 +61,20 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         }
     }
 
-    private inline fun isCompleted(): Boolean = fadingAlpha == maxAlpha
+    private fun isCompleted(): Boolean = fadingAlpha == maxAlpha
 
     private fun finish() {
-        drawableRecycler.recycleImageView(imageView)
-        imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
-        fadingAlpha = maxAlpha
-        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
-        imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
+        updateDrawable {
+            drawableRecycler.recycleImageView(imageView)
+            imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
+            fadingAlpha = maxAlpha
+            imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
+            imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
+        }
         transitionListener.onTransitionCompleted()
     }
 
-    private fun cancel() {
+    override fun cancel() {
         imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
         imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.alpha = 0
         imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)

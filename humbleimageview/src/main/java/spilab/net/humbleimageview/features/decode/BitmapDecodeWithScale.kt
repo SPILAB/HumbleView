@@ -23,7 +23,7 @@ internal class BitmapDecodeWithScale(private val androidBitmapFactory: AndroidBi
         return androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
     }
 
-    private inline fun computeSampleSize(width: Int, height: Int, options: BitmapFactory.Options): Int {
+    private fun computeSampleSize(width: Int, height: Int, options: BitmapFactory.Options): Int {
         val bitmapWidth = options.outWidth
         val bitmapHeight = options.outHeight
         var inSampleSize = 1

@@ -6,7 +6,7 @@ import android.os.Handler
 import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.drawable.DrawableDecoderTask
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.transform.DefaultTransformation
 import spilab.net.humbleimageview.features.transform.BitmapTransformation
 import spilab.net.humbleimageview.view.ViewSize
@@ -20,7 +20,7 @@ internal class HumbleViewRequest(private val context: Context,
 
     var offlineCache: Boolean = false
 
-    var urls: SizeList? = null
+    var urls: UrlsWithSizes? = null
         set(value) {
             field = value
             requestImageIfNeeded()

@@ -2,14 +2,11 @@ package spilab.net.humbleimageview.features.sizelist
 
 import spilab.net.humbleimageview.view.ViewSize
 
-data class SizeList(val urlsWithSizes: List<UrlWithSize>) {
+data class UrlsWithSizes(val urlsWithSizes: List<UrlWithSize>) {
 
     companion object {
-        fun fromUrl(url: String?): SizeList? {
-            if (url != null) {
-                return SizeList(listOf(UrlWithSize(url)))
-            }
-            return null
+        fun fromUrl(url: String): UrlsWithSizes {
+            return UrlsWithSizes(listOf(UrlWithSize(url)))
         }
     }
 

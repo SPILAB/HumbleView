@@ -44,6 +44,8 @@
         <activity
             android:name=".transform.TransformActivity"
             android:label="@string/feature_transform" />
+        <activity android:name=".slideshow.SlideShowActivity"
+            android:label="@string/feature_slideshow" />
     </application>
 
 </manifest>

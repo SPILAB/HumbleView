@@ -18,7 +18,7 @@ internal class ScaleDelegate(private val imageView: ImageView) {
     data class ScaleType(val useLoadedScale: Boolean, val scaleType: ImageView.ScaleType)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): ImageView.ScaleType {
-        var isHumbleBitmapDrawable = thisRef is AndroidImageViewDrawable && thisRef.getDrawable() is HumbleBitmapDrawable
+        val isHumbleBitmapDrawable = thisRef is AndroidImageViewDrawable && thisRef.getDrawable() is HumbleBitmapDrawable
         return if (loadedScaleType.useLoadedScale && isHumbleBitmapDrawable) {
             loadedScaleType.scaleType
         } else {

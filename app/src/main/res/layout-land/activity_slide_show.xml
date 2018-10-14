@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".slideshow.SlideShowActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageViewBig"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/smallMargin"
+        android:layout_marginLeft="@dimen/smallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/halfSmallMargin"
+        android:layout_marginRight="@dimen/halfSmallMargin"
+        android:layout_marginBottom="@dimen/smallMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_photo_black"
+        app:urls="@array/bigSlideShowUrls" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageViewMedium"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/halfSmallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginRight="@dimen/smallMargin"
+        android:layout_marginBottom="@dimen/smallMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toBottomOf="@+id/humbleImageViewSmall"
+        app:srcCompat="@drawable/ic_photo_black" />
+
+    <spilab.net.humbleimageview.HumbleImageView
+        android:id="@+id/humbleImageViewSmall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/halfSmallMargin"
+        android:layout_marginLeft="@dimen/halfSmallMargin"
+        android:layout_marginTop="@dimen/smallMargin"
+        android:layout_marginEnd="@dimen/smallMargin"
+        android:layout_marginRight="@dimen/smallMargin"
+        android:layout_marginBottom="@dimen/halfSmallMargin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_photo_black" />
+</android.support.constraint.ConstraintLayout>

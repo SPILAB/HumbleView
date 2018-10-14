@@ -10,7 +10,7 @@ import spilab.net.humbleimageview.common.MockHumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
-import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.sizelist.UrlWithSize
 import spilab.net.humbleimageview.view.ViewSize
 
@@ -63,7 +63,7 @@ internal class HumbleImageFeaturesTest {
         val humbleImageFeatures = HumbleImageFeatures(mockHumbleImageView.humbleViewImage,
                 spyHumbleViewRequest, mockFeatureTransition)
         humbleImageFeatures.setUrl("url")
-        verify { spyHumbleViewRequest.urls = SizeList.fromUrl("url") }
+        verify { spyHumbleViewRequest.urls = UrlsWithSizes.fromUrl("url") }
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class HumbleImageFeaturesTest {
         val mockFeatureTransition = mockk<FeatureTransition>(relaxed = true)
         val humbleImageFeatures = HumbleImageFeatures(mockHumbleImageView.humbleViewImage,
                 spyHumbleViewRequest, mockFeatureTransition)
-        val sizeList = SizeList(listOf(UrlWithSize("url", ViewSize(123, 456))))
+        val sizeList = UrlsWithSizes(listOf(UrlWithSize("url", ViewSize(123, 456))))
         humbleImageFeatures.setUrls(sizeList)
         verify { spyHumbleViewRequest.urls = sizeList }
     }

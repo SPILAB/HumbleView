@@ -18,7 +18,7 @@ import spilab.net.humbleimageview.features.HumbleImageFeatures
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
 import spilab.net.humbleimageview.features.request.ResourceId
-import spilab.net.humbleimageview.features.sizelist.SizeList
+import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
 import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
@@ -68,6 +68,7 @@ class HumbleImageView : AppCompatImageView {
                 features?.setOfflineCache(styledAttributes.getBoolean(R.styleable.HumbleImageView_offlineCache, false))
                 features?.setTransform(styledAttributes.getString(R.styleable.HumbleImageView_transform),
                         styledAttributes.getString(R.styleable.HumbleImageView_transformValues))
+                features?.setSlideshowUrls(styledAttributes.getTextArray(R.styleable.HumbleImageView_urls))
                 scaleDelegate.initLoadedScaleType(styledAttributes)
                 handleDebugAttributes(styledAttributes)
             } finally {
@@ -88,7 +89,7 @@ class HumbleImageView : AppCompatImageView {
         return this
     }
 
-    fun setUrls(urls: SizeList): HumbleImageView {
+    fun setUrls(urls: UrlsWithSizes): HumbleImageView {
         features?.setUrls(urls)
         return this
     }

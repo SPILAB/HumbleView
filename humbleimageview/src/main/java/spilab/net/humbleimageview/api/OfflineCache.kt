@@ -40,7 +40,7 @@ class OfflineCache internal constructor(private val executorProvider: ExecutorPr
         return cacheDirectory!!
     }
 
-    private inline fun getDefaultCacheDirectory(appContext: Context): File {
+    private fun getDefaultCacheDirectory(appContext: Context): File {
         val cacheDir = File(appContext.filesDir, HumbleViewAPI.CACHE_DIRECTORY)
         cacheDir.mkdirs()
         return cacheDir
