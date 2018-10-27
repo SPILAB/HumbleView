@@ -14,7 +14,9 @@ class BitmapRecycle(private val versionSdk: Int = Build.VERSION.SDK_INT) {
             // From Android 4.4 (KitKat) onward we can re-use if the byte size of
             // the new bitmap is smaller than the reusable bitmap candidate
             // allocation byte count.
-            val byteCount = width * height * getBytesPerPixel(candidate.config)
+            val w = width / inSampleSize
+            val h = height / inSampleSize
+            val byteCount = w * h * getBytesPerPixel(candidate.config)
             return byteCount <= candidate.allocationByteCount
         }
 
@@ -32,11 +34,10 @@ class BitmapRecycle(private val versionSdk: Int = Build.VERSION.SDK_INT) {
     }
 
     private fun getBytesPerPixel(config: Bitmap.Config): Int {
-        return when {
-            config === Bitmap.Config.ARGB_8888 -> 4
-            config === Bitmap.Config.RGB_565 -> 2
-            config === Bitmap.Config.ARGB_4444 -> 2
-            config === Bitmap.Config.ALPHA_8 -> 1
+        return when (config) {
+            Bitmap.Config.ARGB_8888 -> 4
+            Bitmap.Config.RGB_565, Bitmap.Config.ARGB_4444 -> 2
+            Bitmap.Config.ALPHA_8 -> 1
             else -> 1
         }
     }

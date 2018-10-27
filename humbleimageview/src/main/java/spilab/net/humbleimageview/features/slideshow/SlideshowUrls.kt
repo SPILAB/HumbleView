@@ -1,5 +1,8 @@
 package spilab.net.humbleimageview.features.slideshow
 
+import android.os.Handler
+import android.os.Looper
+import spilab.net.humbleimageview.android.AndroidHandler
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.transition.FeatureTransition
@@ -8,9 +11,12 @@ import java.util.*
 internal class SlideshowUrls(private val humbleViewRequest: HumbleViewRequest,
                              private val featureTransition: FeatureTransition,
                              attachedToWindow: Boolean,
-                             private val images: List<UrlsWithSizes>) {
+                             private val images: List<UrlsWithSizes>) : Runnable {
 
     companion object {
+
+        const val DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS = 4000L
+
         fun fromUrls(humbleViewRequest: HumbleViewRequest,
                      featureTransition: FeatureTransition,
                      attachedToWindow: Boolean,
@@ -20,13 +26,16 @@ internal class SlideshowUrls(private val humbleViewRequest: HumbleViewRequest,
         }
     }
 
+    var delayBetweenLoadedImagesMillis = DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS
+
     private var index: Int = 0
-    private var observer: Observer = Observer { observable: Observable, any: Any ->
+    private var observer: Observer = Observer { _: Observable, any: Any ->
         if (any == FeatureTransition.State.ON_TRANSITION_COMPLETED) {
-            nextIndex()
-            humbleViewRequest.urls = images[index]
+            handler.postDelayed(this, delayBetweenLoadedImagesMillis)
         }
     }
+
+    private val handler = AndroidHandler(Handler(Looper.getMainLooper()))
 
     init {
         require(images.isNotEmpty()) {
@@ -54,5 +63,10 @@ internal class SlideshowUrls(private val humbleViewRequest: HumbleViewRequest,
     private fun nextIndex() {
         index++
         if (index == images.size) index = 0
+    }
+
+    override fun run() {
+        nextIndex()
+        humbleViewRequest.urls = images[index]
     }
 }

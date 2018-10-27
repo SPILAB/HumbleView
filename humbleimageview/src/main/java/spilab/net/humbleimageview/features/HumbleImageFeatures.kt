@@ -116,11 +116,9 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     private fun configureImageViewDrawables() {
         val imageViewDrawables = humbleImageView.imageViewDrawables
-        if (imageViewDrawables != null) {
-            for (index in 0 until imageViewDrawables.size) {
-                val iv = imageViewDrawables[index]
-                iv.configureFromImageView()
-            }
+        for (index in 0 until imageViewDrawables.size) {
+            val iv = imageViewDrawables[index]
+            iv.configureFromImageView()
         }
     }
 
@@ -130,5 +128,9 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
             drawable.width = humbleImageView.width
             drawable.height = humbleImageView.height
         }
+    }
+
+    fun setDelayBetweenLoadedImagesMillis(delayBetweenLoadedImagesMillis: Long) {
+        slideShow?.delayBetweenLoadedImagesMillis = delayBetweenLoadedImagesMillis
     }
 }

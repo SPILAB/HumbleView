@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import spilab.net.humbleimageview.android.AndroidBitmapFactory
 import spilab.net.humbleimageview.features.memory.BitmapPool
+import spilab.net.humbleimageview.log.HumbleLogs
 
 internal class BitmapDecodeWithScale(private val androidBitmapFactory: AndroidBitmapFactory = AndroidBitmapFactory()) {
 
@@ -16,11 +17,15 @@ internal class BitmapDecodeWithScale(private val androidBitmapFactory: AndroidBi
         options.inJustDecodeBounds = false
         inSampleSize = computeSampleSize(width, height, options)
         options.inSampleSize = inSampleSize
-        val recycleBitmap = BitmapPool.find(options.outWidth / options.inSampleSize,
-                options.outHeight / options.inSampleSize, inSampleSize)
+        val recycleBitmap = BitmapPool.find(options.outWidth, options.outHeight, inSampleSize)
         options.inBitmap = recycleBitmap
         options.inMutable = true
-        return androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
+        try {
+            return androidBitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.size, options)
+        } catch (throwable: Throwable) {
+            HumbleLogs.log("BitmapFactory.decodeByteArray exception %", throwable)
+            return null
+        }
     }
 
     private fun computeSampleSize(width: Int, height: Int, options: BitmapFactory.Options): Int {

@@ -19,6 +19,7 @@ import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
 import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
+import spilab.net.humbleimageview.features.slideshow.SlideshowUrls
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
 import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
@@ -69,6 +70,8 @@ class HumbleImageView : AppCompatImageView {
                 features?.setTransform(styledAttributes.getString(R.styleable.HumbleImageView_transform),
                         styledAttributes.getString(R.styleable.HumbleImageView_transformValues))
                 features?.setSlideshowUrls(styledAttributes.getTextArray(R.styleable.HumbleImageView_urls))
+                features?.setDelayBetweenLoadedImagesMillis(styledAttributes.getInt(R.styleable.HumbleImageView_delayBetweenLoadedImagesMillis,
+                        SlideshowUrls.DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS.toInt()).toLong())
                 scaleDelegate.initLoadedScaleType(styledAttributes)
                 handleDebugAttributes(styledAttributes)
             } finally {

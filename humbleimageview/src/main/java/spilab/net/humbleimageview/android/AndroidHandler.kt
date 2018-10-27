@@ -7,4 +7,8 @@ internal open class AndroidHandler(private val handler: Handler) {
     open fun post(runnable: Runnable): Boolean {
         return handler.post(runnable)
     }
+
+    open fun postDelayed(runnable: Runnable, delayMillis: Long): Boolean {
+        return handler.postDelayed(runnable, delayMillis)
+    }
 }
