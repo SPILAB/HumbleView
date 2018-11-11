@@ -3,6 +3,7 @@ package spilab.net.humbleimageview.features
 import android.graphics.drawable.Drawable
 import android.support.v4.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
+import spilab.net.humbleimageview.android.AndroidViewCompat
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
@@ -13,12 +14,15 @@ import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.request.DrawableEventsListener
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
+import spilab.net.humbleimageview.features.slideshow.SlideshowFactory
 import spilab.net.humbleimageview.features.slideshow.SlideshowUrls
 import spilab.net.humbleimageview.features.transform.BitmapTransformationFactory
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
                                    private val request: HumbleViewRequest,
-                                   private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView)) : DrawableEventsListener {
+                                   private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView),
+                                   private val slideshowFactory: SlideshowFactory = SlideshowFactory(),
+                                   private val androidViewCompat: AndroidViewCompat = AndroidViewCompat()) : DrawableEventsListener {
 
     private val drawableRecycler: DrawableRecycler
     private var slideShow: SlideshowUrls? = null
@@ -51,6 +55,8 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun setUrl(url: String?) {
         if (url != null) {
+            slideShow?.cancel()
+            slideShow = null
             request.urls = UrlsWithSizes.fromUrl(url)
         }
     }
@@ -61,7 +67,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
 
     fun setSlideshowUrls(urls: Array<out CharSequence>?) {
         if (urls != null) {
-            slideShow = SlideshowUrls.fromUrls(request, featureTransition, ViewCompat.isAttachedToWindow(humbleImageView), urls)
+            slideShow = slideshowFactory.fromUrls(request, featureTransition, androidViewCompat.isAttachedToWindow(humbleImageView), urls)
         }
     }
 

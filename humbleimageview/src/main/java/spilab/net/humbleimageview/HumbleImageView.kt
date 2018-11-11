@@ -19,7 +19,7 @@ import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import spilab.net.humbleimageview.features.request.HumbleViewRequest
 import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
-import spilab.net.humbleimageview.features.slideshow.SlideshowUrls
+import spilab.net.humbleimageview.features.slideshow.SlideshowFactory
 import spilab.net.humbleimageview.features.transition.drawable.DrawableImageViewDelegate
 import spilab.net.humbleimageview.features.transition.drawable.DrawableSecondaryDelegate
 import spilab.net.humbleimageview.features.transition.scale.ScaleDelegate
@@ -71,7 +71,7 @@ class HumbleImageView : AppCompatImageView {
                         styledAttributes.getString(R.styleable.HumbleImageView_transformValues))
                 features?.setSlideshowUrls(styledAttributes.getTextArray(R.styleable.HumbleImageView_urls))
                 features?.setDelayBetweenLoadedImagesMillis(styledAttributes.getInt(R.styleable.HumbleImageView_delayBetweenLoadedImagesMillis,
-                        SlideshowUrls.DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS.toInt()).toLong())
+                        SlideshowFactory.DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS.toInt()).toLong())
                 scaleDelegate.initLoadedScaleType(styledAttributes)
                 handleDebugAttributes(styledAttributes)
             } finally {
@@ -95,6 +95,10 @@ class HumbleImageView : AppCompatImageView {
     fun setUrls(urls: UrlsWithSizes): HumbleImageView {
         features?.setUrls(urls)
         return this
+    }
+
+    fun setSlideshowUrls(urls: Array<String>) {
+        features?.setSlideshowUrls(urls)
     }
 
     fun setOfflineCache(offlineCache: Boolean): HumbleImageView {

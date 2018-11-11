@@ -13,20 +13,7 @@ internal class SlideshowUrls(private val humbleViewRequest: HumbleViewRequest,
                              attachedToWindow: Boolean,
                              private val images: List<UrlsWithSizes>) : Runnable {
 
-    companion object {
-
-        const val DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS = 4000L
-
-        fun fromUrls(humbleViewRequest: HumbleViewRequest,
-                     featureTransition: FeatureTransition,
-                     attachedToWindow: Boolean,
-                     urls: Array<out CharSequence>): SlideshowUrls? {
-            val sizesList: List<UrlsWithSizes> = urls.map { UrlsWithSizes.fromUrl(it.toString()) }.toList()
-            return SlideshowUrls(humbleViewRequest, featureTransition, attachedToWindow, sizesList)
-        }
-    }
-
-    var delayBetweenLoadedImagesMillis = DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS
+    var delayBetweenLoadedImagesMillis = SlideshowFactory.DEFAULT_DELAY_BETWEEN_LOADED_IMAGES_MILLIS
 
     private var index: Int = 0
     private var observer: Observer = Observer { _: Observable, any: Any ->
@@ -50,7 +37,12 @@ internal class SlideshowUrls(private val humbleViewRequest: HumbleViewRequest,
     }
 
     fun onDetached() {
+        cancel()
+    }
+
+    fun cancel() {
         featureTransition.deleteObserver(observer)
+        handler.removeCallbacks(this)
     }
 
     private fun startNextImage() {

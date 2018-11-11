@@ -34,6 +34,8 @@
     <string name="pref_cache_header">Cache</string>
 
     <string name="pref_cache_size">Cache size</string>
+    <string name="activity_slide_show_menu_item_image">Image</string>
+    <string name="activity_slide_show_menu_item_slideshow">SlideShow</string>
     <string-array name="pref_cache_list_titles">
         <item>None</item>
         <item>1 MIB</item>

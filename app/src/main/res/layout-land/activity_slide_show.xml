@@ -53,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/humbleImageViewSmall"
+        app:layout_constraintTop_toTopOf="@+id/guideline10"
         app:loadedImageScaleType="centerCrop"
         app:srcCompat="@drawable/ic_photo_black"
         app:urls="@array/slideShowMediumUrls" />

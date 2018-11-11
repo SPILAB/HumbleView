@@ -11,4 +11,8 @@ internal open class AndroidHandler(private val handler: Handler) {
     open fun postDelayed(runnable: Runnable, delayMillis: Long): Boolean {
         return handler.postDelayed(runnable, delayMillis)
     }
+
+    open fun removeCallbacks(runnable: Runnable) {
+        handler.removeCallbacks(runnable)
+    }
 }
