@@ -1,6 +1,6 @@
 package spilab.net.humbleimageview.common
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 import io.mockk.CapturingSlot
 import io.mockk.every
 import io.mockk.mockk

@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
-import android.support.v7.graphics.Palette
+import androidx.palette.graphics.Palette
 import io.mockk.*
 import org.junit.Assert
 import org.junit.Test
@@ -20,7 +20,7 @@ class PaletteTransitionTest {
     fun `Given an view with an humble bitmap drawable, When create a palette transition, Then replace the bitmap by a color drawable`() {
 
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
-        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>()
+        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>()
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
         val mockDrawableRecycler = mockk<DrawableRecycler>(relaxed = true)
@@ -37,7 +37,7 @@ class PaletteTransitionTest {
     @Test
     fun `Given an view with an humble bitmap drawable, When cancel, Then cancel the task`() {
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
-        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>(relaxed = true)
+        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
@@ -50,7 +50,7 @@ class PaletteTransitionTest {
     @Test
     fun `Given a detached view with an humble bitmap drawable, When attached, Then cancel the task to keep the current bitmap`() {
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
-        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>(relaxed = true)
+        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
@@ -65,7 +65,7 @@ class PaletteTransitionTest {
     @Test
     fun `Given an view with an humble bitmap drawable, When drawable is replaced, Then cancel the task`() {
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
-        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, Palette>>(relaxed = true)
+        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
@@ -90,16 +90,16 @@ class PaletteTransitionTest {
         return Triple(mockBitmap, updatedDrawable, imageViewDrawables)
     }
 
-    private fun createPaletteMock(mockBitmap: Bitmap, mockAsyncTask: AsyncTask<Bitmap, Void, Palette>): Triple<AndroidPalette, CapturingSlot<(Palette) -> Unit>, Palette> {
+    private fun createPaletteMock(mockBitmap: Bitmap, mockAsyncTask: AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>): Triple<AndroidPalette, CapturingSlot<(androidx.palette.graphics.Palette) -> Unit>, androidx.palette.graphics.Palette> {
         val mockAndroidPalette = mockk<AndroidPalette>()
 
-        val mockPaletteSwatch = mockk<Palette.Swatch>()
+        val mockPaletteSwatch = mockk<androidx.palette.graphics.Palette.Swatch>()
         every { mockPaletteSwatch.rgb } returns Color.MAGENTA
 
-        val mockPalette = mockk<Palette>()
+        val mockPalette = mockk<androidx.palette.graphics.Palette>()
         every { mockPalette.mutedSwatch } returns mockPaletteSwatch
 
-        val paletteResultCallback = slot<(palette: Palette) -> Unit>()
+        val paletteResultCallback = slot<(palette: androidx.palette.graphics.Palette) -> Unit>()
         every {
             mockAndroidPalette.generate(mockBitmap, capture(paletteResultCallback))
         } returns mockAsyncTask

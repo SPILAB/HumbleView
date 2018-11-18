@@ -7,16 +7,13 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
-import android.support.v7.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.View
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
 import spilab.net.humbleimageview.features.HumbleImageFeatures
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
-import spilab.net.humbleimageview.features.request.HumbleViewRequest
 import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.slideshow.SlideshowFactory
@@ -54,12 +51,7 @@ class HumbleImageView : AppCompatImageView {
 
     private fun applyCustomAttributes(context: Context, attrs: AttributeSet?,
                                       defStyleAttr: Int) {
-
-        val model = HumbleViewRequest(context.applicationContext,
-                resources, Handler(Looper.getMainLooper()))
-        features = HumbleImageFeatures(this, model)
-
-
+        features = HumbleImageFeatures(this)
         val styledAttributes = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.HumbleImageView, defStyleAttr, 0)

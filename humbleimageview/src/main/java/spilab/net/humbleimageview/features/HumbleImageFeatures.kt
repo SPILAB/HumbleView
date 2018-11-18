@@ -1,25 +1,29 @@
 package spilab.net.humbleimageview.features
 
 import android.graphics.drawable.Drawable
-import android.support.v4.view.ViewCompat
+import android.os.Handler
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.AndroidViewCompat
-import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
-import spilab.net.humbleimageview.features.request.ResourceId
-import spilab.net.humbleimageview.features.request.HumbleViewRequest
-import spilab.net.humbleimageview.view.ViewSize
-import spilab.net.humbleimageview.features.memory.DrawableRecycler
-import spilab.net.humbleimageview.features.memory.VectorDrawablePool
-import spilab.net.humbleimageview.features.transition.FeatureTransition
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
+import spilab.net.humbleimageview.features.memory.VectorDrawablePool
 import spilab.net.humbleimageview.features.request.DrawableEventsListener
+import spilab.net.humbleimageview.features.request.HumbleViewRequest
+import spilab.net.humbleimageview.features.request.ResourceId
 import spilab.net.humbleimageview.features.sizelist.UrlsWithSizes
 import spilab.net.humbleimageview.features.slideshow.SlideshowFactory
 import spilab.net.humbleimageview.features.slideshow.SlideshowUrls
 import spilab.net.humbleimageview.features.transform.BitmapTransformationFactory
+import spilab.net.humbleimageview.features.transition.FeatureTransition
+import spilab.net.humbleimageview.view.ViewSize
 
 internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
-                                   private val request: HumbleViewRequest,
+                                   private val request: HumbleViewRequest = HumbleViewRequest(
+                                           humbleImageView.context.applicationContext,
+                                           humbleImageView.resources,
+                                           Handler(humbleImageView.context.mainLooper)
+                                   ),
                                    private val featureTransition: FeatureTransition = FeatureTransition(humbleImageView),
                                    private val slideshowFactory: SlideshowFactory = SlideshowFactory(),
                                    private val androidViewCompat: AndroidViewCompat = AndroidViewCompat()) : DrawableEventsListener {

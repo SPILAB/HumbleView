@@ -3,9 +3,9 @@ package spilab.net.humbleview.imageslist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import spilab.net.humbleview.R
 import spilab.net.humbleview.data.ImagesUrls.Companion.IMAGES_URLS
 
@@ -21,8 +21,8 @@ class ImagesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_images_list)
-        val viewManager = LinearLayoutManager(this)
-        findViewById<RecyclerView>(R.id.ImagesListView).apply {
+        val viewManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.ImagesListView).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = ImagesListAdapter(IMAGES_URLS)

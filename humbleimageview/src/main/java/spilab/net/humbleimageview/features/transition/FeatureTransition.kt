@@ -1,6 +1,6 @@
 package spilab.net.humbleimageview.features.transition
 
-import android.support.v4.view.ViewCompat
+import androidx.core.view.ViewCompat
 import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable

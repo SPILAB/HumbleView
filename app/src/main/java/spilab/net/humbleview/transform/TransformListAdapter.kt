@@ -1,6 +1,6 @@
 package spilab.net.humbleview.transform
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import spilab.net.humbleview.R
 import spilab.net.humbleimageview.HumbleImageView
 
 class TransformListAdapter(private val imagesUrls: Array<String>) :
-        RecyclerView.Adapter<TransformListAdapter.ViewHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<TransformListAdapter.ViewHolder>() {
 
     enum class ViewType(val typeIndex: Int,
                         val resourceId: Int) {
@@ -21,7 +21,7 @@ class TransformListAdapter(private val imagesUrls: Array<String>) :
         }
     }
 
-    class ViewHolder(private val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
+    class ViewHolder(private val viewHolder: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewHolder) {
         fun bind(url: String) {
             val humbleImageView = viewHolder.findViewById<HumbleImageView>(R.id.humbleImageView)
             // TODO: Add documentation to explain why we should set the place holder again

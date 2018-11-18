@@ -2,8 +2,8 @@ package spilab.net.humbleimageview.api
 
 import android.os.Handler
 import android.os.Looper
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Assert

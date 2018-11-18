@@ -2,7 +2,7 @@ package spilab.net.humbleview.main
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import spilab.net.humbleimageview.HumbleImageView
 
 class MainSamplesAdapter(private val samplesButtons: Array<SampleButton>,
                          private val mainSamplesAdapterListener: MainSamplesAdapterListener) :
-        RecyclerView.Adapter<MainSamplesAdapter.ViewHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<MainSamplesAdapter.ViewHolder>() {
 
     interface MainSamplesAdapterListener {
         fun onClick(intent: Intent)
@@ -20,7 +20,7 @@ class MainSamplesAdapter(private val samplesButtons: Array<SampleButton>,
 
     data class SampleButton(val text: Int, val url: String, val intent: Intent)
 
-    class ViewHolder(private val viewHolder: View) : RecyclerView.ViewHolder(viewHolder),
+    class ViewHolder(private val viewHolder: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewHolder),
             View.OnClickListener {
 
         private lateinit var intent: Intent

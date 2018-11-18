@@ -2,9 +2,9 @@ package spilab.net.humbleview.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import spilab.net.humbleview.R
 import spilab.net.humbleview.decodescale.DecodeScale
 import spilab.net.humbleview.imageslist.ImagesListActivity
@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity(), MainSamplesAdapter.MainSamplesAdapterL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val viewManager = LinearLayoutManager(this)
-        findViewById<RecyclerView>(R.id.samplesListView).apply {
+        val viewManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.samplesListView).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = MainSamplesAdapter(arrayOf(

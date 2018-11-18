@@ -1,6 +1,6 @@
 package spilab.net.humbleview.espresso
 
-import android.support.test.filters.LargeTest
+import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
 import org.junit.Before
 import org.junit.Rule
