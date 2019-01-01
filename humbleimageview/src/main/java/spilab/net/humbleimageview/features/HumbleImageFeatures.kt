@@ -117,7 +117,7 @@ internal class HumbleImageFeatures(private val humbleImageView: HumbleImageView,
     }
 
     override fun onDrawableReady(drawable: HumbleBitmapDrawable) {
-        featureTransition.addTransition(drawable)
+        featureTransition.startCrossFadeTransitionFrom(drawable)
     }
 
     fun prepareOnDraw() {

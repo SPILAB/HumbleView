@@ -4,20 +4,19 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
-import androidx.palette.graphics.Palette
-import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
 
 internal class PaletteTransition(private val imageViewDrawables: Array<AndroidImageViewDrawable>,
                                  private val transitionListener: TransitionListener,
                                  private val androidPalette: AndroidPalette = AndroidPalette(),
                                  private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : TransitionDrawable() {
 
-    private lateinit var task: AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>
+    private var task: AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>? = null
 
-    init {
+    override fun start() {
         with(imageViewDrawables[Transition.CURRENT_IDX].getDrawable() as HumbleBitmapDrawable) {
             task = androidPalette.generate(this.bitmap) {
                 updateDrawable {
@@ -44,7 +43,7 @@ internal class PaletteTransition(private val imageViewDrawables: Array<AndroidIm
     }
 
     override fun cancel() {
-        task.cancel(true)
+        task?.cancel(true)
         transitionListener.onTransitionCompleted()
     }
 }

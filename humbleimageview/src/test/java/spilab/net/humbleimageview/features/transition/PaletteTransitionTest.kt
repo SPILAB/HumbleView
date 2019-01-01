@@ -5,19 +5,18 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
-import androidx.palette.graphics.Palette
 import io.mockk.*
 import org.junit.Assert
 import org.junit.Test
-import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
-import spilab.net.humbleimageview.features.memory.DrawableRecycler
+import spilab.net.humbleimageview.android.AndroidPalette
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
 
 class PaletteTransitionTest {
 
     @Test
-    fun `Given an view with an humble bitmap drawable, When create a palette transition, Then replace the bitmap by a color drawable`() {
+    fun `Given an view with an humble bitmap drawable, When create and start a palette transition, Then replace the bitmap by a color drawable`() {
 
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
         val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>()
@@ -26,7 +25,9 @@ class PaletteTransitionTest {
         val mockDrawableRecycler = mockk<DrawableRecycler>(relaxed = true)
 
 
-        PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette, mockDrawableRecycler)
+        val paletteTransition = PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette, mockDrawableRecycler)
+        paletteTransition.start()
+
         paletteResultCallback.captured.invoke(mockPalette)
         Assert.assertTrue(updatedDrawable.captured is ColorDrawable)
         verify { mockDrawableRecycler.recycleImageViewDrawable(imageViewDrawables[0]) }
@@ -35,26 +36,30 @@ class PaletteTransitionTest {
     }
 
     @Test
-    fun `Given an view with an humble bitmap drawable, When cancel, Then cancel the task`() {
-        val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
-        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
-        val mockListener = mockk<TransitionListener>(relaxed = true)
-        val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
-
-        PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette).onDetached()
-
-        verify { mockAsyncTask.cancel(true) }
-        verify { mockListener.onTransitionCompleted() }
-    }
-
-    @Test
-    fun `Given a detached view with an humble bitmap drawable, When attached, Then cancel the task to keep the current bitmap`() {
+    fun `Given an view with an humble bitmap drawable, When detaching, Then cancel the task`() {
         val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
         val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
         val paletteTransition = PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette)
+        paletteTransition.start()
+        paletteTransition.onDetached()
+
+        verify { mockAsyncTask.cancel(true) }
+        verify { mockListener.onTransitionCompleted() }
+    }
+
+    @Test
+    fun `Given a detached view with an humble bitmap drawable, When attached and detaching, Then should cancel the task to keep the current bitmap`() {
+        val (mockBitmap, updatedDrawable, imageViewDrawables) = createImageViewDrawableMock()
+        val mockAsyncTask = mockk<AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>>(relaxed = true)
+        val mockListener = mockk<TransitionListener>(relaxed = true)
+        val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
+
+        val paletteTransition = PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette)
+        paletteTransition.start()
+
         paletteTransition.onDetached()
         paletteTransition.onAttached()
 
@@ -69,7 +74,9 @@ class PaletteTransitionTest {
         val mockListener = mockk<TransitionListener>(relaxed = true)
         val (mockAndroidPalette, paletteResultCallback, mockPalette) = createPaletteMock(mockBitmap, mockAsyncTask)
 
-        PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette).drawableReplaced()
+        val paletteTransition = PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette)
+        paletteTransition.start()
+        paletteTransition.drawableReplaced()
 
         verify { mockAsyncTask.cancel(true) }
         verify { mockListener.onTransitionCompleted() }

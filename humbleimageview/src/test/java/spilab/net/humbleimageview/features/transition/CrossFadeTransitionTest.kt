@@ -30,7 +30,9 @@ class CrossFadeTransitionTest {
         every { mockAnimationTimer.getNormalized(255.0f) } returns 127.0f
 
         val crossFadeTransition = CrossFadeTransition(mockImageView, imageViewDrawables, mockDrawable, mockListener, mockAnimationTimer, mockDrawableRecycler)
+        crossFadeTransition.start()
         crossFadeTransition.prepareOnDraw()
+
         verifySequence {
             mockDrawableCurrent.mutate()
             mockDrawableCurrent.alpha = 255
@@ -55,7 +57,9 @@ class CrossFadeTransitionTest {
         every { mockImageView.postOnAnimation(capture(slotRunnable)) } answers {}
 
         val crossFadeTransition = CrossFadeTransition(mockImageView, imageViewDrawables, mockDrawable, mockListener, mockAnimationTimer, mockDrawableRecycler)
+        crossFadeTransition.start()
         crossFadeTransition.prepareOnDraw()
+
         slotRunnable.captured.run()
         verifySequence {
             mockDrawableCurrent.mutate()
@@ -81,7 +85,9 @@ class CrossFadeTransitionTest {
         every { mockAnimationTimer.getNormalized(255.0f) } returns 127.0f
 
         val crossFadeTransition = CrossFadeTransition(mockImageView, imageViewDrawables, mockDrawable, mockListener, mockAnimationTimer, mockDrawableRecycler)
+        crossFadeTransition.start()
         crossFadeTransition.drawableReplaced()
+        
         verify { mockDrawableCurrent.alpha = 255 }
         verify { mockDrawableNext.alpha = 0 }
         verify { mockImageNext.setDrawable(null) }

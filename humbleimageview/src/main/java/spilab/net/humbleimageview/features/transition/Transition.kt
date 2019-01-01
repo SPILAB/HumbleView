@@ -7,6 +7,7 @@ internal interface Transition {
         const val NEXT_IDX = 1
     }
 
+    fun start()
     fun prepareOnDraw()
     fun onAttached()
     fun onDetached()
