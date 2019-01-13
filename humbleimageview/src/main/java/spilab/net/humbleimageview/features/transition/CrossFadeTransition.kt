@@ -4,9 +4,8 @@ import android.os.SystemClock
 import android.widget.ImageView
 import spilab.net.humbleimageview.android.AndroidImageViewDrawable
 import spilab.net.humbleimageview.api.HumbleViewAPI
-import spilab.net.humbleimageview.features.memory.DrawableRecycler
 import spilab.net.humbleimageview.drawable.HumbleBitmapDrawable
-import spilab.net.humbleimageview.log.HumbleLogs
+import spilab.net.humbleimageview.features.memory.DrawableRecycler
 
 internal class CrossFadeTransition(private val imageView: ImageView,
                                    private val imageViewDrawables: Array<AndroidImageViewDrawable>,
@@ -41,6 +40,10 @@ internal class CrossFadeTransition(private val imageView: ImageView,
         finish()
     }
 
+    override fun drawableReplaced() {
+        cancel()
+    }
+
     private fun animationLoop() {
         imageView.postOnAnimation(this)
     }
@@ -65,22 +68,18 @@ internal class CrossFadeTransition(private val imageView: ImageView,
     private fun isCompleted(): Boolean = fadingAlpha == maxAlpha
 
     private fun finish() {
-        updateDrawable {
-            drawableRecycler.recycleImageView(imageView)
-            imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
-            fadingAlpha = maxAlpha
-            imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
-            imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
-        }
+        drawableRecycler.recycleImageView(imageView)
+        imageViewDrawables[Transition.CURRENT_IDX].setDrawable(imageViewDrawables[Transition.NEXT_IDX].getDrawable())
+        fadingAlpha = maxAlpha
+        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = fadingAlpha
+        imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
         transitionListener.onTransitionCompleted()
     }
 
     override fun cancel() {
-        updateDrawable {
-            imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
-            imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.alpha = 0
-            imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
-        }
+        imageViewDrawables[Transition.CURRENT_IDX].getDrawable()?.alpha = maxAlpha
+        imageViewDrawables[Transition.NEXT_IDX].getDrawable()?.alpha = 0
+        imageViewDrawables[Transition.NEXT_IDX].setDrawable(null)
         fadingAlpha = maxAlpha
         transitionListener.onTransitionCompleted()
     }

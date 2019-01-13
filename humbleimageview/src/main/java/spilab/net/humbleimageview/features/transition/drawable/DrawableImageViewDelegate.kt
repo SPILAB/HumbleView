@@ -1,11 +1,11 @@
 package spilab.net.humbleimageview.features.transition.drawable
 
 import android.graphics.drawable.Drawable
-import android.widget.ImageView
+import spilab.net.humbleimageview.HumbleImageView
 import spilab.net.humbleimageview.features.memory.VectorDrawableFromResId
 import kotlin.reflect.KProperty
 
-internal class DrawableImageViewDelegate(private val imageView: ImageView) : DrawableDelegate {
+internal class DrawableImageViewDelegate(private val imageView: HumbleImageView) : DrawableDelegate {
 
     override operator fun getValue(thisRef: Any?, property: KProperty<*>): Drawable? {
         if (imageView.drawable is VectorDrawableFromResId) {
@@ -15,6 +15,6 @@ internal class DrawableImageViewDelegate(private val imageView: ImageView) : Dra
     }
 
     override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Drawable?) {
-        imageView.setImageDrawable(value)
+        imageView.setImageDrawableInternal(value)
     }
 }

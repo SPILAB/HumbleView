@@ -140,6 +140,10 @@ class HumbleImageView : AppCompatImageView {
         features?.drawableReplaced()
     }
 
+    internal fun setImageDrawableInternal(drawable: Drawable?) {
+        super.setImageDrawable(drawable)
+    }
+
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
         features?.drawableReplaced()

@@ -19,13 +19,11 @@ internal class PaletteTransition(private val imageViewDrawables: Array<AndroidIm
     override fun start() {
         with(imageViewDrawables[Transition.CURRENT_IDX].getDrawable() as HumbleBitmapDrawable) {
             task = androidPalette.generate(this.bitmap) {
-                updateDrawable {
-                    drawableRecycler.recycleImageViewDrawable(imageViewDrawables[Transition.CURRENT_IDX])
-                    drawableRecycler.recycleImageViewDrawable(imageViewDrawables[Transition.NEXT_IDX])
-                    imageViewDrawables[Transition.CURRENT_IDX].setDrawable(
-                            ColorDrawable(it.mutedSwatch?.rgb ?: Color.GRAY)
-                    )
-                }
+                drawableRecycler.recycleImageViewDrawable(imageViewDrawables[Transition.CURRENT_IDX])
+                drawableRecycler.recycleImageViewDrawable(imageViewDrawables[Transition.NEXT_IDX])
+                imageViewDrawables[Transition.CURRENT_IDX].setDrawable(
+                        ColorDrawable(it.mutedSwatch?.rgb ?: Color.GRAY)
+                )
                 transitionListener.onTransitionCompleted()
             }
         }
@@ -39,6 +37,10 @@ internal class PaletteTransition(private val imageViewDrawables: Array<AndroidIm
     }
 
     override fun onDetached() {
+        cancel()
+    }
+
+    override fun drawableReplaced() {
         cancel()
     }
 
