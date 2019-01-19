@@ -62,9 +62,10 @@ internal class FeatureTransition(private val humbleImageView: HumbleImageView,
     }
 
     fun drawableReplaced() {
-        if (transitions.isNotEmpty()) {
-            transitions.first().drawableReplaced()
+        for (transition in transitions) {
+            transition.cancel()
         }
+        transitions.clear()
     }
 
     private inline fun cancelCurrentTransition() {

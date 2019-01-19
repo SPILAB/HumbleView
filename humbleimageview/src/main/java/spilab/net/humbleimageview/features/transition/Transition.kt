@@ -11,5 +11,5 @@ internal interface Transition {
     fun prepareOnDraw()
     fun onAttached()
     fun onDetached()
-    fun drawableReplaced()
+    fun cancel()
 }

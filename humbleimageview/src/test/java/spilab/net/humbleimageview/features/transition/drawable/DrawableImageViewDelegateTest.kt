@@ -7,6 +7,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert
 import org.junit.Test
+import spilab.net.humbleimageview.HumbleImageView
 
 class DrawableImageViewDelegateTest {
 
@@ -17,7 +18,7 @@ class DrawableImageViewDelegateTest {
     @Test
     fun `Given an image view with a drawable, When get drawable, Then return the image view drawable`() {
         val mockDrawable = mockk<Drawable>()
-        val mockImageView = mockk<ImageView>()
+        val mockImageView = mockk<HumbleImageView>()
         every { mockImageView.drawable } returns mockDrawable
         Assert.assertEquals(
                 mockDrawable,
@@ -27,8 +28,8 @@ class DrawableImageViewDelegateTest {
     @Test
     fun `Given an image view, When set drawable, Then set the image view drawable`() {
         val mockDrawable = mockk<Drawable>()
-        val mockImageView = mockk<ImageView>(relaxed = true)
+        val mockImageView = mockk<HumbleImageView>(relaxed = true)
         ImageViewDelegateTest(DrawableImageViewDelegate(mockImageView)).drawable = mockDrawable
-        verify { mockImageView.setImageDrawable(mockDrawable) }
+        verify { mockImageView.setImageDrawableInternal(mockDrawable) }
     }
 }

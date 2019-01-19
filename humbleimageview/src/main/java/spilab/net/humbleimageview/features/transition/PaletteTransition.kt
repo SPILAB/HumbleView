@@ -12,7 +12,7 @@ import spilab.net.humbleimageview.features.memory.DrawableRecycler
 internal class PaletteTransition(private val imageViewDrawables: Array<AndroidImageViewDrawable>,
                                  private val transitionListener: TransitionListener,
                                  private val androidPalette: AndroidPalette = AndroidPalette(),
-                                 private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : TransitionDrawable() {
+                                 private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Transition {
 
     private var task: AsyncTask<Bitmap, Void, androidx.palette.graphics.Palette>? = null
 
@@ -37,10 +37,6 @@ internal class PaletteTransition(private val imageViewDrawables: Array<AndroidIm
     }
 
     override fun onDetached() {
-        cancel()
-    }
-
-    override fun drawableReplaced() {
         cancel()
     }
 

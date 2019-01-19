@@ -76,7 +76,7 @@ class PaletteTransitionTest {
 
         val paletteTransition = PaletteTransition(imageViewDrawables, mockListener, mockAndroidPalette)
         paletteTransition.start()
-        paletteTransition.drawableReplaced()
+        paletteTransition.cancel()
 
         verify { mockAsyncTask.cancel(true) }
         verify { mockListener.onTransitionCompleted() }

@@ -12,7 +12,7 @@ internal class CrossFadeTransition(private val imageView: ImageView,
                                    private val drawable: HumbleBitmapDrawable,
                                    private val transitionListener: TransitionListener,
                                    private var fadingAnimationTimer: AnimationTimer = AnimationTimer(HumbleViewAPI.fadingSpeedMillis) { SystemClock.uptimeMillis() },
-                                   private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Runnable, TransitionDrawable() {
+                                   private val drawableRecycler: DrawableRecycler = DrawableRecycler()) : Runnable, Transition {
 
     private var maxAlpha: Int = 0
     private var fadingAlpha: Int = -1
@@ -38,10 +38,6 @@ internal class CrossFadeTransition(private val imageView: ImageView,
 
     override fun onDetached() {
         finish()
-    }
-
-    override fun drawableReplaced() {
-        cancel()
     }
 
     private fun animationLoop() {

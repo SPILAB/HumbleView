@@ -86,7 +86,7 @@ class CrossFadeTransitionTest {
 
         val crossFadeTransition = CrossFadeTransition(mockImageView, imageViewDrawables, mockDrawable, mockListener, mockAnimationTimer, mockDrawableRecycler)
         crossFadeTransition.start()
-        crossFadeTransition.drawableReplaced()
+        crossFadeTransition.cancel()
         
         verify { mockDrawableCurrent.alpha = 255 }
         verify { mockDrawableNext.alpha = 0 }

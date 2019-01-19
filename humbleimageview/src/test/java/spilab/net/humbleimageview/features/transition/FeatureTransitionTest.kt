@@ -48,6 +48,6 @@ class FeatureTransitionTest {
         val mockTransition = mockk<Transition>(relaxed = true)
         val featureTransition = FeatureTransition(mockHumbleImageView, mutableListOf(mockTransition))
         featureTransition.drawableReplaced()
-        verify { mockTransition.drawableReplaced() }
+        verify { mockTransition.cancel() }
     }
 }
